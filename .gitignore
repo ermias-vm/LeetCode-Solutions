@@ -1,3 +1,5 @@
+*.x
+
 ### IntelliJ IDEA ###
 .idea/
 .idea/modules.xml
