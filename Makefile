@@ -18,9 +18,9 @@ compile%:
         if [ -z "$$SOURCE_FILE" ]; then \
             echo "No source file found starting with $$N- and ending with .cc"; \
         else \
-            OUTPUT_FILE=$${SOURCE_FILE%.cc}.x; \
+            OUTPUT_FILE="$${SOURCE_FILE%.cc}.x"; \
             echo "Compiling $$SOURCE_FILE to $$OUTPUT_FILE"; \
-            g++ $(CXXFLAGS) $$SOURCE_FILE -o $$OUTPUT_FILE; \
+            g++ $(CXXFLAGS) "$$SOURCE_FILE" -o "$$OUTPUT_FILE"; \
         fi; \
     fi
 
@@ -40,13 +40,16 @@ run%:
             echo "No file found starting with $$N- and ending with .x"; \
         else \
             echo "Running file $$FILE"; \
-            ./$$FILE; \
+            "./$$FILE"; \
         fi; \
     fi
 
 %:
 	@$(MAKE) --no-print-directory compile$@
 	@$(MAKE) --no-print-directory run$@
+	@$(MAKE) --no-print-directory clean$@
+ 
+
 
 find:
 	@echo "Error: No number specified."
@@ -63,5 +66,14 @@ find%:
         echo "Found file: $$FILE"; \
     fi
 
-clean:
+clean%:
+	@N=$(subst clean,,$@); \
+    FILE=$$(find . -type f -name "$$N-*.x" | head -n 1); \
+    if [ -n "$$FILE" ]; then \
+        rm -f "$$FILE"; \
+    else \
+        echo "No file found starting with $$N- and ending with .x to delete."; \
+    fi
+
+clean_all:
 	rm -f $(shell find . -type f -name '*.x')
