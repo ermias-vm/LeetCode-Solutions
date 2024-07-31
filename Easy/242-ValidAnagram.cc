@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 using namespace std;
 
@@ -10,7 +11,6 @@ using namespace std;
 
 
 // Approach 1  
-
 
  /* 
     Time complexity:    O(n)
@@ -39,19 +39,52 @@ public:
     }
 };
 
+// Approach 2
+
+ /* 
+    Time complexity:    O(n)
+    Space complexity:   O(k) : where 'k' is the number of distinct characters across both input 
+
+    This code replaces the fixed-size vectors with unordered_map to count the frequency of each 
+    character in the input strings. This approach is more flexible and can handle any set of characters, 
+    making it suitable for Unicode characters as well. 
+
+*/
+
+class Solution2 {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.size() != t.size()) return false;
+
+        unordered_map<char, int> countS;
+        unordered_map<char, int> countT;
+
+        for (int i = 0; i < s.size(); ++i) {
+            countS[s[i]]++;
+            countT[t[i]]++;
+        }
+
+        return countS == countT;
+    }
+};
+
+
 
 
 // Test
 int main() {
+    //Approach 1
     Solution solution;
-    string s1 = "anagram";
-    string t1 = "nagaram";
-    string s2 = "rat";
-    string t2 = "car";
-
     cout << boolalpha;
-    cout << "Example 1: " << solution.isAnagram(s1, t1) << endl; // Output: true
-    cout << "Example 2: " << solution.isAnagram(s2, t2) << endl; // Output: false
+    cout << "Example 1: " << solution.isAnagram("anagram", "nagaram") << endl; // Output: true
+    cout << "Example 2: " << solution.isAnagram("rat", "car") << endl; // Output: false
 
+    //Approach 2
+    Solution2 solution_unicode;
+    cout << "Unicode Example 1: " << solution_unicode.isAnagram("मनीमनी", "नीम") << endl;       // Output: false
+    cout << "Unicode Example 2: " << solution_unicode.isAnagram("心心相印", "心相心印") << endl; // Output: true
+    cout << "Unicode Example 3: " << solution_unicode.isAnagram("🍏🍏🍏", "🍎🍎🍎") << endl;  // Output: false
+    cout << "Unicode Example 4: " << solution_unicode.isAnagram("🍎🍏", "🍏🍎") << endl;      // Output: true
+    
     return 0;
 }
