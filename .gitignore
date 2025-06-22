@@ -1,6 +1,7 @@
 *.x
 *.class
 base.txt
+0-*
 
 ### IntelliJ IDEA ###
 .idea/
