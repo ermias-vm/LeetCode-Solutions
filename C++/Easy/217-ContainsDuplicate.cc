@@ -4,8 +4,17 @@
 
 using namespace std;
 
+// Description: https://leetcode.com/problems/contains-duplicate
 
+/*
+    Time complexity: O(n)
+    Space complexity: O(n)
+    
+    Use hash set to track seen numbers. For each number, check if already seen 
+    (return true if duplicate found), otherwise add to set. Return false if no duplicates.
+*/
 
+// Solution
 class Solution {
 public:
     bool containsDuplicate(vector<int>& nums) {
@@ -18,31 +27,7 @@ public:
     }
 };
 
-/*
-    Solution:
-
-    Time complexity: O(n) - where n is the number of elements in the array. We traverse the list once.
-
-    Space complexity: O(n) - in the worst case, all elements are distinct, and we store each one in the hash set.
-
- Code: 
- 
-    class Solution {
-public:
-    bool containsDuplicate(vector<int>& nums) {
-        unordered_set<int> seen;
-        for (int num : nums) {
-            if (seen.find(num) != seen.end()) return true;
-            seen.insert(num);
-        }
-        return false;
-    }
-};
-    
-*/
-
-
-//Test
+// Test
 int main() {
     Solution solution;
     vector<int> nums1 = {1,2,3,1};
