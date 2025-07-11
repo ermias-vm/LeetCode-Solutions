@@ -1,7 +1,27 @@
 *.x
 *.class
+*.exe
+*.pdb
+*.obj
 base.txt
 0-*
+
+# TCC Compiler (downloaded automatically by make.ps1)
+C/tcc/
+C++/tcc/
+Java/tcc/
+Python/tcc/
+
+# MinGW Compiler (downloaded automatically by C++ make.ps1)
+C++/mingw/
+
+# Compiled executables and build artifacts
+*.o
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
 
 ### IntelliJ IDEA ###
 .idea/
