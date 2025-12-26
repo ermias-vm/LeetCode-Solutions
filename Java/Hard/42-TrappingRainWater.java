@@ -1,8 +1,20 @@
+// Description: https://leetcode.com/problems/trapping-rain-water/description/
+
+/*
+    Approach: Two Pointers
+
+    Use two pointers starting from both ends of the height array.
+    Maintain the maximum height seen from left and right sides.
+    At each step, move the pointer with the smaller height inward.
+    Water trapped at current position = max_height_from_side - current_height.
+    Only count water if current height is less than the max from that side.
+    Continue until both pointers meet.
+
+    Time complexity: O(n) - Single pass through the array.
+    Space complexity: O(1) - Only pointer and max height variables used.
+*/
+
 import java.util.Arrays;
-
-// Description: https://leetcode.com/problems/trapping-rain-water/
-
-// Solution
 class Solution {
     public int trap(int[] height) {
         if (height.length == 0) return 0;

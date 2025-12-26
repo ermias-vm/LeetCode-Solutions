@@ -1,16 +1,22 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
-#include <ctype.h>
-
 // Description: https://leetcode.com/problems/valid-palindrome/description/
 
 /*
     Approach: Two Pointers
-    
-    Time complexity: O(n)
-    Space complexity: O(1)
+
+    Use two pointers starting from both ends of the string.
+    Skip non-alphanumeric characters by moving pointers inward.
+    Compare characters in a case-insensitive manner using tolower().
+    If any mismatch is found, return false immediately.
+    Continue until pointers meet in the middle.
+
+    Time complexity: O(n) - Single pass through the string.
+    Space complexity: O(1) - Only two pointer variables used.
 */
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <ctype.h>
 
 bool isPalindrome(char* s) {
     int len = strlen(s);

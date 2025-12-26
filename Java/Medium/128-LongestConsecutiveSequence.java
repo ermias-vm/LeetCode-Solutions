@@ -1,10 +1,22 @@
+// Description: https://leetcode.com/problems/longest-consecutive-sequence/description/
+
+/*
+    Approach: Hash Set
+
+    Store all elements in a HashSet for O(1) lookup.
+    For each number, check if it's the start of a sequence (num-1 not in set).
+    If it's a sequence start, count consecutive numbers by looking up num+1, num+2, etc.
+    Track the longest sequence found during iteration.
+    By only counting from sequence starts, each element is visited at most twice.
+    This achieves linear time despite the nested loop structure.
+
+    Time complexity: O(n) - Each element visited at most twice.
+    Space complexity: O(n) - HashSet stores all elements.
+*/
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Arrays;
-
-// Description: https://leetcode.com/problems/longest-consecutive-sequence/
-
-// Solution
 class Solution {
     public int longestConsecutive(int[] nums) {
         Set<Integer> numSet = new HashSet<>();

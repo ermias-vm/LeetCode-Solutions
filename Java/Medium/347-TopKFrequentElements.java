@@ -1,15 +1,20 @@
-import java.util.*;
-
 // Description: https://leetcode.com/problems/top-k-frequent-elements/description/
 
 /*
-    Time complexity: O(n)
-    Space complexity: O(n)
-    
-    We use a hash map to count the frequency of each element, which takes O(n) time.
-    Then, we use a list of lists (buckets) to group elements by their frequencies, which also takes O(n) time.
-    Finally, we collect the top k frequent elements from the buckets, which takes O(n) time in the worst case.
+    Approach: Bucket Sort
+
+    Count frequencies of each element using a HashMap.
+    Create buckets where index represents frequency (max frequency = n).
+    Place each unique element into its corresponding frequency bucket.
+    Iterate from highest frequency bucket to collect top k elements.
+    Stop when k elements have been collected.
+    This avoids sorting and achieves linear time complexity.
+
+    Time complexity: O(n) - Linear frequency counting and bucket collection.
+    Space complexity: O(n) - HashMap and buckets storage.
 */
+
+import java.util.*;
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
         Map<Integer, Integer> freqMap = new HashMap<>();

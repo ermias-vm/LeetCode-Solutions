@@ -1,25 +1,25 @@
+// Description: https://leetcode.com/problems/car-fleet/description/
+
+/*
+    Approach: Sorting + Monotonic Stack
+
+    Calculate the time each car needs to reach the target: time = (target - position) / speed.
+    Pair each car's position with its arrival time.
+    Sort cars by position in descending order (closest to target first).
+    Use a stack to track distinct fleets based on arrival times.
+    If a car takes more time than the car ahead, it forms a new fleet.
+    If it takes less or equal time, it catches up and merges with the fleet ahead.
+
+    Time complexity: O(n log n) - Due to sorting.
+    Space complexity: O(n) - For storing car pairs and stack.
+*/
+
 #include <iostream>
 #include <vector>
 #include <stack>
 #include <algorithm>
 
 using namespace std;
-
-
-// Description: https://leetcode.com/problems/car-fleet/description/
-
-
-// Approach: Sort by position and use monotonic stack
-
-/* 
-    Time complexity: O(n log n)
-    Space complexity: O(n)
-
-    1. Pair each car's position with its time to reach target: time = (target - position) / speed
-    2. Sort cars by position in descending order (closest to target first)
-    3. Use a stack to track fleets: if a car takes more time than the car ahead,
-       it forms a new fleet (can't catch up). Otherwise, it joins the fleet ahead.
-*/
 
 class Solution {
 public:

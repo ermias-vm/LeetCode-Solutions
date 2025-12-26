@@ -1,27 +1,23 @@
+// Description: https://leetcode.com/problems/min-stack/description/
+
+/*
+    Approach: Two Stacks
+
+    Use a main stack to store all elements pushed.
+    Use a separate min stack to track minimum values at each state.
+    Push to min stack only when value is <= current minimum.
+    When popping, also pop from min stack if values match.
+    getMin() returns top of min stack in O(1) time.
+    This design maintains minimum tracking through push/pop operations.
+
+    Time complexity: O(1) - All operations are constant time.
+    Space complexity: O(n) - Two stacks store at most n elements each.
+*/
+
 #include <iostream>
 #include <stack>
 
 using namespace std;
-
-
-// Description:  https://leetcode.com/problems/min-stack/description/
-
-
-// Approach: Use two stacks, one for the elements and one for the minimums.
-
-/* 
-    Time complexity: O(1) for each operation
-
-    Space complexity: O(n) where n is the number of elements in the stack
-
-    Approach description: 
-    We use two stacks to implement the MinStack class. The main stack stores all the elements, 
-    while the minStack stores the minimum elements. When pushing a new element, we push it onto 
-    the main stack. If the minStack is empty or the new element is less than or equal to the top 
-    of the minStack, we also push it onto the minStack. When popping an element, we pop it from 
-    both stacks if it is equal to the top of the minStack. The top operation returns the top of 
-    the main stack, and the getMin operation returns the top of the minStack.
-*/
 
 
 class MinStack {
@@ -52,16 +48,6 @@ public:
         return minStack.top();
     }
 };
-
-/**
- * Your MinStack object will be instantiated and called as such:
- * MinStack* obj = new MinStack();
- * obj->push(val);
- * obj->pop();
- * int param_3 = obj->top();
- * int param_4 = obj->getMin();
- */
-
 
 // Test
 int main() {

@@ -1,29 +1,23 @@
+// Description: https://leetcode.com/problems/encode-and-decode-strings/description/
+
+/*
+    Approach: Length Prefix Encoding
+
+    Encode: Prefix each string with its length followed by '#' delimiter.
+    Also prefix the entire message with the list size and '#'.
+    This handles any characters within strings including special characters.
+    Decode: First extract list size, then iteratively extract each string.
+    For each string, read the length before '#', then extract that many characters.
+    This encoding is unambiguous and handles empty strings correctly.
+
+    Time complexity: O(n) - Where n is total characters across all strings.
+    Space complexity: O(n) - For the encoded/decoded strings.
+*/
+
 #include <iostream>
 #include <vector>
 #include <string>
-
 using namespace std;
-
-
-// Description:  https://leetcode.com/problems/encode-and-decode-strings/description/
-
-
-//  Approach 1  
-
-/* 
-    Time complexity: 
-        - Encoding: O(N), where N is the total length of all strings in the input vector.
-        - Decoding: O(N), where N is the length of the encoded string.
-
-    Space complexity:
-        - Encoding: O(1) additional space, not counting the space required for the output string.
-        - Decoding: O(N), where N is the length of the encoded string.
-
-    The encoding function converts each string into a format that includes 
-    the length of the string followed by the string itself. The decoding function reverses this process 
-    by reading the lengths and extracting the corresponding substrings.)
-*/
-
 
 class Solution {
 public:

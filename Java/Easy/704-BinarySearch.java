@@ -1,19 +1,20 @@
-import java.util.Arrays;
-
 // Description: https://leetcode.com/problems/binary-search/description/
 
 /*
     Approach: Binary Search
 
-    Time complexity: O(log n) - We divide the search space in half each iteration.
-    Space complexity: O(1) - We use a constant amount of extra space.
+    Use two pointers (left and right) to define the search range.
+    Calculate the middle index using: mid = left + (right - left) / 2 to avoid overflow.
+    Compare the middle element with the target value.
+    If equal, return the index. If target is greater, search the right half.
+    If target is smaller, search the left half.
+    Repeat until target is found or search space is exhausted (left > right).
 
-    We use two pointers to define the search range.
-    At each step, we compare the middle element with the target.
-    If the middle element equals the target, we return its index.
-    If the target is greater, we search the right half.
-    If the target is smaller, we search the left half.
+    Time complexity: O(log n) - Search space halves each iteration.
+    Space complexity: O(1) - Only pointer variables used.
 */
+
+import java.util.Arrays;
 
 // Solution
 class Solution {

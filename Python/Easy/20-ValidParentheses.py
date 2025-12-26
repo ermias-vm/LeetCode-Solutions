@@ -1,6 +1,20 @@
-from typing import Dict
+# Description: https://leetcode.com/problems/valid-parentheses/description/
 
-# Description: https://leetcode.com/problems/valid-parentheses/
+"""
+    Approach: Stack with Dictionary
+
+    Use a list as a stack to track opening brackets during iteration.
+    Store bracket pairs in a dictionary for O(1) matching lookups.
+    For each opening bracket, append it to the stack.
+    For each closing bracket, check if stack is non-empty and top matches.
+    If mismatch or stack empty on closing bracket, return False.
+    After processing, stack should be empty for valid parentheses.
+
+    Time complexity: O(n) - Single pass through the string.
+    Space complexity: O(n) - Stack stores at most n/2 opening brackets.
+"""
+
+from typing import Dict
 
 # Solution
 class Solution:

@@ -1,8 +1,22 @@
+// Description: https://leetcode.com/problems/valid-parentheses/description/
+
+/*
+    Approach: Stack with HashMap
+
+    Use a Stack to track opening brackets encountered during iteration.
+    Store bracket pairs in a HashMap for O(1) matching lookups.
+    For each opening bracket, push it onto the stack.
+    For each closing bracket, check if stack is non-empty and top matches.
+    If mismatch or stack empty on closing bracket, return false.
+    After processing, stack should be empty for valid parentheses.
+
+    Time complexity: O(n) - Single pass through the string.
+    Space complexity: O(n) - Stack stores at most n/2 opening brackets.
+*/
+
 import java.util.Stack;
 import java.util.HashMap;
 import java.util.Map;
-
-// Description: https://leetcode.com/problems/valid-parentheses/
 
 // Solution
 class Solution {

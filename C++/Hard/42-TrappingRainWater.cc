@@ -1,24 +1,23 @@
+// Description: https://leetcode.com/problems/trapping-rain-water/description/
+
+/*
+    Approach: Two Pointers
+
+    Use two pointers starting from both ends of the height array.
+    Maintain the maximum height seen from left and right sides.
+    At each step, move the pointer with the smaller height inward.
+    Water trapped at current position = max_height_from_side - current_height.
+    Only count water if current height is less than the max from that side.
+    Continue until both pointers meet.
+
+    Time complexity: O(n) - Single pass through the array.
+    Space complexity: O(1) - Only pointer and max height variables used.
+*/
+
 #include <iostream>
 #include <vector>
 
 using namespace std;
-
-
-// Description:  https://leetcode.com/problems/trapping-rain-water/
-
-
-// Approach: Two-pointer technique
-/* 
-    Time complexity: O(n) - We traverse the array only once.
-    Space complexity: O(1) - We use a constant amount of extra space.
-
-   // Approach: Two-pointer technique
-    // We use two pointers, one starting from the beginning and one from the end of the array.
-    // We keep track of the maximum height seen so far from both ends.
-    // We calculate the trapped water at each position by comparing the current height with the maximum height seen so far.
-
-
-*/
 
 
 

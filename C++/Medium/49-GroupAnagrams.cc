@@ -1,22 +1,25 @@
+// Description: https://leetcode.com/problems/group-anagrams/description/
+
+/*
+    Approach: Sorted String as Key
+
+    Use a hash map where the key is the sorted version of each string.
+    Sorting a string's characters creates a canonical form for all its anagrams.
+    All anagrams will have the same sorted form and group together.
+    Iterate through input strings, sort each one, and add to corresponding group.
+    Finally, collect all groups from the hash map values.
+    This leverages sorting for anagram identification.
+
+    Time complexity: O(n * k log k) - n strings, each of max length k, sorted.
+    Space complexity: O(n * k) - Storing all strings in hash map.
+*/
+
 #include <iostream>
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
 
 using namespace std;
-
-// Description:  https://leetcode.com/problems/group-anagrams/description/
-
-//  Approach 1
-
-/* 
-    Time complexity: O(N * K * log K), where N is the number of strings and K is the maximum length of a string.
-    Space complexity: O(N * K), where N is the number of strings and K is the maximum length of a string.
-
-    The solution uses a hash map to group strings that are anagrams. 
-    Each string is sorted, and the sorted string is used as the key in the hash map. 
-    All strings that are anagrams will have the same sorted string and thus will be grouped together.)
-*/
 
 class Solution {
 public:

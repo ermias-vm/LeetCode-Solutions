@@ -1,8 +1,20 @@
+// Description: https://leetcode.com/problems/container-with-most-water/description/
+
+/*
+    Approach: Two Pointers
+
+    Start with pointers at both ends for maximum width container.
+    Calculate area as min(height[left], height[right]) * (right - left).
+    Move the pointer with smaller height inward to potentially find larger area.
+    This greedy choice ensures we don't miss the optimal solution.
+    Track the maximum area found during the iteration.
+    Continue until both pointers meet.
+
+    Time complexity: O(n) - Single pass through the array.
+    Space complexity: O(1) - Only pointer and area variables used.
+*/
+
 import java.util.Arrays;
-
-// Description: https://leetcode.com/problems/container-with-most-water/
-
-
 class Solution {
     public int maxArea(int[] height) {
         int left = 0;

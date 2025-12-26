@@ -1,8 +1,20 @@
+// Description: https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/
+
+/*
+    Approach: Two Pointers
+
+    Use two pointers starting from both ends of the sorted array.
+    Calculate sum of elements at both pointers.
+    If sum equals target, return 1-indexed positions.
+    If sum is too small, move left pointer right to increase sum.
+    If sum is too large, move right pointer left to decrease sum.
+    Sorted property guarantees exactly one solution exists.
+
+    Time complexity: O(n) - Single pass through the array.
+    Space complexity: O(1) - Only pointer variables used.
+*/
+
 import java.util.Arrays;
-
-// Description: https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
-
-// Solution
 class Solution {
     public int[] twoSum(int[] numbers, int target) {
         int left = 0, right = numbers.length - 1;

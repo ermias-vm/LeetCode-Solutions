@@ -1,6 +1,20 @@
-import java.util.Locale;
-
 // Description: https://leetcode.com/problems/valid-palindrome/description/
+
+/*
+    Approach: Two Pointers
+
+    Use two pointers starting from both ends of the string.
+    Skip non-alphanumeric characters using Character.isLetterOrDigit().
+    Compare characters in lowercase using Character.toLowerCase().
+    If any mismatch is found, return false immediately.
+    Move pointers toward center until they meet.
+    Return true if all comparisons passed.
+
+    Time complexity: O(n) - Single pass through the string.
+    Space complexity: O(1) - Only two pointer variables used.
+*/
+
+import java.util.Locale;
 
 // Solution
 class Solution {

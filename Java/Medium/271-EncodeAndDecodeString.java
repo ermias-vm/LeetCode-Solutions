@@ -1,8 +1,20 @@
-import java.util.*;
-
 // Description: https://leetcode.com/problems/encode-and-decode-strings/description/
 
+/*
+    Approach: Length Prefix Encoding
 
+    Encode: Prefix each string with its length followed by '#' delimiter.
+    Also prefix the entire message with the list size and '#'.
+    This handles any characters within strings including special characters.
+    Decode: First extract list size, then iteratively extract each string.
+    For each string, read the length before '#', then extract that many characters.
+    This encoding is unambiguous and handles empty strings correctly.
+
+    Time complexity: O(n) - Where n is total characters across all strings.
+    Space complexity: O(n) - For the encoded/decoded strings.
+*/
+
+import java.util.*;
 class Solution {
     
     public String encode(List<String> strs) {

@@ -1,8 +1,20 @@
-import java.util.Arrays;
-
 // Description: https://leetcode.com/problems/search-a-2d-matrix/description/
 
+/*
+    Approach: Binary Search
 
+    Treat the 2D matrix as a flattened 1D sorted array.
+    Use binary search on virtual indices from 0 to (m * n - 1).
+    Convert 1D index to 2D coordinates: row = mid / n, col = mid % n.
+    Compare the element at these coordinates with the target.
+    Narrow search space based on comparison until target is found or exhausted.
+    This approach leverages the matrix's row-major sorted properties.
+
+    Time complexity: O(log(m * n)) - Binary search on m * n elements.
+    Space complexity: O(1) - Only pointer variables used.
+*/
+
+import java.util.Arrays;
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
         if (matrix.length == 0 || matrix[0].length == 0) return false;

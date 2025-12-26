@@ -1,6 +1,20 @@
-from typing import List
-
 # Description: https://leetcode.com/problems/contains-duplicate/description/
+
+"""
+    Approach: Hash Set
+
+    Use a set to track numbers seen during iteration.
+    For each number, check if it already exists in the set.
+    If found, return True immediately as a duplicate exists.
+    Otherwise, add the number to the set and continue.
+    If iteration completes without finding duplicates, return False.
+    Python set provides O(1) average time for add and membership test.
+
+    Time complexity: O(n) - Single pass through the array.
+    Space complexity: O(n) - Set stores at most n elements.
+"""
+
+from typing import List
 
 # Solution
 class Solution:

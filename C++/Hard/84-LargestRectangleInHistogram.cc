@@ -1,23 +1,24 @@
+// Description: https://leetcode.com/problems/largest-rectangle-in-histogram/description/
+
+/*
+    Approach: Monotonic Stack
+
+    Maintain a monotonic increasing stack storing bar indices.
+    For each bar, pop all taller bars from the stack and calculate their areas.
+    When popping, the width extends from current index to index after stack top.
+    Use height 0 as sentinel at the end to flush remaining bars from stack.
+    For each popped bar, calculate area = height * width and track maximum.
+    This ensures each bar is pushed and popped exactly once.
+
+    Time complexity: O(n) - Each element pushed and popped at most once.
+    Space complexity: O(n) - Stack can contain at most n elements.
+*/
+
 #include <iostream>
 #include <vector>
 #include <stack>
 
 using namespace std;
-
-
-// Description: https://leetcode.com/problems/largest-rectangle-in-histogram/description/
-
-
-// Approach: Monotonic Stack
-/*
-    Time complexity: O(n) - Each element is pushed and popped at most once.
-    Space complexity: O(n) - Stack can contain at most n elements.
-
-    We use a monotonic increasing stack to keep track of bar indices.
-    For each bar, we pop bars from the stack that are taller than the current bar
-    and calculate the area with the popped bar as the smallest (limiting) height.
-    The width extends from the current index back to the index after the new stack top.
-*/
 
 
 class Solution {

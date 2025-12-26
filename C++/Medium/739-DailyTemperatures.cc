@@ -1,24 +1,24 @@
+// Description: https://leetcode.com/problems/daily-temperatures/description/
+
+/*
+    Approach: Monotonic Stack
+
+    Use a monotonic decreasing stack that stores indices of temperatures.
+    For each new temperature, pop indices from stack while current temp is warmer.
+    For each popped index, calculate wait time as (current_index - popped_index).
+    Push current index onto stack after processing.
+    Elements remaining in stack have no warmer day (answer stays 0).
+    Each element is pushed and popped at most once.
+
+    Time complexity: O(n) - Each element pushed and popped at most once.
+    Space complexity: O(n) - Stack can contain at most n indices.
+*/
+
 #include <iostream>
 #include <vector>
 #include <stack>
 
 using namespace std;
-
-
-// Description: https://leetcode.com/problems/daily-temperatures/
-
-
-// Approach: Monotonic Stack
-
-/* 
-    Time complexity: O(n)
-    Space complexity: O(n)
-
-    We use a monotonic decreasing stack that stores indices of temperatures.
-    For each temperature, we pop all indices from the stack where the temperature
-    is less than the current one, and calculate the difference in days.
-    This ensures each element is pushed and popped at most once.
-*/
 
 class Solution {
 public:

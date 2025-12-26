@@ -1,19 +1,23 @@
+// Description: https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/
+
+/*
+    Approach: Binary Search
+
+    Use binary search to find the minimum element in a rotated sorted array.
+    Compare the middle element with the rightmost element.
+    If nums[mid] > nums[right], the minimum is in the right half (excluding mid).
+    Otherwise, the minimum is in the left half (including mid).
+    Continue narrowing the search space until left equals right.
+    The element at this position is the minimum.
+
+    Time complexity: O(log n) - Binary search halves search space each iteration.
+    Space complexity: O(1) - Only pointer variables used.
+*/
+
 #include <iostream>
 #include <vector>
 
 using namespace std;
-
-// Description: https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/
-
-// Approach: Binary Search
-// Compare mid element with the rightmost element.
-// If nums[mid] > nums[right], the minimum is in the right half.
-// Otherwise, the minimum is in the left half (including mid).
-
-/* 
-    Time complexity: O(log n) - Binary search.
-    Space complexity: O(1) - We use a constant amount of extra space.
-*/
 
 
 class Solution {

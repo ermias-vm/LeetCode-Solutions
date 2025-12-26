@@ -1,23 +1,21 @@
+// Description: https://leetcode.com/problems/contains-duplicate/description/
+
+/*
+    Approach: Sorting
+
+    Sort the array in ascending order using qsort.
+    After sorting, duplicate elements will be adjacent to each other.
+    Iterate through the sorted array comparing each element with the previous one.
+    If any two adjacent elements are equal, a duplicate exists.
+    This approach trades time for space compared to hash-based solutions.
+
+    Time complexity: O(n log n) - Due to sorting.
+    Space complexity: O(1) - Sorting is done in-place.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
-// Description: https://leetcode.com/problems/contains-duplicate
-
-/*
-    Approach: Hash table simulation using sorted array
-    
-    Time complexity: O(n log n) due to sorting
-    Space complexity: O(1) if we don't count the space used by the sorting algorithm
-    
-    Explanation:
-    - Sort the array using qsort
-    - Check adjacent elements for duplicates
-    - If any two adjacent elements are equal, return true
-    - If no duplicates found after checking all adjacent pairs, return false
-*/
-
-// Solution:
 int compare(const void* a, const void* b) {
     return (*(int*)a - *(int*)b);
 }

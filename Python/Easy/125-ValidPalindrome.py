@@ -1,5 +1,19 @@
 # Description: https://leetcode.com/problems/valid-palindrome/description/
 
+"""
+    Approach: Two Pointers
+
+    Use two pointers starting from both ends of the string.
+    Skip non-alphanumeric characters using isalnum() method.
+    Compare characters in lowercase using lower() method.
+    If any mismatch is found, return False immediately.
+    Move pointers toward center until they meet.
+    Return True if all comparisons passed.
+
+    Time complexity: O(n) - Single pass through the string.
+    Space complexity: O(1) - Only two pointer variables used.
+"""
+
 # Solution
 class Solution:
     def isPalindrome(self, s: str) -> bool:

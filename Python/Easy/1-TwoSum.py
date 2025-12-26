@@ -1,3 +1,19 @@
+# Description: https://leetcode.com/problems/two-sum/description/
+
+"""
+    Approach: Hash Map
+
+    Use a dictionary to store each number and its index as we iterate.
+    For each element, calculate its complement (target - current number).
+    Check if the complement already exists in the dictionary.
+    If found, return the complement's index and current index.
+    Otherwise, store the current number and index in the dictionary.
+    This achieves single-pass lookup with O(1) average time per operation.
+
+    Time complexity: O(n) - Single pass through the array.
+    Space complexity: O(n) - Dictionary stores at most n elements.
+"""
+
 from typing import List, Dict
 
 # Solution

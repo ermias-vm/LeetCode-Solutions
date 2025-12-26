@@ -1,8 +1,22 @@
+// Description: https://leetcode.com/problems/contains-duplicate/description/
+
+/*
+    Approach: Hash Set
+
+    Use a HashSet to track numbers seen during iteration.
+    For each number, check if it already exists in the set.
+    If found, return true immediately as a duplicate exists.
+    Otherwise, add the number to the set and continue.
+    If iteration completes without finding duplicates, return false.
+    HashSet provides O(1) average time for insertion and contains check.
+
+    Time complexity: O(n) - Single pass through the array.
+    Space complexity: O(n) - HashSet stores at most n elements.
+*/
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Arrays;
-
-// Description: https://leetcode.com/problems/contains-duplicate/description/
 
 // Solution
 class Solution {

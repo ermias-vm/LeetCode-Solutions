@@ -1,24 +1,23 @@
+// Description: https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/
+
+/*
+    Approach: Two Pointers
+
+    Use two pointers starting from both ends of the sorted array.
+    Calculate sum of elements at both pointers.
+    If sum equals target, return 1-indexed positions.
+    If sum is too small, move left pointer right to increase sum.
+    If sum is too large, move right pointer left to decrease sum.
+    Sorted property guarantees exactly one solution exists.
+
+    Time complexity: O(n) - Single pass through the array.
+    Space complexity: O(1) - Only pointer variables used.
+*/
+
 #include <iostream>
 #include <vector>
 
 using namespace std;
-
-// Description:  https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
-
-//  Approach: Two Pointers
-
-/* 
-    Time complexity: O(n), where n is the length of the array.
-    Space complexity: O(1), as we are using only constant extra space.
-
-    This approach uses two pointers to find the two numbers that add up to the target.
-    - Initialize two pointers, one at the beginning (left) and one at the end (right) of the array.
-    - Calculate the sum of the numbers at these two pointers.
-    - If the sum is equal to the target, return the indices (1-based).
-    - If the sum is less than the target, move the left pointer to the right to increase the sum.
-    - If the sum is greater than the target, move the right pointer to the left to decrease the sum.
-    - Repeat the process until the two pointers meet.
-*/
 
 class Solution {
 public:

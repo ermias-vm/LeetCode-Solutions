@@ -1,11 +1,22 @@
+// Description: https://leetcode.com/problems/valid-parentheses/description/
+
+/*
+    Approach: Stack
+
+    Use a stack to track opening brackets as we iterate through the string.
+    For each opening bracket, push it onto the stack.
+    For each closing bracket, check if it matches the top of the stack.
+    If the stack is empty or brackets don't match, return false.
+    After processing all characters, the stack should be empty for valid input.
+
+    Time complexity: O(n) - Single pass through the string.
+    Space complexity: O(n) - Stack stores at most n/2 opening brackets.
+*/
+
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-//Description: https://leetcode.com/problems/valid-parentheses
-
-// Approach: Stack
 bool isValid(char* s) {
     int n = (int)strlen(s);
     char stack[n];
@@ -16,14 +27,13 @@ bool isValid(char* s) {
         if (c == '(' || c == '{' || c == '[') {
             stack[++top] = c;
         } else {
-            // If stack is empty or top bracket doesn't match, invalid
             if (top < 0) return false;
             if ((c == ')' && stack[top] != '(') ||
                 (c == '}' && stack[top] != '{') ||
                 (c == ']' && stack[top] != '[')) {
                 return false;
             }
-            top--; // pop
+            top--;
         }
     }
     return (top == -1);

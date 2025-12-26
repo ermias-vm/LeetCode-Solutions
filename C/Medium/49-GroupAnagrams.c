@@ -1,8 +1,22 @@
+// Description: https://leetcode.com/problems/group-anagrams/description/
+
+/*
+    Approach: Sorted String as Key
+
+    Create pairs of (sorted_string, original_string) for each input string.
+    Sorting characters of a string creates a canonical form for all anagrams.
+    Sort all pairs by their sorted string key.
+    Group consecutive pairs with matching sorted keys together.
+    Build the result by collecting strings from each group.
+    This approach avoids hash tables by using sorting-based grouping.
+
+    Time complexity: O(n * k log k) - n strings, each of max length k.
+    Space complexity: O(n * k) - Storage for all string pairs.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-// Description: https://leetcode.com/problems/group-anagrams/description/
 
 // Function for qsort to compare characters
 int compareChar(const void* a, const void* b) {

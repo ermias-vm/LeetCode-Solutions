@@ -1,19 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-// Description: https://leetcode.com/problems/daily-temperatures/
+// Description: https://leetcode.com/problems/daily-temperatures/description/
 
 /*
     Approach: Monotonic Stack
 
-    Time complexity: O(n)
-    Space complexity: O(n)
+    Use a monotonic decreasing stack that stores indices of temperatures.
+    For each new temperature, pop indices from the stack while current temp is warmer.
+    For each popped index, calculate the wait time as (current_index - popped_index).
+    Push the current index onto the stack after processing.
+    Elements remaining in the stack have no warmer day (answer stays 0).
+    Each element is pushed and popped at most once.
 
-    We use a monotonic decreasing stack that stores indices of temperatures.
-    For each temperature, we pop all indices from the stack where the temperature
-    is less than the current one, and calculate the difference in days.
-    This ensures each element is pushed and popped at most once.
+    Time complexity: O(n) - Single pass with constant time operations per element.
+    Space complexity: O(n) - Stack can contain at most n indices.
 */
+
+#include <stdio.h>
+#include <stdlib.h>
 
 int* dailyTemperatures(int* temperatures, int temperaturesSize, int* returnSize) {
     *returnSize = temperaturesSize;

@@ -1,19 +1,20 @@
-#include <stdio.h>
-
 // Description: https://leetcode.com/problems/binary-search/description/
 
 /*
     Approach: Binary Search
 
-    Time complexity: O(log n) - We divide the search space in half each iteration.
-    Space complexity: O(1) - We use a constant amount of extra space.
+    Use two pointers (left and right) to define the search range.
+    Calculate the middle index to avoid integer overflow: mid = left + (right - left) / 2.
+    Compare the middle element with the target value.
+    If equal, return the index. If target is greater, search the right half.
+    If target is smaller, search the left half.
+    Repeat until the target is found or the search space is exhausted.
 
-    We use two pointers to define the search range.
-    At each step, we compare the middle element with the target.
-    If the middle element equals the target, we return its index.
-    If the target is greater, we search the right half.
-    If the target is smaller, we search the left half.
+    Time complexity: O(log n) - Search space halves each iteration.
+    Space complexity: O(1) - Only pointer variables used.
 */
+
+#include <stdio.h>
 
 int search(int* nums, int numsSize, int target) {
     int left = 0, right = numsSize - 1;

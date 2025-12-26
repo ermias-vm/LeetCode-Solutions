@@ -1,33 +1,40 @@
+// Description: https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
+
+/*
+    Approach: Sliding Window
+
+    Use an array of size 128 to track the last seen index of each ASCII character.
+    Maintain a sliding window with start and end pointers.
+    When a duplicate character is found, move start to the position after its last occurrence.
+    Update the character's last seen index at each step.
+    Track the maximum window length (end - start + 1) throughout the iteration.
+
+    Time complexity: O(n) - Single pass through the string.
+    Space complexity: O(1) - Fixed size array of 128 characters.
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-// Description: https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
-
-// Approach 1: Using array to track character indices )
 int lengthOfLongestSubstring(char* s) {
     int n = strlen(s);
     if (n == 0) return 0;
     
     int maxLength = 0;
-    int charIndex[128]; // Array to store last index of each ASCII character
+    int charIndex[128];
     int start = 0;
     
-    // Initialize all positions to -1
     for (int i = 0; i < 128; i++) {
         charIndex[i] = -1;
     }
     
     for (int end = 0; end < n; end++) {
-        // If the current character was seen before and is within current window
         if (charIndex[s[end]] >= start) {
             start = charIndex[s[end]] + 1;
         }
         
-        // Update the last seen index of current character
         charIndex[s[end]] = end;
         
-        // Update maximum length if current window is larger
         int currentLength = end - start + 1;
         if (currentLength > maxLength) {
             maxLength = currentLength;

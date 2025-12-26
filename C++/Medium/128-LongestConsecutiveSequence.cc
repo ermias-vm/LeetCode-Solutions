@@ -1,28 +1,24 @@
+// Description: https://leetcode.com/problems/longest-consecutive-sequence/description/
+
+/*
+    Approach: Hash Set
+
+    Store all elements in an unordered_set for O(1) lookup.
+    For each number, check if it's the start of a sequence (num-1 not in set).
+    If it's a sequence start, count consecutive numbers by looking up num+1, num+2, etc.
+    Track the longest sequence found during iteration.
+    By only counting from sequence starts, each element is visited at most twice.
+    This achieves linear time despite nested loops.
+
+    Time complexity: O(n) - Each element visited at most twice.
+    Space complexity: O(n) - Hash set stores all elements.
+*/
+
 #include <iostream>
 #include <vector>
 #include <unordered_set>
 
 using namespace std;
-
-
-// Description:  https://leetcode.com/problems/longest-consecutive-sequence/description/
-
-
-//  Approach : Using unordered_set 
-
-/* 
-    Time complexity: O(n) 
-    Space complexity: O(n)
-
-    Explanation:
-    - We use an unordered_set to store the elements of the array. 
-      This allows us to have O(1) average time complexity for insertions and lookups.
-    - We then iterate through each element in the array. For each element, we check if it is the start 
-      of a sequence by verifying that the element minus one is not in the set.
-    - If it is the start of a sequence, we then count the length of the sequence by incrementing 
-      the element and checking if the incremented element is in the set.
-    - We keep track of the maximum length of any sequence we find.
-*/
 
 
 class Solution {

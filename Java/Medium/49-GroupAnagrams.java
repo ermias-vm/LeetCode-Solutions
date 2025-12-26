@@ -1,7 +1,20 @@
+// Description: https://leetcode.com/problems/group-anagrams/description/
+
+/*
+    Approach: Sorted String as Key
+
+    Use a HashMap where the key is the sorted version of each string.
+    Sorting a string's characters creates a canonical form for all its anagrams.
+    All anagrams will have the same sorted form and group together.
+    Iterate through input strings, sort each one, and add to corresponding group.
+    Use putIfAbsent to initialize new groups and get() to add to existing ones.
+    Finally, return all groups as an ArrayList of the map values.
+
+    Time complexity: O(n * k log k) - n strings, each of max length k, sorted.
+    Space complexity: O(n * k) - Storing all strings in HashMap.
+*/
+
 import java.util.*;
-
-// Description:  https://leetcode.com/problems/group-anagrams/description/
-
 class Solution {
 
     public List<List<String>> groupAnagrams(String[] strs) {

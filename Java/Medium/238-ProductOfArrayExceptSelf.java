@@ -1,8 +1,20 @@
-import java.util.Arrays;
-
 // Description: https://leetcode.com/problems/product-of-array-except-self/description/
 
-// Solution
+/*
+    Approach: Prefix and Suffix Products
+
+    Use two passes to calculate products without using division.
+    First pass (left to right): store cumulative left products in result array.
+    Second pass (right to left): multiply each position by cumulative right product.
+    After both passes, result[i] contains product of all elements except nums[i].
+    Track running products with single variables instead of extra arrays.
+    This achieves O(1) extra space (excluding the output array).
+
+    Time complexity: O(n) - Two passes through the array.
+    Space complexity: O(1) - Only uses the output array.
+*/
+
+import java.util.Arrays;
 class Solution {
     public int[] productExceptSelf(int[] nums) {
         int n = nums.length;

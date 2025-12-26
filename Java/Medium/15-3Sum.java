@@ -1,8 +1,20 @@
-import java.util.*;
-
 // Description: https://leetcode.com/problems/3sum/description/
 
-// Solution
+/*
+    Approach: Sorting + Two Pointers
+
+    Sort the array to enable two-pointer technique and duplicate handling.
+    Fix one element and use two pointers to find pairs summing to its negation.
+    Skip duplicate values for the fixed element to avoid repeated triplets.
+    For valid triplets, also skip duplicates for the other two elements.
+    Move pointers based on current sum: left++ if too small, right-- if too large.
+    Continue until all elements have been considered as the fixed element.
+
+    Time complexity: O(n^2) - O(n log n) sort + O(n^2) two-pointer search.
+    Space complexity: O(1) - Excluding the output list.
+*/
+
+import java.util.*;
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);

@@ -1,8 +1,20 @@
-import java.util.Arrays;
-
 // Description: https://leetcode.com/problems/koko-eating-bananas/description/
 
+/*
+    Approach: Binary Search on Answer
 
+    Binary search on the eating speed k between 1 and max(piles).
+    For each candidate speed, calculate total hours needed: sum of ceil(pile/k).
+    Use the formula (pile + k - 1) / k to compute ceiling without floating point.
+    If total hours <= h, the speed is feasible; try a smaller speed.
+    If total hours > h, the speed is too slow; try a larger speed.
+    Return the minimum feasible speed when search converges.
+
+    Time complexity: O(n * log(max(piles))) - Binary search with O(n) verification.
+    Space complexity: O(1) - Only a few variables used.
+*/
+
+import java.util.Arrays;
 class Solution {
     public int minEatingSpeed(int[] piles, int h) {
         int left = 1;

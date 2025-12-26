@@ -1,14 +1,20 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 // Description: https://leetcode.com/problems/longest-consecutive-sequence/description/
 
 /*
-    Approach: Sort and count consecutive elements
-    
-    Time complexity: O(n log n) due to sorting
-    Space complexity: O(1)
+    Approach: Sorting
+
+    Sort the array to bring consecutive elements together.
+    Iterate through the sorted array, skipping duplicates.
+    Count consecutive sequences by checking if current element equals previous + 1.
+    Reset the streak counter when a gap is found.
+    Track the longest streak encountered during the iteration.
+
+    Time complexity: O(n log n) - Due to sorting.
+    Space complexity: O(1) - Sorting is done in-place.
 */
+
+#include <stdio.h>
+#include <stdlib.h>
 
 int compare(const void* a, const void* b) {
     return (*(int*)a - *(int*)b);

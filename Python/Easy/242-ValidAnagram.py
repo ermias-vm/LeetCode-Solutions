@@ -1,18 +1,34 @@
-from typing import Dict
-from collections import defaultdict
-
 # Description: https://leetcode.com/problems/valid-anagram/description/
 
-# Approach 1: Using frequency list (for lowercase English letters only)
 """
-    Time complexity:    O(n)
-    Space complexity:   O(1)
-    
-    The strategy used to solve the problem involves counting the frequency of each character in both strings.
-    Two lists of size 26 (for each letter in the alphabet) are used to store these frequencies.
-    The characters in the strings are iterated over, and their corresponding counts are incremented.
-    Finally, the two lists are compared; if they are identical, the strings are anagrams.
+    Approach 1: Frequency List
+
+    First check if strings have equal length; if not, they can't be anagrams.
+    Use two lists of size 26 to count character frequencies.
+    Convert character to index using ord(c) - ord('a').
+    Iterate through both strings simultaneously, incrementing respective counts.
+    Compare the frequency lists at the end.
+    This approach works for lowercase English letters only.
+
+    Time complexity: O(n) - Single pass through both strings.
+    Space complexity: O(1) - Fixed size arrays of 26 elements.
 """
+
+"""
+    Approach 2: Dictionary (Unicode support)
+
+    Use defaultdict(int) to count character frequencies for both strings.
+    This approach handles any Unicode characters, not just lowercase letters.
+    Iterate through both strings, incrementing character counts.
+    Compare the frequency dictionaries at the end.
+    More flexible but uses more space for diverse character sets.
+
+    Time complexity: O(n) - Single pass through both strings.
+    Space complexity: O(k) - Where k is the number of distinct characters.
+"""
+
+from typing import Dict
+from collections import defaultdict
 class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
         if len(s) != len(t):
@@ -27,15 +43,6 @@ class Solution:
         
         return count_s == count_t
 
-# Approach 2: Using dictionary (for any Unicode characters)
-"""
-    Time complexity:    O(n)
-    Space complexity:   O(k) where 'k' is the number of distinct characters across both input
-    
-    This code replaces the fixed-size lists with dictionary to count the frequency of each
-    character in the input strings. This approach is more flexible and can handle any set of characters,
-    making it suitable for Unicode characters as well.
-"""
 class Solution2:
     def isAnagram(self, s: str, t: str) -> bool:
         if len(s) != len(t):

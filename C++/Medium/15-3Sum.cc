@@ -1,34 +1,24 @@
+// Description: https://leetcode.com/problems/3sum/description/
+
+/*
+    Approach: Sorting + Two Pointers
+
+    Sort the array to enable two-pointer technique and duplicate handling.
+    Fix one element and use two pointers to find pairs summing to its negation.
+    Skip duplicate values for the fixed element to avoid repeated triplets.
+    For valid triplets, also skip duplicates for the other two elements.
+    Move pointers based on current sum: left++ if too small, right-- if too large.
+    Continue until all elements have been considered as the fixed element.
+
+    Time complexity: O(n^2) - O(n log n) sort + O(n^2) two-pointer search.
+    Space complexity: O(1) - Excluding the output array.
+*/
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
 
 using namespace std;
-
-
-// Description:  https://leetcode.com/problems/3sum/description/
-
-
-//  Approach (Two Pointers)  
-
-/* 
-    Time complexity: O(n^2), where n is the number of elements in the input array.
-    Space complexity: O(1), ignoring the space required for the output.
-
-    The approach involves sorting the array and then using a two-pointer 
-    technique to find all unique triplets that sum up to zero.
-    We iterate through it using a loop. In each iteration, we fix one element and 
-    use two pointers to find the other two elements that, together with the fixed 
-    element, sum up to zero. The first pointer (left) is initialized just after the 
-    fixed element, and the second pointer (right) is initialized at the end of the array.
-
-    We then calculate the sum of the three elements: the fixed element, the element pointed 
-    to by left, and the element pointed to by right. If the sum is zero, we have found a 
-    valid triplet and add it to the list of results. We then move both pointers to search 
-    for more possible triplets. If the sum is less than zero, we increment the left pointer 
-    to increase the sum. If the sum is greater than zero, we decrement the right pointer to decrease the sum.
-
-    To avoid duplicates, we skip over duplicate elements for both the fixed element and the elements pointed to by left and right
-*/
 
 
 

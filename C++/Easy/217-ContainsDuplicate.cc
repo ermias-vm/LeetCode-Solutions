@@ -1,29 +1,34 @@
+// Description: https://leetcode.com/problems/contains-duplicate/description/
+
+/*
+    Approach: Hash Set
+
+    Use an unordered_set to track numbers seen during iteration.
+    For each number, check if it already exists in the set.
+    If found, return true immediately as a duplicate exists.
+    Otherwise, add the number to the set and continue.
+    If iteration completes without finding duplicates, return false.
+    Hash set provides O(1) average time for insertion and lookup.
+
+    Time complexity: O(n) - Single pass through the array.
+    Space complexity: O(n) - Hash set stores at most n elements.
+*/
+
 #include <iostream>
 #include <vector>
 #include <unordered_set>
 
 using namespace std;
 
-// Description: https://leetcode.com/problems/contains-duplicate
-
-/*
-    Time complexity: O(n)
-    Space complexity: O(n)
-    
-    Use hash set to track seen numbers. For each number, check if already seen 
-    (return true if duplicate found), otherwise add to set. Return false if no duplicates.
-*/
-
-// Solution
 class Solution {
 public:
     bool containsDuplicate(vector<int>& nums) {
-        unordered_set<int> seen; // Create an empty unordered set to keep track of seen numbers.
-        for (int num : nums) { // Iterate through each number in the input vector.
-            if (seen.find(num) != seen.end()) return true; // If the current number is already in the set, return true (duplicate found).
-            seen.insert(num); // If not, insert the current number into the set.
+        unordered_set<int> seen;
+        for (int num : nums) {
+            if (seen.find(num) != seen.end()) return true;
+            seen.insert(num);
         }
-        return false; // If no duplicates are found after checking all numbers, return false.
+        return false;
     }
 };
 

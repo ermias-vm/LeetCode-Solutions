@@ -1,19 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 // Description: https://leetcode.com/problems/largest-rectangle-in-histogram/description/
 
 /*
     Approach: Monotonic Stack
 
+    Maintain a monotonic increasing stack storing bar indices.
+    For each bar, pop all taller bars from the stack.
+    When popping, calculate the rectangle area using the popped bar as height.
+    The width extends from current index to the index after the new stack top.
+    Add a sentinel bar of height 0 at the end to flush remaining stack elements.
+    Track the maximum area found during the process.
+
     Time complexity: O(n) - Each element is pushed and popped at most once.
     Space complexity: O(n) - Stack can contain at most n elements.
-
-    We use a monotonic increasing stack to keep track of bar indices.
-    For each bar, we pop bars from the stack that are taller than the current bar
-    and calculate the area with the popped bar as the smallest (limiting) height.
-    The width extends from the current index back to the index after the new stack top.
 */
+
+#include <stdio.h>
+#include <stdlib.h>
 
 int largestRectangleArea(int* heights, int heightsSize) {
     int* stack = (int*)malloc((heightsSize + 1) * sizeof(int));

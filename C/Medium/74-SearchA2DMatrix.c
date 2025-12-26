@@ -1,17 +1,21 @@
-#include <stdio.h>
-#include <stdbool.h>
-
 // Description: https://leetcode.com/problems/search-a-2d-matrix/description/
 
 /*
     Approach: Binary Search
+
     Treat the 2D matrix as a flattened 1D sorted array.
-    Use binary search on indices 0 to (m * n - 1).
-    Convert 1D index to 2D: row = mid / n, col = mid % n.
-    
+    Use binary search on virtual indices from 0 to (m * n - 1).
+    Convert 1D index to 2D coordinates: row = mid / n, col = mid % n.
+    Compare the element at these coordinates with the target.
+    Narrow search space based on comparison until target is found or exhausted.
+    This approach leverages the matrix's sorted properties efficiently.
+
     Time complexity: O(log(m * n)) - Binary search on m * n elements.
-    Space complexity: O(1) - We use a constant amount of extra space.
+    Space complexity: O(1) - Only pointer variables used.
 */
+
+#include <stdio.h>
+#include <stdbool.h>
 
 bool searchMatrix(int** matrix, int matrixSize, int* matrixColSize, int target) {
     if (matrixSize == 0 || matrixColSize[0] == 0) return false;
