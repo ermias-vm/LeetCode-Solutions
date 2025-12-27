@@ -15,12 +15,14 @@ compile%:
 	if [ -z "$$SOURCE_FILE" ]; then \
 		echo "No source file found for problem $$N (e.g., $$N-*.java)."; exit 1; \
 	fi; \
-	echo "Compiling $$SOURCE_FILE"; \
+	CLASS_DIR=$$(dirname "$$SOURCE_FILE"); \
+	echo "Compiling $$SOURCE_FILE to $$CLASS_DIR/Test.class"; \
 	$(JC) $(JFLAGS) "$$SOURCE_FILE"
 
 # Run the Test class for the given problem number
 run%:
 	@N=$*; \
+	SOURCE_FILE=$$(find . -type f -name "$$N-*.java" -print -quit); \
 	CLASS_FILE=$$(find . -type f -name "Test.class" -print -quit); \
 	if [ -z "$$CLASS_FILE" ]; then \
 		$(MAKE) --no-print-directory compile$$N; \
@@ -30,19 +32,23 @@ run%:
 		fi; \
 	fi; \
 	CLASS_DIR=$$(dirname "$$CLASS_FILE"); \
-	echo "Running Test (from $$CLASS_DIR)"; \
+	echo "Running file $$CLASS_DIR/Test.class"; \
 	$(JVM) -cp "$$CLASS_DIR" Test
 
 # Clean the Solution.class and Test.class files for the given problem number
 clean%:
 	@N=$*; \
-	for CLASS in Solution Test; do \
-		CLASS_FILE=$$(find . -type f -name "$$CLASS.class" -print -quit); \
-		if [ -n "$$CLASS_FILE" ]; then \
-			echo "Deleting $$CLASS_FILE"; \
-			rm -f "$$CLASS_FILE"; \
-		fi; \
-	done
+	SOURCE_FILE=$$(find . -type f -name "$$N-*.java" -print -quit); \
+	if [ -n "$$SOURCE_FILE" ]; then \
+		CLASS_DIR=$$(dirname "$$SOURCE_FILE"); \
+		for CLASS in Solution Test; do \
+			CLASS_FILE="$$CLASS_DIR/$$CLASS.class"; \
+			if [ -f "$$CLASS_FILE" ]; then \
+				echo "Deleting $$CLASS_FILE"; \
+				rm -f "$$CLASS_FILE"; \
+			fi; \
+		done; \
+	fi
 
 clean_all:
 	@echo "Deleting all Solution.class and Test.class files..."; \
@@ -54,7 +60,6 @@ clean_all:
 %:
 	@PROBLEM_NUM=$@; \
 	if echo "$$PROBLEM_NUM" | grep -Eq '^[0-9]+$$'; then \
-		echo "Processing problem #$$PROBLEM_NUM"; \
 		$(MAKE) --no-print-directory compile$$PROBLEM_NUM; \
 		$(MAKE) --no-print-directory run$$PROBLEM_NUM; \
 		$(MAKE) --no-print-directory clean$$PROBLEM_NUM; \
@@ -77,4 +82,53 @@ find%:
 		echo "Found file: $$FILE"; \
 	fi
 
-.PHONY: all compile run clean clean_all compile% run% clean%
+# Format all Java files using clang-format (uses ../.clang-format config)
+format:
+	@echo "Formatting all Java source files..."
+	@modified_files=""; \
+	for file in $$(find . -name "*.java" -type f); do \
+		if [ -f "$$file" ]; then \
+			cp "$$file" "$$file.bak"; \
+			clang-format -i "$$file" 2>/dev/null || true; \
+			if ! cmp -s "$$file" "$$file.bak"; then \
+				modified_files="$$modified_files$$file (clang-format)\n"; \
+			fi; \
+			rm -f "$$file.bak"; \
+		fi; \
+	done; \
+	echo "  Ensuring all source files end with newline..."; \
+	for file in $$(find . -name "*.java" -type f); do \
+		if [ -s "$$file" ] && [ "$$(tail -c1 "$$file" | wc -l)" -eq 0 ]; then \
+			modified_files="$$modified_files$$file (added final newline)\n"; \
+			echo >> "$$file"; \
+		fi; \
+	done; \
+	echo ""; \
+	echo "Formatting complete!"; \
+	echo ""; \
+	echo "Modified files:"; \
+	if [ -n "$$modified_files" ]; then \
+		printf "$$modified_files" | sed 's/^/  - /'; \
+	else \
+		echo "  No files were modified."; \
+	fi
+
+format-check:
+	@echo "Checking format for all Java source files..."
+	@unformatted=""; \
+	for file in $$(find . -name "*.java" -type f); do \
+		if [ -f "$$file" ]; then \
+			if ! clang-format --dry-run --Werror "$$file" 2>/dev/null; then \
+				unformatted="$$unformatted$$file\n"; \
+			fi; \
+		fi; \
+	done; \
+	if [ -n "$$unformatted" ]; then \
+		echo "The following files need formatting:"; \
+		printf "$$unformatted" | sed 's/^/  - /'; \
+		exit 1; \
+	else \
+		echo "All files are properly formatted!"; \
+	fi
+
+.PHONY: all compile run clean clean_all compile% run% clean% format format-check

@@ -9,28 +9,53 @@ all:
 	@echo "Example: make 20  (finds e.g. 20-my_solution.py in Easy/, Medium/, or Hard/)"
 	@echo "This will run the script and clean up __pycache__ and .pyc files."
 
+# Compile target (Python is interpreted, but we keep it for consistency)
+compile%:
+	@N=$*; \
+	SCRIPT_FILE=$$(find . -path ./venv -prune -o -type f -name "$$N-*.py" -print -quit); \
+	if [ -z "$$SCRIPT_FILE" ]; then \
+		echo "No Python script file found for problem $$N"; \
+		exit 1; \
+	fi; \
+	echo "Compiling $$SCRIPT_FILE (syntax check)"; \
+	$(PYTHON) -m py_compile "$$SCRIPT_FILE"
+
+# Run a specific Python problem
+run%:
+	@N=$*; \
+	SCRIPT_FILE=$$(find . -path ./venv -prune -o -type f -name "$$N-*.py" -print -quit); \
+	if [ -z "$$SCRIPT_FILE" ]; then \
+		echo "No Python script file found for problem $$N"; \
+		exit 1; \
+	fi; \
+	echo "Running file $$SCRIPT_FILE"; \
+	$(PYTHON) "$$SCRIPT_FILE"
+
+# Clean Python cache for a specific problem
+clean%:
+	@N=$*; \
+	SCRIPT_FILE=$$(find . -path ./venv -prune -o -type f -name "$$N-*.py" -print -quit); \
+	if [ -n "$$SCRIPT_FILE" ]; then \
+		SCRIPT_DIR=$$(dirname "$$SCRIPT_FILE"); \
+		PYC_FILE="$${SCRIPT_FILE%.py}.pyc"; \
+		if [ -d "$$SCRIPT_DIR/__pycache__" ]; then \
+			echo "Deleting $$SCRIPT_DIR/__pycache__"; \
+			rm -rf "$$SCRIPT_DIR/__pycache__"; \
+		fi; \
+		find "$$SCRIPT_DIR" -maxdepth 1 -name "*.pyc" -type f -delete 2>/dev/null || true; \
+	fi
+
 # Main target to run a Python problem and clean up
 # Example: make 20
 %:
 	@PROBLEM_NUM=$@; \
 	if echo $$PROBLEM_NUM | grep -Eq '^[0-9]+$$'; then \
-		echo "Processing Python problem #$$PROBLEM_NUM"; \
-		SCRIPT_FILE=`find . -path ./venv -prune -o -type f -name "$$PROBLEM_NUM-*.py" -print -quit`; \
-		if [ -z "$$SCRIPT_FILE" ]; then \
-			echo "No Python script file found for problem $$PROBLEM_NUM"; \
-			exit 1; \
-		fi; \
-		echo "Running $$SCRIPT_FILE"; \
-		$(PYTHON) $$SCRIPT_FILE; \
-		SCRIPT_DIR=`dirname $$SCRIPT_FILE`; \
-		echo "Cleaning up Python artifacts"; \
-		if [ -d "$$SCRIPT_DIR/__pycache__" ]; then \
-			rm -rf "$$SCRIPT_DIR/__pycache__"; \
-		fi; \
-		find "$$SCRIPT_DIR" -maxdepth 1 -name "*.pyc" -type f -delete; \
+		$(MAKE) --no-print-directory compile$$PROBLEM_NUM; \
+		$(MAKE) --no-print-directory run$$PROBLEM_NUM; \
+		$(MAKE) --no-print-directory clean$$PROBLEM_NUM; \
 	else \
 		case "$$PROBLEM_NUM" in \
-			all|find|clean_all) \
+			all|find|clean_all|format|format-check) \
 				$(MAKE) $$PROBLEM_NUM; \
 				;; \
 			*) \
@@ -41,17 +66,6 @@ all:
 		esac; \
 	fi
 
-# Run a specific Python problem
-run:
-	@echo "Error: No problem number specified"
-	@echo "Usage: make run<problem_number>"
-	@echo "Example: make run1"
-
-# Equivalent to just 'make <problem_number>'
-run%:
-	@N=$*; \
-	$(MAKE) $$N
-
 # Find the source file for a specific problem
 find:
 	@echo "Error: No problem number specified"
@@ -60,7 +74,7 @@ find:
 
 find%:
 	@N=$*; \
-	FILE=`find . -type f -name "$$N-*.py" | head -n 1`; \
+	FILE=$$(find . -path ./venv -prune -o -type f -name "$$N-*.py" -print -quit); \
 	if [ -z "$$FILE" ]; then \
 		echo "No file found for problem $$N"; \
 	else \
@@ -74,4 +88,24 @@ clean_all:
 	@find . -type f -name "*.pyc" -delete
 	@echo "All Python cache files cleaned"
 
-.PHONY: all find clean_all run run%
+# Ensure all Python files end with newline
+format:
+	@echo "Checking Python source files..."
+	@modified_files=""; \
+	for file in $$(find . -path ./venv -prune -o -name "*.py" -type f -print); do \
+		if [ -s "$$file" ] && [ "$$(tail -c1 "$$file" | wc -l)" -eq 0 ]; then \
+			modified_files="$$modified_files$$file (added final newline)\n"; \
+			echo >> "$$file"; \
+		fi; \
+	done; \
+	echo ""; \
+	echo "Complete!"; \
+	echo ""; \
+	echo "Modified files:"; \
+	if [ -n "$$modified_files" ]; then \
+		printf "$$modified_files" | sed 's/^/  - /'; \
+	else \
+		echo "  No files were modified."; \
+	fi
+
+.PHONY: all find clean_all compile% run% clean% format
