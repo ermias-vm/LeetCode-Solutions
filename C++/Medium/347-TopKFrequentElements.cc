@@ -26,9 +26,7 @@ public:
         for (int num : nums) freqMap[num]++;
 
         vector<vector<int>> buckets(nums.size() + 1);
-        for (auto& pair : freqMap) {
-            buckets[pair.second].push_back(pair.first);
-        }
+        for (auto& pair : freqMap) { buckets[pair.second].push_back(pair.first); }
 
         vector<int> result;
         for (int i = buckets.size() - 1; i >= 0; --i) {
@@ -37,7 +35,7 @@ public:
                 if (result.size() == static_cast<size_t>(k)) return result;
             }
         }
-    
+
         return result;
     }
 };
@@ -51,9 +49,7 @@ int main() {
 
     vector<int> result = solution.topKFrequent(nums, k);
     cout << "Top " << k << " frequent elements: ";
-    for (int num : result) {
-        cout << num << " ";
-    }
+    for (int num : result) { cout << num << " "; }
     cout << endl;
 
     return 0;

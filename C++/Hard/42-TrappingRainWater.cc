@@ -19,8 +19,6 @@
 
 using namespace std;
 
-
-
 class Solution {
 public:
     int trap(vector<int>& height) {
@@ -32,12 +30,16 @@ public:
 
         while (left < right) {
             if (height[left] < height[right]) {
-                if (height[left] >= left_max) left_max = height[left];
-                else water_trapped += left_max - height[left];
+                if (height[left] >= left_max)
+                    left_max = height[left];
+                else
+                    water_trapped += left_max - height[left];
                 left++;
             } else {
-                if (height[right] >= right_max) right_max = height[right];
-                else water_trapped += right_max - height[right];
+                if (height[right] >= right_max)
+                    right_max = height[right];
+                else
+                    water_trapped += right_max - height[right];
                 right--;
             }
         }
@@ -52,8 +54,8 @@ int main() {
     vector<int> height1 = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
     vector<int> height2 = {4, 2, 0, 3, 2, 5};
 
-    cout << "Test case 1: " << solution.trap(height1) << endl; // Output: 6
-    cout << "Test case 2: " << solution.trap(height2) << endl; // Output: 9
+    cout << "Test case 1: " << solution.trap(height1) << endl;  // Output: 6
+    cout << "Test case 2: " << solution.trap(height2) << endl;  // Output: 9
 
     return 0;
 }

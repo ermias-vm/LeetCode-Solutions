@@ -30,37 +30,38 @@ int minEatingSpeed(int* piles, int pilesSize, int h) {
     for (int i = 0; i < pilesSize; i++) {
         if (piles[i] > maxPile) maxPile = piles[i];
     }
-    
+
     int left = 1;
     int right = maxPile;
-    
+
     while (left < right) {
         int mid = left + (right - left) / 2;
-        
-        if (canFinish(piles, pilesSize, mid, h)) right = mid;
-        else left = mid + 1;
+
+        if (canFinish(piles, pilesSize, mid, h))
+            right = mid;
+        else
+            left = mid + 1;
     }
-    
+
     return left;
 }
-
 
 // Test
 int main() {
     // Test case 1
     int piles1[] = {3, 6, 7, 11};
     int h1 = 8;
-    printf("Test case 1: %d\n", minEatingSpeed(piles1, 4, h1)); // Output: 4
-    
+    printf("Test case 1: %d\n", minEatingSpeed(piles1, 4, h1));  // Output: 4
+
     // Test case 2
     int piles2[] = {30, 11, 23, 4, 20};
     int h2 = 5;
-    printf("Test case 2: %d\n", minEatingSpeed(piles2, 5, h2)); // Output: 30
-    
+    printf("Test case 2: %d\n", minEatingSpeed(piles2, 5, h2));  // Output: 30
+
     // Test case 3
     int piles3[] = {30, 11, 23, 4, 20};
     int h3 = 6;
-    printf("Test case 3: %d\n", minEatingSpeed(piles3, 5, h3)); // Output: 23
+    printf("Test case 3: %d\n", minEatingSpeed(piles3, 5, h3));  // Output: 23
 
     return 0;
 }

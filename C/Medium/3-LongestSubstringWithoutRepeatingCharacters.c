@@ -1,4 +1,5 @@
-// Description: https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
+// Description:
+// https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
 
 /*
     Approach: Sliding Window
@@ -19,28 +20,22 @@
 int lengthOfLongestSubstring(char* s) {
     int n = strlen(s);
     if (n == 0) return 0;
-    
+
     int maxLength = 0;
     int charIndex[128];
     int start = 0;
-    
-    for (int i = 0; i < 128; i++) {
-        charIndex[i] = -1;
-    }
-    
+
+    for (int i = 0; i < 128; i++) { charIndex[i] = -1; }
+
     for (int end = 0; end < n; end++) {
-        if (charIndex[s[end]] >= start) {
-            start = charIndex[s[end]] + 1;
-        }
-        
+        if (charIndex[s[end]] >= start) { start = charIndex[s[end]] + 1; }
+
         charIndex[s[end]] = end;
-        
+
         int currentLength = end - start + 1;
-        if (currentLength > maxLength) {
-            maxLength = currentLength;
-        }
+        if (currentLength > maxLength) { maxLength = currentLength; }
     }
-    
+
     return maxLength;
 }
 
@@ -53,26 +48,26 @@ int main() {
     char test3[] = "pwwkew";
     char test4[] = "";
     char test5[] = "dvdf";
-    
+
     printf("Input: s = \"%s\"\n", test1);
     printf("Output: %d\n", lengthOfLongestSubstring(test1));
     printf("Expected: 3\n\n");
-    
+
     printf("Input: s = \"%s\"\n", test2);
     printf("Output: %d\n", lengthOfLongestSubstring(test2));
     printf("Expected: 1\n\n");
-    
+
     printf("Input: s = \"%s\"\n", test3);
     printf("Output: %d\n", lengthOfLongestSubstring(test3));
     printf("Expected: 3\n\n");
-    
+
     printf("Input: s = \"%s\"\n", test4);
     printf("Output: %d\n", lengthOfLongestSubstring(test4));
     printf("Expected: 0\n\n");
-    
+
     printf("Input: s = \"%s\"\n", test5);
     printf("Output: %d\n", lengthOfLongestSubstring(test5));
     printf("Expected: 3\n\n");
-    
+
     return 0;
 }

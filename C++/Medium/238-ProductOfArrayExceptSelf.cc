@@ -51,17 +51,12 @@ int main() {
     vector<int> result2 = solution.productExceptSelf(example2);
 
     cout << "Example 1: ";
-    for (int num : result1) {
-        cout << num << " ";
-    }
+    for (int num : result1) { cout << num << " "; }
     cout << endl;
 
     cout << "Example 2: ";
-    for (int num : result2) {
-        cout << num << " ";
-    }
+    for (int num : result2) { cout << num << " "; }
     cout << endl;
 
     return 0;
 }
-

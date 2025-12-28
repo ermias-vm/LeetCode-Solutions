@@ -28,8 +28,7 @@ bool isValid(char* s) {
             stack[++top] = c;
         } else {
             if (top < 0) return false;
-            if ((c == ')' && stack[top] != '(') ||
-                (c == '}' && stack[top] != '{') ||
+            if ((c == ')' && stack[top] != '(') || (c == '}' && stack[top] != '{') ||
                 (c == ']' && stack[top] != '[')) {
                 return false;
             }

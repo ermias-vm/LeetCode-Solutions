@@ -29,15 +29,15 @@ int compare(const void* a, const void* b) {
 
 int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
     *returnSize = 2;
-    
+
     Pair* pairs = (Pair*)malloc(numsSize * sizeof(Pair));
     for (int i = 0; i < numsSize; i++) {
         pairs[i].value = nums[i];
         pairs[i].index = i;
     }
-    
+
     qsort(pairs, numsSize, sizeof(Pair), compare);
-    
+
     int left = 0, right = numsSize - 1;
     while (left < right) {
         int sum = pairs[left].value + pairs[right].value;
@@ -45,13 +45,13 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
             int* result = (int*)malloc(2 * sizeof(int));
             result[0] = pairs[left].index;
             result[1] = pairs[right].index;
-            
+
             if (result[0] > result[1]) {
                 int temp = result[0];
                 result[0] = result[1];
                 result[1] = temp;
             }
-            
+
             free(pairs);
             return result;
         } else if (sum < target) {
@@ -60,11 +60,10 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
             right--;
         }
     }
-    
+
     free(pairs);
     return NULL;
 }
-
 
 // Test
 void printArray(int* arr, int size) {
@@ -81,13 +80,13 @@ int main() {
     int numsSize = sizeof(nums) / sizeof(nums[0]);
     int target = 9;
     int returnSize;
-    
+
     printf("Input: nums = ");
     printArray(nums, numsSize);
     printf(", target = %d\n", target);
-    
+
     int* result = twoSum(nums, numsSize, target, &returnSize);
-    
+
     if (result != NULL) {
         printf("Output: ");
         printArray(result, returnSize);

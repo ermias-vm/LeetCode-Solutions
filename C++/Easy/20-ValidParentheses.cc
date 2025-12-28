@@ -24,18 +24,14 @@ class Solution {
 public:
     bool isValid(string s) {
         stack<char> openedBrackets;
-        unordered_map<char, char> bracketMap = {
-            {')', '('},
-            {']', '['},
-            {'}', '{'}
-        };
+        unordered_map<char, char> bracketMap = {{')', '('}, {']', '['}, {'}', '{'}};
 
         for (char c : s) {
             if (bracketMap.find(c) != bracketMap.end()) {
                 if (openedBrackets.empty() || openedBrackets.top() != bracketMap[c]) return false;
                 openedBrackets.pop();
-            }
-            else openedBrackets.push(c);
+            } else
+                openedBrackets.push(c);
         }
 
         return openedBrackets.empty();
@@ -55,4 +51,3 @@ int main() {
 
     return 0;
 }
-

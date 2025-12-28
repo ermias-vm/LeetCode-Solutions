@@ -26,7 +26,7 @@ public:
         int n = temperatures.size();
         vector<int> answer(n, 0);
         stack<int> st;  // Stack of indices
-        
+
         for (int i = 0; i < n; i++) {
             while (!st.empty() && temperatures[st.top()] < temperatures[i]) {
                 int prevIndex = st.top();
@@ -35,11 +35,10 @@ public:
             }
             st.push(i);
         }
-        
+
         return answer;
     }
 };
-
 
 // Test
 int main() {

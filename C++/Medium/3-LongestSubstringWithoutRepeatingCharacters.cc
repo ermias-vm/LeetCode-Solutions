@@ -1,4 +1,5 @@
-// Description: https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
+// Description:
+// https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
 
 /*
     Approach: Sliding Window with Vector
@@ -38,8 +39,8 @@ public:
 // Test
 int main() {
     Solution solution;
-    cout << "Example 1: " << solution.lengthOfLongestSubstring("abcabcbb") << endl; // Output: 3
-    cout << "Example 2: " << solution.lengthOfLongestSubstring("bbbbb") << endl; // Output: 1
-    cout << "Example 3: " << solution.lengthOfLongestSubstring("pwwkew") << endl; // Output: 3
+    cout << "Example 1: " << solution.lengthOfLongestSubstring("abcabcbb") << endl;  // Output: 3
+    cout << "Example 2: " << solution.lengthOfLongestSubstring("bbbbb") << endl;     // Output: 1
+    cout << "Example 3: " << solution.lengthOfLongestSubstring("pwwkew") << endl;    // Output: 3
     return 0;
 }

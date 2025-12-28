@@ -20,8 +20,6 @@
 
 using namespace std;
 
-
-
 class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
@@ -29,37 +27,36 @@ public:
 
         vector<vector<int>> result;
         for (int i = 0; i < int(nums.size()); ++i) {
-            if (i > 0 && nums[i] == nums[i - 1]) continue; // Skip duplicates
-            
+            if (i > 0 && nums[i] == nums[i - 1]) continue;  // Skip duplicates
+
             int left = i + 1;
             int right = nums.size() - 1;
-            
+
             while (left < right) {
                 int sum = nums[i] + nums[left] + nums[right];
-                
+
                 if (sum == 0) {
                     result.push_back({nums[i], nums[left], nums[right]});
-                    while (left < right && nums[left] == nums[left + 1]) ++left; // Skip duplicates
-                    while (left < right && nums[right] == nums[right - 1]) --right; // Skip duplicates
-                    ++left; 
+                    while (left < right && nums[left] == nums[left + 1]) ++left;  // Skip duplicates
+                    while (left < right && nums[right] == nums[right - 1])
+                        --right;  // Skip duplicates
+                    ++left;
                     --right;
-                } 
-                else if (sum < 0) ++left;
-                else --right;
+                } else if (sum < 0)
+                    ++left;
+                else
+                    --right;
             }
         }
         return result;
     }
 };
 
-
 // Test
 
 void printResult(const vector<vector<int>>& result) {
     for (const auto& triplet : result) {
-        for (int num : triplet) {
-            cout << num << " ";
-        }
+        for (int num : triplet) { cout << num << " "; }
         cout << endl;
     }
     cout << endl;
@@ -70,7 +67,7 @@ int main() {
     vector<int> nums1 = {-1, 0, 1, 2, -1, -4};
     vector<int> nums2 = {0, 1, 1};
     vector<int> nums3 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    
+
     // Print results
     printResult(sol.threeSum(nums1));
     printResult(sol.threeSum(nums2));

@@ -25,7 +25,7 @@ public:
         vector<string> result;
         stack<pair<string, pair<unsigned int, unsigned int>>> stk;
         stk.push({"", {0, 0}});
-        
+
         while (!stk.empty()) {
             auto [current, counts] = stk.top();
             stk.pop();
@@ -47,9 +47,7 @@ public:
 // Test
 
 void print(const vector<string>& result) {
-    for (const string& s : result) {
-        cout << s << endl;
-    }
+    for (const string& s : result) { cout << s << endl; }
     cout << endl;
 }
 

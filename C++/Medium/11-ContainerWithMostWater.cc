@@ -19,29 +19,28 @@
 
 using namespace std;
 
-
 class Solution {
 public:
     int maxArea(vector<int>& height) {
-        unsigned int left = 0; 
+        unsigned int left = 0;
         unsigned right = height.size() - 1;
         unsigned int maxArea = 0;
-        
+
         while (left < right) {
             unsigned int width = right - left;
             unsigned int currentHeight = min(height[left], height[right]);
             unsigned int currentArea = width * currentHeight;
             maxArea = max(maxArea, currentArea);
 
-            if (height[left] < height[right]) left++;
-            else right--;
+            if (height[left] < height[right])
+                left++;
+            else
+                right--;
         }
-        
+
         return maxArea;
     }
 };
-
-
 
 // Test
 int main() {
@@ -49,8 +48,8 @@ int main() {
     vector<int> height1 = {1, 8, 6, 2, 5, 4, 8, 3, 7};
     vector<int> height2 = {1, 1};
 
-    cout << "Test case 1: " << solution.maxArea(height1) << endl; // Output: 49
-    cout << "Test case 2: " << solution.maxArea(height2) << endl; // Output: 1
+    cout << "Test case 1: " << solution.maxArea(height1) << endl;  // Output: 49
+    cout << "Test case 2: " << solution.maxArea(height2) << endl;  // Output: 1
 
     return 0;
 }

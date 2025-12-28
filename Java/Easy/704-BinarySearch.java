@@ -44,7 +44,7 @@ class Test {
         int[] nums1 = {-1, 0, 3, 5, 9, 12};
         int[] nums2 = {-1, 0, 3, 5, 9, 12};
 
-        System.out.println("Test case 1: " + solution.search(nums1, 9));  // Output: 4
-        System.out.println("Test case 2: " + solution.search(nums2, 2));  // Output: -1
+        System.out.println("Test case 1: " + solution.search(nums1, 9)); // Output: 4
+        System.out.println("Test case 2: " + solution.search(nums2, 2)); // Output: -1
     }
 }

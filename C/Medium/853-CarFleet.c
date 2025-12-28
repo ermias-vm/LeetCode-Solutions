@@ -32,35 +32,32 @@ int carFleet(int target, int* position, int positionSize, int* speed, int speedS
     if (positionSize == 0) return 0;
 
     Car* cars = (Car*)malloc(positionSize * sizeof(Car));
-    
+
     for (int i = 0; i < positionSize; i++) {
         cars[i].position = position[i];
         cars[i].time = (double)(target - position[i]) / speed[i];
     }
-    
+
     // Sort by position in descending order
     qsort(cars, positionSize, sizeof(Car), compare);
-    
+
     double* stack = (double*)malloc(positionSize * sizeof(double));
     int top = -1;
-    
+
     for (int i = 0; i < positionSize; i++) {
         double time = cars[i].time;
         // If current car takes more time, it forms a new fleet
-        if (top == -1 || time > stack[top]) {
-            stack[++top] = time;
-        }
+        if (top == -1 || time > stack[top]) { stack[++top] = time; }
         // Otherwise, it catches up and joins the fleet ahead
     }
-    
+
     int fleets = top + 1;
-    
+
     free(cars);
     free(stack);
-    
+
     return fleets;
 }
-
 
 // Test
 int main() {

@@ -19,26 +19,28 @@
 
 bool searchMatrix(int** matrix, int matrixSize, int* matrixColSize, int target) {
     if (matrixSize == 0 || matrixColSize[0] == 0) return false;
-    
+
     int m = matrixSize;
     int n = matrixColSize[0];
     int left = 0;
     int right = m * n - 1;
-    
+
     while (left <= right) {
         int mid = left + (right - left) / 2;
         int row = mid / n;
         int col = mid % n;
         int midVal = matrix[row][col];
-        
-        if (midVal == target) return true;
-        else if (midVal < target) left = mid + 1;
-        else right = mid - 1;
+
+        if (midVal == target)
+            return true;
+        else if (midVal < target)
+            left = mid + 1;
+        else
+            right = mid - 1;
     }
-    
+
     return false;
 }
-
 
 // Test
 int main() {
@@ -49,12 +51,14 @@ int main() {
     int* matrix1[] = {row1, row2, row3};
     int colSize1[] = {4, 4, 4};
     int target1 = 3;
-    
-    printf("Test case 1: %s\n", searchMatrix(matrix1, 3, colSize1, target1) ? "true" : "false"); // Output: true
-    
+
+    printf("Test case 1: %s\n",
+           searchMatrix(matrix1, 3, colSize1, target1) ? "true" : "false");  // Output: true
+
     // Test case 2
     int target2 = 13;
-    printf("Test case 2: %s\n", searchMatrix(matrix1, 3, colSize1, target2) ? "true" : "false"); // Output: false
+    printf("Test case 2: %s\n",
+           searchMatrix(matrix1, 3, colSize1, target2) ? "true" : "false");  // Output: false
 
     return 0;
 }

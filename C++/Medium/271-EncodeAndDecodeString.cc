@@ -21,7 +21,6 @@ using namespace std;
 
 class Solution {
 public:
-
     string encode(vector<string>& strs) {
         string encodedString = to_string(strs.size()) + "#";
         for (const string& str : strs) encodedString += to_string(str.size()) + '#' + str;
@@ -31,7 +30,7 @@ public:
     vector<string> decode(string s) {
         size_t currentPos = 0;
         size_t hashPos = s.find('#', currentPos);
-        unsigned int  listSize = stoi(s.substr(currentPos, hashPos - currentPos));
+        unsigned int listSize = stoi(s.substr(currentPos, hashPos - currentPos));
         currentPos = hashPos + 1;
 
         vector<string> decodedStrings(listSize);
@@ -47,10 +46,9 @@ public:
     }
 };
 
-
-//Test
+// Test
 int main() {
-    Solution solution; 
+    Solution solution;
     vector<string> strs1 = {"hello", "world"};
     vector<string> strs2 = {"", "a", "abc", "defg"};
 
@@ -63,17 +61,13 @@ int main() {
     // Print results
     cout << "Encoded 1: " << encoded1 << endl;
     cout << "Decoded 1: ";
-    for (const auto& str : decoded1) {
-        cout << "\"" << str << "\" ";
-    }
+    for (const auto& str : decoded1) { cout << "\"" << str << "\" "; }
     cout << endl;
 
     cout << "Encoded 2: " << encoded2 << endl;
     cout << "Decoded 2: ";
-    for (const auto& str : decoded2) {
-        cout << "\"" << str << "\" ";
-    }
+    for (const auto& str : decoded2) { cout << "\"" << str << "\" "; }
     cout << endl;
 
-    return 0; 
+    return 0;
 }

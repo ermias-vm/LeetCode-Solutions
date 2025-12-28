@@ -41,7 +41,7 @@ class Solution {
 class Test {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        String[] example1 = {"eat","tea","tan","ate","nat","bat"};
+        String[] example1 = {"eat", "tea", "tan", "ate", "nat", "bat"};
         String[] example2 = {""};
         String[] example3 = {"a"};
 

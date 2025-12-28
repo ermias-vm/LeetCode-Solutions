@@ -26,31 +26,26 @@ public:
     int carFleet(int target, vector<int>& position, vector<int>& speed) {
         int n = position.size();
         vector<pair<int, double>> cars(n);  // {position, time to reach target}
-        
+
         for (int i = 0; i < n; i++) {
             cars[i] = {position[i], (double)(target - position[i]) / speed[i]};
         }
-        
+
         // Sort by position in descending order (closest to target first)
-        sort(cars.begin(), cars.end(), [](auto& a, auto& b) {
-            return a.first > b.first;
-        });
-        
+        sort(cars.begin(), cars.end(), [](auto& a, auto& b) { return a.first > b.first; });
+
         stack<double> st;  // Stack of arrival times
-        
+
         for (int i = 0; i < n; i++) {
             double time = cars[i].second;
             // If current car takes more time, it forms a new fleet
-            if (st.empty() || time > st.top()) {
-                st.push(time);
-            }
+            if (st.empty() || time > st.top()) { st.push(time); }
             // Otherwise, it catches up and joins the fleet ahead
         }
-        
+
         return st.size();
     }
 };
-
 
 // Test
 int main() {

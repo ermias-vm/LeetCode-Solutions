@@ -20,7 +20,6 @@
 
 using namespace std;
 
-
 class Solution {
 public:
     int largestRectangleArea(vector<int>& heights) {
@@ -50,8 +49,8 @@ int main() {
     vector<int> heights1 = {2, 1, 5, 6, 2, 3};
     vector<int> heights2 = {2, 4};
 
-    cout << "Test case 1: " << solution.largestRectangleArea(heights1) << endl; // Output: 10
-    cout << "Test case 2: " << solution.largestRectangleArea(heights2) << endl; // Output: 4
+    cout << "Test case 1: " << solution.largestRectangleArea(heights1) << endl;  // Output: 10
+    cout << "Test case 2: " << solution.largestRectangleArea(heights2) << endl;  // Output: 4
 
     return 0;
 }

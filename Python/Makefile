@@ -88,24 +88,4 @@ clean_all:
 	@find . -type f -name "*.pyc" -delete
 	@echo "All Python cache files cleaned"
 
-# Ensure all Python files end with newline
-format:
-	@echo "Checking Python source files..."
-	@modified_files=""; \
-	for file in $$(find . -path ./venv -prune -o -name "*.py" -type f -print); do \
-		if [ -s "$$file" ] && [ "$$(tail -c1 "$$file" | wc -l)" -eq 0 ]; then \
-			modified_files="$$modified_files$$file (added final newline)\n"; \
-			echo >> "$$file"; \
-		fi; \
-	done; \
-	echo ""; \
-	echo "Complete!"; \
-	echo ""; \
-	echo "Modified files:"; \
-	if [ -n "$$modified_files" ]; then \
-		printf "$$modified_files" | sed 's/^/  - /'; \
-	else \
-		echo "  No files were modified."; \
-	fi
-
-.PHONY: all find clean_all compile% run% clean% format
+.PHONY: all find clean_all compile% run% clean%

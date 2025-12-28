@@ -84,7 +84,7 @@ find%:
 
 # Format all Java files using clang-format (uses ../.clang-format config)
 format:
-	@echo "Formatting all Java source files..."
+	@echo "Formatting Java/..."
 	@modified_files=""; \
 	for file in $$(find . -name "*.java" -type f); do \
 		if [ -f "$$file" ]; then \
@@ -96,7 +96,7 @@ format:
 			rm -f "$$file.bak"; \
 		fi; \
 	done; \
-	echo "  Ensuring all source files end with newline..."; \
+	echo "Ensuring all Java files end with newline..."; \
 	for file in $$(find . -name "*.java" -type f); do \
 		if [ -s "$$file" ] && [ "$$(tail -c1 "$$file" | wc -l)" -eq 0 ]; then \
 			modified_files="$$modified_files$$file (added final newline)\n"; \
@@ -106,11 +106,11 @@ format:
 	echo ""; \
 	echo "Formatting complete!"; \
 	echo ""; \
-	echo "Modified files:"; \
 	if [ -n "$$modified_files" ]; then \
+		echo "Modified files Java:"; \
 		printf "$$modified_files" | sed 's/^/  - /'; \
 	else \
-		echo "  No files were modified."; \
+		echo "No files were modified."; \
 	fi
 
 format-check:

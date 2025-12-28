@@ -19,34 +19,27 @@
 
 using namespace std;
 
-
 class MinStack {
 private:
     stack<int> mainStack;
     stack<int> minStack;
 
 public:
-    MinStack() {
-        
-    }
-    
+    MinStack() {}
+
     void push(int val) {
         mainStack.push(val);
         if (minStack.empty() || val <= minStack.top()) minStack.push(val);
     }
-    
+
     void pop() {
         if (mainStack.top() == minStack.top()) minStack.pop();
         mainStack.pop();
     }
-    
-    int top() {
-        return mainStack.top();
-    }
-    
-    int getMin() {
-        return minStack.top();
-    }
+
+    int top() { return mainStack.top(); }
+
+    int getMin() { return minStack.top(); }
 };
 
 // Test
@@ -55,11 +48,10 @@ int main() {
     stk.push(-2);
     stk.push(0);
     stk.push(-3);
-    cout << stk.getMin() << endl; // return -3
+    cout << stk.getMin() << endl;  // return -3
     stk.pop();
-    cout << stk.top() << endl;    // return 0
-    cout << stk.getMin() << endl; // return -2
+    cout << stk.top() << endl;     // return 0
+    cout << stk.getMin() << endl;  // return -2
 
     return 0;
 }
-

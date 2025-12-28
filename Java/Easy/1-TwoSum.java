@@ -14,9 +14,9 @@
     Space complexity: O(n) - HashMap stores at most n elements.
 */
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Arrays;
 
 // Solution
 class Solution {
@@ -25,11 +25,11 @@ class Solution {
         for (int i = 0; i < nums.length; i++) {
             int complement = target - nums[i];
             if (numMap.containsKey(complement)) {
-                return new int[]{numMap.get(complement), i};
+                return new int[] {numMap.get(complement), i};
             }
             numMap.put(nums[i], i);
         }
-        return new int[]{};
+        return new int[] {};
     }
 }
 

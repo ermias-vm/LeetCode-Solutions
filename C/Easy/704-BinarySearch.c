@@ -34,7 +34,6 @@ int search(int* nums, int numsSize, int target) {
     return -1;
 }
 
-
 // Test
 int main() {
     // Test case 1

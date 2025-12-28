@@ -19,9 +19,7 @@
 #include <string.h>
 
 // Function for qsort to compare characters
-int compareChar(const void* a, const void* b) {
-    return (*(char*)a - *(char*)b);
-}
+int compareChar(const void* a, const void* b) { return (*(char*)a - *(char*)b); }
 
 // Function to sort a string
 char* sortString(const char* s) {
@@ -59,7 +57,7 @@ char*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnCo
     // Count groups
     int groupCount = 1;
     for (int i = 1; i < strsSize; i++) {
-        if (strcmp(pairs[i][0], pairs[i-1][0]) != 0) groupCount++;
+        if (strcmp(pairs[i][0], pairs[i - 1][0]) != 0) groupCount++;
     }
 
     // Build result
@@ -73,7 +71,7 @@ char*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnCo
     result[g][0] = pairs[0][1];
 
     for (int i = 1; i < strsSize; i++) {
-        if (strcmp(pairs[i][0], pairs[i-1][0]) == 0) {
+        if (strcmp(pairs[i][0], pairs[i - 1][0]) == 0) {
             // Same group - expand
             int oldSize = (*returnColumnSizes)[g];
             result[g] = realloc(result[g], (oldSize + 1) * sizeof(char*));
@@ -100,7 +98,7 @@ char*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnCo
 
 // Test
 int main() {
-    char* strs[] = {"eat","tea","tan","ate","nat","bat"};
+    char* strs[] = {"eat", "tea", "tan", "ate", "nat", "bat"};
     int strsSize = 6;
     int returnSize;
     int* returnColumnSizes;

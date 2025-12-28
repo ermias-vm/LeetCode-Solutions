@@ -20,10 +20,10 @@ using namespace std;
 
 struct ListNode {
     int val;
-    ListNode *next;
+    ListNode* next;
     ListNode() : val(0), next(nullptr) {}
     ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
+    ListNode(int x, ListNode* next) : val(x), next(next) {}
 };
 
 class Solution {
@@ -49,10 +49,7 @@ public:
     }
 };
 
-
-
-
-//Test
+// Test
 
 ListNode* buildList(const std::vector<int>& nums) {
     ListNode dummy(0);
@@ -63,7 +60,6 @@ ListNode* buildList(const std::vector<int>& nums) {
     }
     return dummy.next;
 }
-
 
 void printList(ListNode* head) {
     while (head) {
@@ -86,17 +82,17 @@ int main() {
     vector<int> nums2 = {5, 6, 4};
     ListNode* l1 = buildList(nums1);
     ListNode* l2 = buildList(nums2);
-    //printList(l1);
-    //printList(l2);
+    // printList(l1);
+    // printList(l2);
     Solution solution;
     ListNode* result = solution.addTwoNumbers(l1, l2);
     cout << "Output: ";
     printList(result);
-    
+
     // Correctamente liberar la memoria de las listas
     deleteList(l1);
     deleteList(l2);
     deleteList(result);
-    
+
     return 0;
 }

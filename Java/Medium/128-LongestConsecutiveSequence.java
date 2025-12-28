@@ -14,20 +14,21 @@
     Space complexity: O(n) - HashSet stores all elements.
 */
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Arrays;
 class Solution {
     public int longestConsecutive(int[] nums) {
         Set<Integer> numSet = new HashSet<>();
-        for (int num : nums) numSet.add(num);
+        for (int num : nums)
+            numSet.add(num);
         int longestStreak = 0;
 
         for (int n : numSet) {
             if (!numSet.contains(n - 1)) { // Check if num is the start of a sequence
                 int currentNum = n;
                 int currentStreak = 1;
-                
+
                 while (numSet.contains(currentNum + 1)) {
                     currentNum++;
                     currentStreak++;
@@ -35,12 +36,12 @@ class Solution {
                 longestStreak = Math.max(currentStreak, longestStreak);
             }
         }
-        return longestStreak; 
+        return longestStreak;
     }
 }
 
 class Test {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Solution solution = new Solution();
         int[] nums1 = {100, 4, 200, 1, 3, 2};
         System.out.println("Input: nums = " + Arrays.toString(nums1) + "\n");
@@ -53,5 +54,4 @@ class Test {
         System.out.println("Input: nums = " + Arrays.toString(nums3));
         System.out.println("Output: " + solution.longestConsecutive(nums3));
     }
-
 }

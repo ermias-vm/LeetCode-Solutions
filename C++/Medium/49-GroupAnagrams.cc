@@ -30,16 +30,14 @@ public:
             sort(sortedStr.begin(), sortedStr.end());
             anagramGroups[sortedStr].push_back(s);
         }
-        
+
         vector<vector<string>> result;
-        for (auto& group : anagramGroups) {
-            result.push_back(group.second);
-        }
+        for (auto& group : anagramGroups) { result.push_back(group.second); }
         return result;
     }
 };
 
-//Test
+// Test
 
 // Function to print the results
 void printResults(const vector<vector<string>>& results, const string& exampleLabel) {

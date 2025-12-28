@@ -8,7 +8,6 @@
 #   make format                     -> Format all source files
 #   make format c++                 -> Format only C++ files
 #   make format java                -> Format only Java files
-#   make format python              -> Format only Python files
 
 # Default language directory (c, c++, java, python)
 DEFAULT_LANG ?= c
@@ -53,7 +52,6 @@ help:
 	@echo "║   make format c              Format only C files                 ║"
 	@echo "║   make format c++            Format only C++ files               ║"
 	@echo "║   make format java           Format only Java files              ║"
-	@echo "║   make format python         Format only Python files            ║"
 	@echo "║   make clean_all             Clean all in default language       ║"
 	@echo "║   make clean_all <lang>      Clean all in specified language     ║"
 	@echo "║   make find<N>               Find problem N in default language  ║"
@@ -64,15 +62,19 @@ help:
 format:
 ifeq ($(IS_LANG),)
 	@echo "Formatting all source files..."
-	@$(MAKE) --no-print-directory _do_format_c DIRS="C C++"
+	@echo ""
+	@$(MAKE) --no-print-directory _do_format_c DIRS="C"
+	@echo ""
+	@echo ""
+	@$(MAKE) --no-print-directory _do_format_c DIRS="C++"
+	@echo ""
+	@echo ""
 	@$(MAKE) -C Java --no-print-directory format
-	@$(MAKE) -C Python --no-print-directory format
 else ifeq ($(IS_LANG),java)
 	@$(MAKE) -C Java --no-print-directory format
-else ifeq ($(IS_LANG),python)
-	@$(MAKE) -C Python --no-print-directory format
 else
 	@echo "Formatting $(IS_LANG) source files..."
+	@echo ""
 	@$(MAKE) --no-print-directory _do_format_c DIRS="$(TARGET_DIR)"
 endif
 
@@ -80,7 +82,7 @@ endif
 _do_format_c:
 	@modified_files=""; \
 	for dir in $(DIRS); do \
-		echo "  Processing $$dir/..."; \
+		echo "Formatting $$dir/..."; \
 		if [ "$$dir" = "C" ]; then \
 			EXT="c"; \
 		elif [ "$$dir" = "C++" ]; then \
@@ -108,7 +110,7 @@ _do_format_c:
 				rm -f "$$file.bak"; \
 			fi; \
 		done; \
-		echo "  Ensuring all source files end with newline..."; \
+		echo "Ensuring all $$dir files end with newline..."; \
 		for file in $$(find $$dir \( -name "*.$$EXT" -o -name "*.h" \) -type f); do \
 			if [ -s "$$file" ] && [ "$$(tail -c1 "$$file" | wc -l)" -eq 0 ]; then \
 				modified_files="$$modified_files$$file (added final newline)\n"; \
@@ -119,11 +121,11 @@ _do_format_c:
 	echo ""; \
 	echo "Formatting complete!"; \
 	echo ""; \
-	echo "Modified files:"; \
 	if [ -n "$$modified_files" ]; then \
+		echo "Modified files $$dir:"; \
 		printf "$$modified_files" | sed 's/^/  - /'; \
 	else \
-		echo "  No files were modified."; \
+		echo "No files were modified."; \
 	fi
 
 # Format all languages at once
@@ -138,9 +140,6 @@ format-all:
 	@echo ""
 	@echo "--- Java files ---"
 	@$(MAKE) -C Java --no-print-directory format
-	@echo ""
-	@echo "--- Python files ---"
-	@$(MAKE) -C Python --no-print-directory format
 	@echo ""
 	@echo "=== All formatting complete ==="
 
