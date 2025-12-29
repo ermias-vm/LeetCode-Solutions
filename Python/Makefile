@@ -2,6 +2,7 @@
 
 # Default Python interpreter
 PYTHON = python3
+VERIFY_SCRIPT = ../verify_output.sh
 
 # Default target
 all:
@@ -28,8 +29,12 @@ run%:
 		echo "No Python script file found for problem $$N"; \
 		exit 1; \
 	fi; \
+	DIFFICULTY=$$(dirname "$$SCRIPT_FILE" | sed 's|^\\./||'); \
 	echo "Running file $$SCRIPT_FILE"; \
-	$(PYTHON) "$$SCRIPT_FILE"
+	TMP_OUTPUT=$$(mktemp); \
+	$(PYTHON) "$$SCRIPT_FILE" | tee "$$TMP_OUTPUT"; \
+	"$(VERIFY_SCRIPT)" "$$N" "$$TMP_OUTPUT" "$$DIFFICULTY"; \
+	rm -f "$$TMP_OUTPUT"
 
 # Clean Python cache for a specific problem
 clean%:

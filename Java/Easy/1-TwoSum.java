@@ -35,12 +35,22 @@ class Solution {
 
 // Test
 class Test {
-    public static void main(String[] args) {
+    public static void runTest(int[] nums, int target) {
         Solution solution = new Solution();
-        int[] nums = {2, 7, 11, 15};
-        int target = 9;
         int[] result = solution.twoSum(nums, target);
         System.out.println("Input: nums = " + Arrays.toString(nums) + ", target = " + target);
         System.out.println("Output: " + Arrays.toString(result));
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Example 1
+        runTest(new int[]{2, 7, 11, 15}, 9);
+
+        // Example 2
+        runTest(new int[]{3, 2, 4}, 6);
+
+        // Example 3
+        runTest(new int[]{3, 3}, 6);
     }
 }

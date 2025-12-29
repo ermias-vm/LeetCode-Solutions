@@ -1,4 +1,4 @@
-# 🧩 LeetCode Solutions
+# LeetCode Solutions
 
 Welcome to the **LeetCode Solutions** repository! This is a comprehensive collection of solutions and explanations for problems found on [LeetCode](https://leetcode.com/problemset/).
 
@@ -7,8 +7,9 @@ Welcome to the **LeetCode Solutions** repository! This is a comprehensive collec
 - **Solutions**: Code solutions for LeetCode problems in **C**, **C++**, **Java**, and **Python**.
 - **Explanations**: Brief insights into the strategy and thought process for each solution.
 - **Difficulty Levels**: Solutions are categorized by their difficulty level - Easy, Medium, and Hard within each language folder.
+- **Output Verification**: Automatic verification of solution outputs against expected LeetCode test cases.
 
-## 📁 Directory Structure
+## Directory Structure
 
 The repository is organized by programming language, and then by difficulty:
 
@@ -30,11 +31,16 @@ LeetCode-Solutions/
 │   ├── Easy/
 │   ├── Medium/
 │   └── Hard/
+├── ExpectedOutputs/
+│   ├── Easy/
+│   ├── Medium/
+│   └── Hard/
+├── verify_output.sh
 └── README.md
 ```
 
 
-## 🛠️ How to Use the Makefiles
+## How to Use the Makefiles
 
 Each language directory (`C/`, `C++/`, `Java/`, `Python/`) contains a `Makefile` that automates compiling, running, cleaning, and finding solutions. All commands below work in all four languages (except where noted).
 
@@ -113,7 +119,42 @@ make 20
 
 ---
 
-## 🔎 Summary Table
+## Output Verification System
+
+Each time you run a problem with `make run<number>` or `make <number>`, the output is automatically verified against the expected LeetCode test case outputs.
+
+### How it Works
+
+1. **Expected Outputs**: The `ExpectedOutputs/` folder contains `.txt` files for each problem, organized by difficulty (Easy, Medium, Hard).
+2. **Format**: Each expected output file has the number of test cases on the first line, followed by one expected output per line.
+3. **Verification**: When you run a problem, the script captures lines containing "Output:" and compares them against the expected values.
+
+### Example
+
+For problem 1 (Two Sum), the expected output file `ExpectedOutputs/Easy/1.txt` contains:
+```
+3
+[0, 1]
+[1, 2]
+[0, 1]
+```
+
+When you run `make 1`, the verification shows:
+```
+PASSED: Output '[0, 1]' matches expected.
+Expected Outputs: [0, 1], [1, 2], [0, 1]
+```
+
+### Adding Expected Outputs
+
+To add verification for a new problem:
+1. Create a file `ExpectedOutputs/<Difficulty>/<problem_number>.txt`
+2. First line: number of expected outputs
+3. Following lines: one expected output per line (matching the format your solution prints)
+
+---
+
+## Summary Table
 | Command Example         | Description                                      |
 |------------------------|--------------------------------------------------|
 | `make find1`           | Find the file for problem 1                      |
@@ -125,7 +166,7 @@ make 20
 
 ---
 
-## 💡 Tips
+## Tips
 - Always use the correct language directory before running `make` commands.
 - The `find` command is useful to quickly locate where a problem's solution is stored.
 - Use `clean` and `clean_all` to keep your workspace tidy, especially after compiling or running multiple problems.

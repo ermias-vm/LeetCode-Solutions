@@ -75,10 +75,7 @@ void printArray(int* arr, int size) {
     printf("]");
 }
 
-int main() {
-    int nums[] = {2, 7, 11, 15};
-    int numsSize = sizeof(nums) / sizeof(nums[0]);
-    int target = 9;
+void runTest(int* nums, int numsSize, int target) {
     int returnSize;
 
     printf("Input: nums = ");
@@ -90,9 +87,23 @@ int main() {
     if (result != NULL) {
         printf("Output: ");
         printArray(result, returnSize);
-        printf("\n");
+        printf("\n\n");
         free(result);
     }
+}
+
+int main() {
+    // Example 1
+    int nums1[] = {2, 7, 11, 15};
+    runTest(nums1, 4, 9);
+
+    // Example 2
+    int nums2[] = {3, 2, 4};
+    runTest(nums2, 3, 6);
+
+    // Example 3
+    int nums3[] = {3, 3};
+    runTest(nums3, 2, 6);
 
     return 0;
 }

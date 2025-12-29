@@ -1,5 +1,6 @@
 
 CXXFLAGS=-std=c++20 -Wall
+VERIFY_SCRIPT = ../verify_output.sh
 
 all:
 
@@ -39,8 +40,12 @@ run%:
         if [ -z "$$FILE" ]; then \
             echo "No file found starting with $$N- and ending with .x"; \
         else \
+            DIFFICULTY=$$(dirname "$$FILE" | sed 's|^\\./||'); \
             echo "Running file $$FILE"; \
-            "./$$FILE"; \
+            TMP_OUTPUT=$$(mktemp); \
+            "./$$FILE" | tee "$$TMP_OUTPUT"; \
+            "$(VERIFY_SCRIPT)" "$$N" "$$TMP_OUTPUT" "$$DIFFICULTY"; \
+            rm -f "$$TMP_OUTPUT"; \
         fi; \
     fi
 

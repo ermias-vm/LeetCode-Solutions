@@ -58,18 +58,10 @@ help:
 	@echo "║   make find<N> <lang>        Find problem N in specified lang    ║"
 	@echo "╚══════════════════════════════════════════════════════════════════╝"
 
-# Format target
+# Format target - runs format-all by default
 format:
 ifeq ($(IS_LANG),)
-	@echo "Formatting all source files..."
-	@echo ""
-	@$(MAKE) --no-print-directory _do_format_c DIRS="C"
-	@echo ""
-	@echo ""
-	@$(MAKE) --no-print-directory _do_format_c DIRS="C++"
-	@echo ""
-	@echo ""
-	@$(MAKE) -C Java --no-print-directory format
+	@$(MAKE) --no-print-directory format-all
 else ifeq ($(IS_LANG),java)
 	@$(MAKE) -C Java --no-print-directory format
 else
@@ -130,18 +122,17 @@ _do_format_c:
 
 # Format all languages at once
 format-all:
-	@echo "=== Formatting all source files ==="
+	@echo "Formatting all source files..."
 	@echo ""
-	@echo "--- C files ---"
 	@$(MAKE) --no-print-directory _do_format_c DIRS="C"
 	@echo ""
-	@echo "--- C++ files ---"
+	@echo ""
 	@$(MAKE) --no-print-directory _do_format_c DIRS="C++"
 	@echo ""
-	@echo "--- Java files ---"
+	@echo ""
 	@$(MAKE) -C Java --no-print-directory format
 	@echo ""
-	@echo "=== All formatting complete ==="
+	@echo "Formatting complete!"
 
 # Format check (dry run)
 format-check:

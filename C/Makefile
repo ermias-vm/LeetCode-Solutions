@@ -2,11 +2,12 @@
 
 CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra -g
+VERIFY_SCRIPT = ../verify_output.sh
 
 all:
 	@echo "Usage: make <problem_number>"
 	@echo "Example: make 271  (finds e.g. 271-*.c in Easy/, Medium/, or Hard/)"
-	@echo "This will compile, run, and clean up the executable."
+	@echo "This will compile, run, verify output, and clean up the executable."
 
 compile:
 	@echo "Error: No number specified."
@@ -44,8 +45,12 @@ run%:
         if [ -z "$$FILE" ]; then \
             echo "No executable found starting with $$N- and ending with .x"; \
         else \
+            DIFFICULTY=$$(dirname "$$FILE" | sed 's|^\./||'); \
             echo "Running file $$FILE"; \
-            "./$$FILE"; \
+            TMP_OUTPUT=$$(mktemp); \
+            "./$$FILE" | tee "$$TMP_OUTPUT"; \
+            "$(VERIFY_SCRIPT)" "$$N" "$$TMP_OUTPUT" "$$DIFFICULTY"; \
+            rm -f "$$TMP_OUTPUT"; \
         fi; \
     fi
 

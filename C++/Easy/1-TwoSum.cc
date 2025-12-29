@@ -34,15 +34,37 @@ public:
 };
 
 // Test
-int main() {
-    Solution solution;
-    vector<int> nums = {2, 7, 11, 15};
-    int target = 9;
-    vector<int> result = solution.twoSum(nums, target);
-    if (!result.empty()) {
-        cout << "Indices: " << result[0] << " and " << result[1] << endl;
-    } else {
-        cout << "No two sum solution found." << endl;
+void printVector(const vector<int>& v) {
+    cout << "[";
+    for (size_t i = 0; i < v.size(); i++) {
+        cout << v[i];
+        if (i < v.size() - 1) cout << ", ";
     }
+    cout << "]";
+}
+
+void runTest(vector<int> nums, int target) {
+    Solution solution;
+    vector<int> result = solution.twoSum(nums, target);
+    
+    cout << "Input: nums = ";
+    printVector(nums);
+    cout << ", target = " << target << endl;
+    
+    cout << "Output: ";
+    printVector(result);
+    cout << endl << endl;
+}
+
+int main() {
+    // Example 1
+    runTest({2, 7, 11, 15}, 9);
+
+    // Example 2
+    runTest({3, 2, 4}, 6);
+
+    // Example 3
+    runTest({3, 3}, 6);
+
     return 0;
 }

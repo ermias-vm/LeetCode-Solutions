@@ -3,6 +3,7 @@
 JC = javac
 JVM = java
 JFLAGS =
+VERIFY_SCRIPT = ../verify_output.sh
 
 all:
 	@echo "Usage: make <problem_number>"
@@ -23,6 +24,7 @@ compile%:
 run%:
 	@N=$*; \
 	SOURCE_FILE=$$(find . -type f -name "$$N-*.java" -print -quit); \
+	DIFFICULTY=$$(dirname "$$SOURCE_FILE" | sed 's|^\\./||'); \
 	CLASS_FILE=$$(find . -type f -name "Test.class" -print -quit); \
 	if [ -z "$$CLASS_FILE" ]; then \
 		$(MAKE) --no-print-directory compile$$N; \
@@ -33,7 +35,10 @@ run%:
 	fi; \
 	CLASS_DIR=$$(dirname "$$CLASS_FILE"); \
 	echo "Running file $$CLASS_DIR/Test.class"; \
-	$(JVM) -cp "$$CLASS_DIR" Test
+	TMP_OUTPUT=$$(mktemp); \
+	$(JVM) -cp "$$CLASS_DIR" Test | tee "$$TMP_OUTPUT"; \
+	"$(VERIFY_SCRIPT)" "$$N" "$$TMP_OUTPUT" "$$DIFFICULTY"; \
+	rm -f "$$TMP_OUTPUT"
 
 # Clean the Solution.class and Test.class files for the given problem number
 clean%:
