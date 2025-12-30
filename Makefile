@@ -314,13 +314,13 @@ summary:
 # Usage: make verify all | make verify c | make verify c++ | make verify java
 verify:
 ifeq ($(SECOND_ARG),all)
-	@$(MAKE) --no-print-directory _verify_all LANGS="c c++ java"
+	@$(MAKE) --no-print-directory _verify_all LANGS="c c++ java" OUT_PREFIX="All"
 else ifeq ($(SECOND_ARG),c)
-	@$(MAKE) --no-print-directory _verify_all LANGS="c"
+	@$(MAKE) --no-print-directory _verify_all LANGS="c" OUT_PREFIX="C"
 else ifeq ($(SECOND_ARG),c++)
-	@$(MAKE) --no-print-directory _verify_all LANGS="c++"
+	@$(MAKE) --no-print-directory _verify_all LANGS="c++" OUT_PREFIX="C++"
 else ifeq ($(SECOND_ARG),java)
-	@$(MAKE) --no-print-directory _verify_all LANGS="java"
+	@$(MAKE) --no-print-directory _verify_all LANGS="java" OUT_PREFIX="Java"
 else
 	@echo "Usage: make verify <all|c|c++|java>"
 	@echo ""
@@ -336,11 +336,14 @@ all:
 	@true
 
 _verify_all:
-	@echo ""
-	@echo "   Verification Results:"
-	@echo ""
-	@# All logic in single shell block to preserve variables
-	@verify_c="no"; verify_cpp="no"; verify_java="no"; \
+	@mkdir -p out
+	@outfile="out/$(OUT_PREFIX)_TestResults.txt"; \
+	echo "" | tee "$$outfile"; \
+	echo "═══════════════════════════════════════════════════════════════════════════════" | tee -a "$$outfile"; \
+	echo "   Verification Results - $(OUT_PREFIX)" | tee -a "$$outfile"; \
+	echo "═══════════════════════════════════════════════════════════════════════════════" | tee -a "$$outfile"; \
+	echo "" | tee -a "$$outfile"; \
+	verify_c="no"; verify_cpp="no"; verify_java="no"; \
 	for lang in $(LANGS); do \
 		if [ "$$lang" = "c" ]; then verify_c="yes"; fi; \
 		if [ "$$lang" = "c++" ]; then verify_cpp="yes"; fi; \
@@ -355,6 +358,8 @@ _verify_all:
 				if [ -n "$$src" ]; then \
 					dir=$$(dirname "$$src"); \
 					difficulty=$$(basename "$$dir"); \
+					name=$$(basename "$$src" .c | cut -d'-' -f2-); \
+					echo "Testing [C] Problem $$num - $$name..." | tee -a "$$outfile"; \
 					exe="$${src%.c}.x"; \
 					gcc -std=c11 -Wall -o "$$exe" "$$src" 2>/dev/null; \
 					if [ -f "$$exe" ]; then \
@@ -369,18 +374,33 @@ _verify_all:
 								expected=$$(sed -n "$$((i+1))p" "$$expected_file"); \
 								if [ "$$actual" != "$$expected" ]; then \
 									errors=$$((errors + 1)); \
+									echo "  Example $$i: FAIL" >> "$$outfile"; \
+									echo "    Expected: $$expected" >> "$$outfile"; \
+									echo "    Got:      $$actual" >> "$$outfile"; \
+								else \
+									echo "  Example $$i: PASS" >> "$$outfile"; \
 								fi; \
 							done; \
+							if [ $$errors -eq 0 ]; then \
+								echo "  Result: PASS ($$num_expected/$$num_expected)" | tee -a "$$outfile"; \
+							else \
+								echo "  Result: FAIL ($$errors/$$num_expected failed)" | tee -a "$$outfile"; \
+							fi; \
 							c_results="$$c_results$$num:$$errors "; \
 						fi; \
 						rm -f "$$tmp" "$$exe"; \
+					else \
+						echo "  Compilation failed!" | tee -a "$$outfile"; \
 					fi; \
+					echo "" >> "$$outfile"; \
 				fi; \
 			elif [ "$$lang" = "c++" ]; then \
 				src=$$(find C++ -name "$$num-*.cc" 2>/dev/null | head -n 1); \
 				if [ -n "$$src" ]; then \
 					dir=$$(dirname "$$src"); \
 					difficulty=$$(basename "$$dir"); \
+					name=$$(basename "$$src" .cc | cut -d'-' -f2-); \
+					echo "Testing [C++] Problem $$num - $$name..." | tee -a "$$outfile"; \
 					exe="$${src%.cc}.x"; \
 					g++ -std=c++20 -Wall -o "$$exe" "$$src" 2>/dev/null; \
 					if [ -f "$$exe" ]; then \
@@ -395,18 +415,33 @@ _verify_all:
 								expected=$$(sed -n "$$((i+1))p" "$$expected_file"); \
 								if [ "$$actual" != "$$expected" ]; then \
 									errors=$$((errors + 1)); \
+									echo "  Example $$i: FAIL" >> "$$outfile"; \
+									echo "    Expected: $$expected" >> "$$outfile"; \
+									echo "    Got:      $$actual" >> "$$outfile"; \
+								else \
+									echo "  Example $$i: PASS" >> "$$outfile"; \
 								fi; \
 							done; \
+							if [ $$errors -eq 0 ]; then \
+								echo "  Result: PASS ($$num_expected/$$num_expected)" | tee -a "$$outfile"; \
+							else \
+								echo "  Result: FAIL ($$errors/$$num_expected failed)" | tee -a "$$outfile"; \
+							fi; \
 							cpp_results="$$cpp_results$$num:$$errors "; \
 						fi; \
 						rm -f "$$tmp" "$$exe"; \
+					else \
+						echo "  Compilation failed!" | tee -a "$$outfile"; \
 					fi; \
+					echo "" >> "$$outfile"; \
 				fi; \
 			elif [ "$$lang" = "java" ]; then \
 				src=$$(find Java -name "$$num-*.java" 2>/dev/null | head -n 1); \
 				if [ -n "$$src" ]; then \
 					dir=$$(dirname "$$src"); \
 					difficulty=$$(basename "$$dir"); \
+					name=$$(basename "$$src" .java | cut -d'-' -f2-); \
+					echo "Testing [Java] Problem $$num - $$name..." | tee -a "$$outfile"; \
 					javac "$$src" 2>/dev/null; \
 					if [ -f "$$dir/Test.class" ]; then \
 						tmp=$$(mktemp); \
@@ -420,19 +455,37 @@ _verify_all:
 								expected=$$(sed -n "$$((i+1))p" "$$expected_file"); \
 								if [ "$$actual" != "$$expected" ]; then \
 									errors=$$((errors + 1)); \
+									echo "  Example $$i: FAIL" >> "$$outfile"; \
+									echo "    Expected: $$expected" >> "$$outfile"; \
+									echo "    Got:      $$actual" >> "$$outfile"; \
+								else \
+									echo "  Example $$i: PASS" >> "$$outfile"; \
 								fi; \
 							done; \
+							if [ $$errors -eq 0 ]; then \
+								echo "  Result: PASS ($$num_expected/$$num_expected)" | tee -a "$$outfile"; \
+							else \
+								echo "  Result: FAIL ($$errors/$$num_expected failed)" | tee -a "$$outfile"; \
+							fi; \
 							java_results="$$java_results$$num:$$errors "; \
 						fi; \
 						rm -f "$$tmp" "$$dir/Test.class" "$$dir/Solution.class"; \
+					else \
+						echo "  Compilation failed!" | tee -a "$$outfile"; \
 					fi; \
+					echo "" >> "$$outfile"; \
 				fi; \
 			fi; \
 		done; \
 	done; \
-	echo   "  ┌──────┬──────────────────────────────────────────────┬────────┬─────┬─────┬──────┬────────┐"; \
-	printf "  │ %-4s │ %-44s │ %-6s │ %-3s │ %-3s │ %-4s │ %-6s │\n" "#" "Problem" "Level" "C" "C++" "Java" "Test"; \
-	echo   "  ├──────┼──────────────────────────────────────────────┼────────┼─────┼─────┼──────┼────────┤"; \
+	echo "" | tee -a "$$outfile"; \
+	echo "═══════════════════════════════════════════════════════════════════════════════" | tee -a "$$outfile"; \
+	echo "   Summary Table" | tee -a "$$outfile"; \
+	echo "═══════════════════════════════════════════════════════════════════════════════" | tee -a "$$outfile"; \
+	echo "" | tee -a "$$outfile"; \
+	echo   "  ┌──────┬──────────────────────────────────────────────┬────────┬─────┬─────┬──────┬────────┐" | tee -a "$$outfile"; \
+	printf "  │ %-4s │ %-44s │ %-6s │ %-3s │ %-3s │ %-4s │ %-6s │\n" "#" "Problem" "Level" "C" "C++" "Java" "Test" | tee -a "$$outfile"; \
+	echo   "  ├──────┼──────────────────────────────────────────────┼────────┼─────┼─────┼──────┼────────┤" | tee -a "$$outfile"; \
 	all_src=$$(find C C++ Java -name "*-*.c" -o -name "*-*.cc" -o -name "*-*.java" 2>/dev/null | \
 		sed 's|.*/||' | sed 's|\.[^.]*$$||' | sort -t'-' -k1 -n | uniq); \
 	first=1; \
@@ -462,7 +515,7 @@ _verify_all:
 			if [ "$$rnum" = "$$num" ]; then java_err="$$rval"; fi; \
 		done; \
 		if [ $$first -eq 0 ]; then \
-			echo   "  ├──────┼──────────────────────────────────────────────┼────────┼─────┼─────┼──────┼────────┤"; \
+			echo   "  ├──────┼──────────────────────────────────────────────┼────────┼─────┼─────┼──────┼────────┤" | tee -a "$$outfile"; \
 		fi; \
 		first=0; \
 		c_display="-"; cpp_display="-"; java_display="-"; \
@@ -470,8 +523,8 @@ _verify_all:
 		if [ "$$verify_c" = "yes" ]; then \
 			if [ -n "$$c_err" ]; then \
 				has_test="yes"; \
-				if [ "$$c_err" = "0" ]; then c_display="✓"; \
-				else c_display="$$c_err"; test_result="FAIL"; fi; \
+				c_display="$$c_err"; \
+				if [ "$$c_err" != "0" ]; then test_result="FAIL"; fi; \
 			elif find C -name "$$num-*.c" 2>/dev/null | grep -q .; then \
 				c_display="-"; \
 			fi; \
@@ -479,8 +532,8 @@ _verify_all:
 		if [ "$$verify_cpp" = "yes" ]; then \
 			if [ -n "$$cpp_err" ]; then \
 				has_test="yes"; \
-				if [ "$$cpp_err" = "0" ]; then cpp_display="✓"; \
-				else cpp_display="$$cpp_err"; test_result="FAIL"; fi; \
+				cpp_display="$$cpp_err"; \
+				if [ "$$cpp_err" != "0" ]; then test_result="FAIL"; fi; \
 			elif find C++ -name "$$num-*.cc" 2>/dev/null | grep -q .; then \
 				cpp_display="-"; \
 			fi; \
@@ -488,8 +541,8 @@ _verify_all:
 		if [ "$$verify_java" = "yes" ]; then \
 			if [ -n "$$java_err" ]; then \
 				has_test="yes"; \
-				if [ "$$java_err" = "0" ]; then java_display="✓"; \
-				else java_display="$$java_err"; test_result="FAIL"; fi; \
+				java_display="$$java_err"; \
+				if [ "$$java_err" != "0" ]; then test_result="FAIL"; fi; \
 			elif find Java -name "$$num-*.java" 2>/dev/null | grep -q .; then \
 				java_display="-"; \
 			fi; \
@@ -503,10 +556,17 @@ _verify_all:
 		else \
 			test_result="-"; \
 		fi; \
-		printf "  │ %4s │ %-44s │ %-6s │  %s  │  %s  │  %s   │ %-6s │\n" "$$num" "$$name" "$$level" "$$c_display" "$$cpp_display" "$$java_display" "$$test_result"; \
+		printf "  │ %4s │ %-44s │ %-6s │  %s  │  %s  │  %s   │ %-6s │\n" "$$num" "$$name" "$$level" "$$c_display" "$$cpp_display" "$$java_display" "$$test_result" | tee -a "$$outfile"; \
 	done; \
-	echo   "  └──────┴──────────────────────────────────────────────┴────────┴─────┴─────┴──────┴────────┘"; \
-	echo ""; \
-	echo "   Summary: $$total_pass passed, $$total_fail failed"; \
-	echo "";
+	echo   "  └──────┴──────────────────────────────────────────────┴────────┴─────┴─────┴──────┴────────┘" | tee -a "$$outfile"; \
+	echo "" | tee -a "$$outfile"; \
+	echo "   Summary: $$total_pass passed, $$total_fail failed" | tee -a "$$outfile"; \
+	echo "" | tee -a "$$outfile"; \
+	if [ $$total_fail -eq 0 ]; then \
+		final_file="out/$(OUT_PREFIX)_TestResults_PASS.txt"; \
+	else \
+		final_file="out/$(OUT_PREFIX)_TestResults_FAIL.txt"; \
+	fi; \
+	mv "$$outfile" "$$final_file"; \
+	echo "   Output saved to: $$final_file";
 

@@ -12,19 +12,24 @@ A collection of [LeetCode](https://leetcode.com/problemset/) problem solutions i
   - **[Hard/](C/Hard/)** - Hard difficulty problems
   - **[Makefile](C/Makefile)** - C-specific Makefile
 - **[C++/](C++/)** - C++ solutions
-  - **[Easy/](C++/Easy/)** - Easy difficulty problems
-  - **[Medium/](C++/Medium/)** - Medium difficulty problems
-  - **[Hard/](C++/Hard/)** - Hard difficulty problems
+  - **[Easy/](C++/Easy/)**
+  - **[Medium/](C++/Medium/)**
+  - **[Hard/](C++/Hard/)**
   - **[Makefile](C++/Makefile)** - C++-specific Makefile
 - **[Java/](Java/)** - Java solutions
-  - **[Easy/](Java/Easy/)** - Easy difficulty problems
-  - **[Medium/](Java/Medium/)** - Medium difficulty problems
-  - **[Hard/](Java/Hard/)** - Hard difficulty problems
+  - **[Easy/](Java/Easy/)**
+  - **[Medium/](Java/Medium/)**
+  - **[Hard/](Java/Hard/)**
   - **[Makefile](Java/Makefile)** - Java-specific Makefile
 - **[ExpectedOutputs/](ExpectedOutputs/)** - Expected test outputs for verification
-  - **[Easy/](ExpectedOutputs/Easy/)** - Expected outputs for easy problems
-  - **[Medium/](ExpectedOutputs/Medium/)** - Expected outputs for medium problems
-  - **[Hard/](ExpectedOutputs/Hard/)** - Expected outputs for hard problems
+  - **[Easy/](ExpectedOutputs/Easy/)** 
+  - **[Medium/](ExpectedOutputs/Medium/)**
+  - **[Hard/](ExpectedOutputs/Hard/)**
+- **[out/]** - Generated verification results (suffix _PASS or _FAIL)
+  - **All_TestResults_PASS.txt** / **All_TestResults_FAIL.txt**
+  - **C_TestResults_PASS.txt** / **C_TestResults_FAIL.txt**
+  - **C++_TestResults_PASS.txt** / **C++_TestResults_FAIL.txt**
+  - **Java_TestResults_PASS.txt** / **Java_TestResults_FAIL.txt**
 
 ---
 
@@ -123,13 +128,13 @@ Solutions must print `Output: <result>` for each test case.
 
 When running `make verify all`:
 
-| Symbol | Meaning |
-|--------|---------|
-| ✓ | All tests passed |
-| Number | Number of failed tests |
+| Value | Meaning |
+|-------|---------|
+| 0 | All tests passed (0 errors) |
+| N | Number of failed tests |
 | - | No solution or not tested |
-| PASS | All languages passed |
-| FAIL | At least one language failed |
+| PASS | All tested problems passed |
+| FAIL | At least one test failed |
 
 ---
 
