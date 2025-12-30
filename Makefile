@@ -48,7 +48,6 @@ help:
 	@echo "║                                                                  ║"
 	@echo "║ Other commands:                                                  ║"
 	@echo "║   make format                Format all source files             ║"
-	@echo "║   make format-all            Format all languages (detailed)     ║"
 	@echo "║   make format c              Format only C files                 ║"
 	@echo "║   make format c++            Format only C++ files               ║"
 	@echo "║   make format java           Format only Java files              ║"
@@ -57,6 +56,8 @@ help:
 	@echo "║   make find<N>               Find problem N in default language  ║"
 	@echo "║   make find<N> <lang>        Find problem N in specified lang    ║"
 	@echo "║   make summary               Show summary table of all problems  ║"
+	@echo "║   make verify all            Verify all problems (C, C++, Java)  ║"
+	@echo "║   make verify <lang>         Verify problems in specific lang    ║"
 	@echo "╚══════════════════════════════════════════════════════════════════╝"
 
 # Format target - runs format-all by default
@@ -235,7 +236,7 @@ clean%:
 		exit 1; \
 	fi
 
-.PHONY: help format format-all format-check clean_all global_clean c c++ java python _do_format_c _do_format_check_c summary
+.PHONY: help format format-all format-check clean_all global_clean c c++ java python _do_format_c _do_format_check_c summary verify all
 
 # Summary - Show table with problem counts by language and difficulty
 summary:
@@ -307,5 +308,205 @@ summary:
 	echo   "  └──────┴──────────────────────────────────────────────┴────────┴─────┴─────┴──────┴──────┘"; \
 	echo ""; \
 	echo "   Total distinct problems: $$problem_count"; \
+	echo "";
+
+# Verify - Run all problems with expected outputs and show results table
+# Usage: make verify all | make verify c | make verify c++ | make verify java
+verify:
+ifeq ($(SECOND_ARG),all)
+	@$(MAKE) --no-print-directory _verify_all LANGS="c c++ java"
+else ifeq ($(SECOND_ARG),c)
+	@$(MAKE) --no-print-directory _verify_all LANGS="c"
+else ifeq ($(SECOND_ARG),c++)
+	@$(MAKE) --no-print-directory _verify_all LANGS="c++"
+else ifeq ($(SECOND_ARG),java)
+	@$(MAKE) --no-print-directory _verify_all LANGS="java"
+else
+	@echo "Usage: make verify <all|c|c++|java>"
+	@echo ""
+	@echo "Examples:"
+	@echo "  make verify all     Verify all problems in C, C++, and Java"
+	@echo "  make verify c       Verify only C problems"
+	@echo "  make verify c++     Verify only C++ problems"
+	@echo "  make verify java    Verify only Java problems"
+endif
+
+# Handle 'all' as a target argument
+all:
+	@true
+
+_verify_all:
+	@echo ""
+	@echo "   Verification Results:"
+	@echo ""
+	@# All logic in single shell block to preserve variables
+	@verify_c="no"; verify_cpp="no"; verify_java="no"; \
+	for lang in $(LANGS); do \
+		if [ "$$lang" = "c" ]; then verify_c="yes"; fi; \
+		if [ "$$lang" = "c++" ]; then verify_cpp="yes"; fi; \
+		if [ "$$lang" = "java" ]; then verify_java="yes"; fi; \
+	done; \
+	all_problems=$$(find ExpectedOutputs -name "*.txt" 2>/dev/null | sed 's|.*/||' | sed 's|\.txt$$||' | sort -n | uniq); \
+	c_results=""; cpp_results=""; java_results=""; \
+	for num in $$all_problems; do \
+		for lang in $(LANGS); do \
+			if [ "$$lang" = "c" ]; then \
+				src=$$(find C -name "$$num-*.c" 2>/dev/null | head -n 1); \
+				if [ -n "$$src" ]; then \
+					dir=$$(dirname "$$src"); \
+					difficulty=$$(basename "$$dir"); \
+					exe="$${src%.c}.x"; \
+					gcc -std=c11 -Wall -o "$$exe" "$$src" 2>/dev/null; \
+					if [ -f "$$exe" ]; then \
+						tmp=$$(mktemp); \
+						"./$$exe" > "$$tmp" 2>&1; \
+						expected_file="ExpectedOutputs/$$difficulty/$$num.txt"; \
+						if [ -f "$$expected_file" ]; then \
+							num_expected=$$(head -n 1 "$$expected_file"); \
+							errors=0; \
+							for i in $$(seq 1 $$num_expected); do \
+								actual=$$(grep "^Output:" "$$tmp" | sed -n "$${i}p" | sed 's/^Output: //'); \
+								expected=$$(sed -n "$$((i+1))p" "$$expected_file"); \
+								if [ "$$actual" != "$$expected" ]; then \
+									errors=$$((errors + 1)); \
+								fi; \
+							done; \
+							c_results="$$c_results$$num:$$errors "; \
+						fi; \
+						rm -f "$$tmp" "$$exe"; \
+					fi; \
+				fi; \
+			elif [ "$$lang" = "c++" ]; then \
+				src=$$(find C++ -name "$$num-*.cc" 2>/dev/null | head -n 1); \
+				if [ -n "$$src" ]; then \
+					dir=$$(dirname "$$src"); \
+					difficulty=$$(basename "$$dir"); \
+					exe="$${src%.cc}.x"; \
+					g++ -std=c++20 -Wall -o "$$exe" "$$src" 2>/dev/null; \
+					if [ -f "$$exe" ]; then \
+						tmp=$$(mktemp); \
+						"./$$exe" > "$$tmp" 2>&1; \
+						expected_file="ExpectedOutputs/$$difficulty/$$num.txt"; \
+						if [ -f "$$expected_file" ]; then \
+							num_expected=$$(head -n 1 "$$expected_file"); \
+							errors=0; \
+							for i in $$(seq 1 $$num_expected); do \
+								actual=$$(grep "^Output:" "$$tmp" | sed -n "$${i}p" | sed 's/^Output: //'); \
+								expected=$$(sed -n "$$((i+1))p" "$$expected_file"); \
+								if [ "$$actual" != "$$expected" ]; then \
+									errors=$$((errors + 1)); \
+								fi; \
+							done; \
+							cpp_results="$$cpp_results$$num:$$errors "; \
+						fi; \
+						rm -f "$$tmp" "$$exe"; \
+					fi; \
+				fi; \
+			elif [ "$$lang" = "java" ]; then \
+				src=$$(find Java -name "$$num-*.java" 2>/dev/null | head -n 1); \
+				if [ -n "$$src" ]; then \
+					dir=$$(dirname "$$src"); \
+					difficulty=$$(basename "$$dir"); \
+					javac "$$src" 2>/dev/null; \
+					if [ -f "$$dir/Test.class" ]; then \
+						tmp=$$(mktemp); \
+						java -cp "$$dir" Test > "$$tmp" 2>&1; \
+						expected_file="ExpectedOutputs/$$difficulty/$$num.txt"; \
+						if [ -f "$$expected_file" ]; then \
+							num_expected=$$(head -n 1 "$$expected_file"); \
+							errors=0; \
+							for i in $$(seq 1 $$num_expected); do \
+								actual=$$(grep "^Output:" "$$tmp" | sed -n "$${i}p" | sed 's/^Output: //'); \
+								expected=$$(sed -n "$$((i+1))p" "$$expected_file"); \
+								if [ "$$actual" != "$$expected" ]; then \
+									errors=$$((errors + 1)); \
+								fi; \
+							done; \
+							java_results="$$java_results$$num:$$errors "; \
+						fi; \
+						rm -f "$$tmp" "$$dir/Test.class" "$$dir/Solution.class"; \
+					fi; \
+				fi; \
+			fi; \
+		done; \
+	done; \
+	echo   "  ┌──────┬──────────────────────────────────────────────┬────────┬─────┬─────┬──────┬────────┐"; \
+	printf "  │ %-4s │ %-44s │ %-6s │ %-3s │ %-3s │ %-4s │ %-6s │\n" "#" "Problem" "Level" "C" "C++" "Java" "Test"; \
+	echo   "  ├──────┼──────────────────────────────────────────────┼────────┼─────┼─────┼──────┼────────┤"; \
+	all_src=$$(find C C++ Java -name "*-*.c" -o -name "*-*.cc" -o -name "*-*.java" 2>/dev/null | \
+		sed 's|.*/||' | sed 's|\.[^.]*$$||' | sort -t'-' -k1 -n | uniq); \
+	first=1; \
+	total_pass=0; total_fail=0; \
+	for problem in $$all_src; do \
+		num=$$(echo "$$problem" | cut -d'-' -f1); \
+		name=$$(echo "$$problem" | cut -d'-' -f2-); \
+		if ! find ExpectedOutputs -name "$$num.txt" 2>/dev/null | grep -q .; then continue; fi; \
+		level=""; \
+		if find C/Easy C++/Easy Java/Easy -name "$$num-*" 2>/dev/null | grep -q .; then level="Easy"; fi; \
+		if find C/Medium C++/Medium Java/Medium -name "$$num-*" 2>/dev/null | grep -q .; then level="Medium"; fi; \
+		if find C/Hard C++/Hard Java/Hard -name "$$num-*" 2>/dev/null | grep -q .; then level="Hard"; fi; \
+		c_err=""; cpp_err=""; java_err=""; \
+		for r in $$c_results; do \
+			rnum=$$(echo "$$r" | cut -d':' -f1); \
+			rval=$$(echo "$$r" | cut -d':' -f2); \
+			if [ "$$rnum" = "$$num" ]; then c_err="$$rval"; fi; \
+		done; \
+		for r in $$cpp_results; do \
+			rnum=$$(echo "$$r" | cut -d':' -f1); \
+			rval=$$(echo "$$r" | cut -d':' -f2); \
+			if [ "$$rnum" = "$$num" ]; then cpp_err="$$rval"; fi; \
+		done; \
+		for r in $$java_results; do \
+			rnum=$$(echo "$$r" | cut -d':' -f1); \
+			rval=$$(echo "$$r" | cut -d':' -f2); \
+			if [ "$$rnum" = "$$num" ]; then java_err="$$rval"; fi; \
+		done; \
+		if [ $$first -eq 0 ]; then \
+			echo   "  ├──────┼──────────────────────────────────────────────┼────────┼─────┼─────┼──────┼────────┤"; \
+		fi; \
+		first=0; \
+		c_display="-"; cpp_display="-"; java_display="-"; \
+		test_result="PASS"; has_test="no"; \
+		if [ "$$verify_c" = "yes" ]; then \
+			if [ -n "$$c_err" ]; then \
+				has_test="yes"; \
+				if [ "$$c_err" = "0" ]; then c_display="✓"; \
+				else c_display="$$c_err"; test_result="FAIL"; fi; \
+			elif find C -name "$$num-*.c" 2>/dev/null | grep -q .; then \
+				c_display="-"; \
+			fi; \
+		fi; \
+		if [ "$$verify_cpp" = "yes" ]; then \
+			if [ -n "$$cpp_err" ]; then \
+				has_test="yes"; \
+				if [ "$$cpp_err" = "0" ]; then cpp_display="✓"; \
+				else cpp_display="$$cpp_err"; test_result="FAIL"; fi; \
+			elif find C++ -name "$$num-*.cc" 2>/dev/null | grep -q .; then \
+				cpp_display="-"; \
+			fi; \
+		fi; \
+		if [ "$$verify_java" = "yes" ]; then \
+			if [ -n "$$java_err" ]; then \
+				has_test="yes"; \
+				if [ "$$java_err" = "0" ]; then java_display="✓"; \
+				else java_display="$$java_err"; test_result="FAIL"; fi; \
+			elif find Java -name "$$num-*.java" 2>/dev/null | grep -q .; then \
+				java_display="-"; \
+			fi; \
+		fi; \
+		if [ "$$has_test" = "yes" ]; then \
+			if [ "$$test_result" = "PASS" ]; then \
+				total_pass=$$((total_pass + 1)); \
+			else \
+				total_fail=$$((total_fail + 1)); \
+			fi; \
+		else \
+			test_result="-"; \
+		fi; \
+		printf "  │ %4s │ %-44s │ %-6s │  %s  │  %s  │  %s   │ %-6s │\n" "$$num" "$$name" "$$level" "$$c_display" "$$cpp_display" "$$java_display" "$$test_result"; \
+	done; \
+	echo   "  └──────┴──────────────────────────────────────────────┴────────┴─────┴─────┴──────┴────────┘"; \
+	echo ""; \
+	echo "   Summary: $$total_pass passed, $$total_fail failed"; \
 	echo "";
 
