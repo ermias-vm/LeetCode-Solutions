@@ -56,6 +56,7 @@ help:
 	@echo "║   make clean_all <lang>      Clean all in specified language     ║"
 	@echo "║   make find<N>               Find problem N in default language  ║"
 	@echo "║   make find<N> <lang>        Find problem N in specified lang    ║"
+	@echo "║   make summary               Show summary table of all problems  ║"
 	@echo "╚══════════════════════════════════════════════════════════════════╝"
 
 # Format target - runs format-all by default
@@ -234,5 +235,77 @@ clean%:
 		exit 1; \
 	fi
 
-.PHONY: help format format-all format-check clean_all global_clean c c++ java python _do_format_c _do_format_check_c
+.PHONY: help format format-all format-check clean_all global_clean c c++ java python _do_format_c _do_format_check_c summary
+
+# Summary - Show table with problem counts by language and difficulty
+summary:
+	@echo ""
+	@echo "   LeetCode Solutions - Summary:"
+	@echo ""
+	@# Count files per language and difficulty
+	@c_easy=$$(find C/Easy -name "*.c" 2>/dev/null | wc -l); \
+	c_medium=$$(find C/Medium -name "*.c" 2>/dev/null | wc -l); \
+	c_hard=$$(find C/Hard -name "*.c" 2>/dev/null | wc -l); \
+	c_total=$$((c_easy + c_medium + c_hard)); \
+	cpp_easy=$$(find C++/Easy -name "*.cc" 2>/dev/null | wc -l); \
+	cpp_medium=$$(find C++/Medium -name "*.cc" 2>/dev/null | wc -l); \
+	cpp_hard=$$(find C++/Hard -name "*.cc" 2>/dev/null | wc -l); \
+	cpp_total=$$((cpp_easy + cpp_medium + cpp_hard)); \
+	java_easy=$$(find Java/Easy -name "*.java" 2>/dev/null | wc -l); \
+	java_medium=$$(find Java/Medium -name "*.java" 2>/dev/null | wc -l); \
+	java_hard=$$(find Java/Hard -name "*.java" 2>/dev/null | wc -l); \
+	java_total=$$((java_easy + java_medium + java_hard)); \
+	test_easy=$$(find ExpectedOutputs/Easy -name "*.txt" 2>/dev/null | wc -l); \
+	test_medium=$$(find ExpectedOutputs/Medium -name "*.txt" 2>/dev/null | wc -l); \
+	test_hard=$$(find ExpectedOutputs/Hard -name "*.txt" 2>/dev/null | wc -l); \
+	test_total=$$((test_easy + test_medium + test_hard)); \
+	total_easy=$$((c_easy + cpp_easy + java_easy)); \
+	total_medium=$$((c_medium + cpp_medium + java_medium)); \
+	total_hard=$$((c_hard + cpp_hard + java_hard)); \
+	grand_total=$$((c_total + cpp_total + java_total)); \
+	echo   "  ┌────────────┬────────┬────────┬────────┬────────┐"; \
+	printf "  │ %-10s │ %6s │ %6s │ %6s │ %6s │\n" "Language" "Easy" "Medium" "Hard" "Total"; \
+	echo   "  ├────────────┼────────┼────────┼────────┼────────┤"; \
+	printf "  │ %-10s │ %6d │ %6d │ %6d │ %6d │\n" "C" $$c_easy $$c_medium $$c_hard $$c_total; \
+	printf "  │ %-10s │ %6d │ %6d │ %6d │ %6d │\n" "C++" $$cpp_easy $$cpp_medium $$cpp_hard $$cpp_total; \
+	printf "  │ %-10s │ %6d │ %6d │ %6d │ %6d │\n" "Java" $$java_easy $$java_medium $$java_hard $$java_total; \
+	echo   "  ├────────────┼────────┼────────┼────────┼────────┤"; \
+	printf "  │ %-10s │ %6d │ %6d │ %6d │ %6d │\n" "Total" $$total_easy $$total_medium $$total_hard $$grand_total; \
+	echo   "  ├────────────┼────────┼────────┼────────┼────────┤"; \
+	printf "  │ %-10s │ %6d │ %6d │ %6d │ %6d │\n" "Tests" $$test_easy $$test_medium $$test_hard $$test_total; \
+	echo   "  └────────────┴────────┴────────┴────────┴────────┘"; \
+	echo ""
+	@echo ""
+	@echo "   Problems Detail:"
+	@echo ""
+	@# Get all unique problem numbers and their names
+	@all_problems=$$(find C C++ Java -name "*-*.c" -o -name "*-*.cc" -o -name "*-*.java" 2>/dev/null | \
+		sed 's|.*/||' | sed 's|\.[^.]*$$||' | sort -t'-' -k1 -n | uniq); \
+	problem_count=$$(echo "$$all_problems" | wc -w); \
+	echo   "  ┌──────┬──────────────────────────────────────────────┬────────┬─────┬─────┬──────┬──────┐"; \
+	printf "  │ %-4s │ %-44s │ %-6s │ %-3s │ %-3s │ %-4s │ %-4s │\n" "#" "Problem" "Level" "C" "C++" "Java" "Test"; \
+	echo   "  ├──────┼──────────────────────────────────────────────┼────────┼─────┼─────┼──────┼──────┤"; \
+	first=1; \
+	for problem in $$all_problems; do \
+		num=$$(echo "$$problem" | cut -d'-' -f1); \
+		name=$$(echo "$$problem" | cut -d'-' -f2-); \
+		level=""; \
+		if find C/Easy C++/Easy Java/Easy -name "$$num-*" 2>/dev/null | grep -q .; then level="Easy"; fi; \
+		if find C/Medium C++/Medium Java/Medium -name "$$num-*" 2>/dev/null | grep -q .; then level="Medium"; fi; \
+		if find C/Hard C++/Hard Java/Hard -name "$$num-*" 2>/dev/null | grep -q .; then level="Hard"; fi; \
+		c_exists=" "; cpp_exists=" "; java_exists=" "; test_exists=" "; \
+		if find C -name "$$num-*.c" 2>/dev/null | grep -q .; then c_exists="✓"; fi; \
+		if find C++ -name "$$num-*.cc" 2>/dev/null | grep -q .; then cpp_exists="✓"; fi; \
+		if find Java -name "$$num-*.java" 2>/dev/null | grep -q .; then java_exists="✓"; fi; \
+		if find ExpectedOutputs -name "$$num.txt" 2>/dev/null | grep -q .; then test_exists="✓"; fi; \
+		if [ $$first -eq 0 ]; then \
+			echo   "  ├──────┼──────────────────────────────────────────────┼────────┼─────┼─────┼──────┼──────┤"; \
+		fi; \
+		first=0; \
+		printf "  │ %4s │ %-44s │ %-6s │  %s  │  %s  │  %s   │  %s   │\n" "$$num" "$$name" "$$level" "$$c_exists" "$$cpp_exists" "$$java_exists" "$$test_exists"; \
+	done; \
+	echo   "  └──────┴──────────────────────────────────────────────┴────────┴─────┴─────┴──────┴──────┘"; \
+	echo ""; \
+	echo "   Total distinct problems: $$problem_count"; \
+	echo "";
 
