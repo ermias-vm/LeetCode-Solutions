@@ -17,6 +17,7 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <algorithm>
 using namespace std;
 
 class Solution {
@@ -47,12 +48,26 @@ public:
 // Test
 
 void print(const vector<string>& result) {
-    for (const string& s : result) { cout << s << endl; }
-    cout << endl;
+    cout << "Output: [";
+    for (size_t i = 0; i < result.size(); i++) {
+        cout << "\"" << result[i] << "\"";
+        if (i < result.size() - 1) cout << ", ";
+    }
+    cout << "]" << endl;
 }
 
 int main() {
     Solution solution;
-    print(solution.generateParenthesis(3));
+    
+    // Example 1: n = 3
+    vector<string> res1 = solution.generateParenthesis(3);
+    // Sort for consistent output
+    sort(res1.begin(), res1.end());
+    print(res1);
+    
+    // Example 2: n = 1
+    vector<string> res2 = solution.generateParenthesis(1);
+    print(res2);
+    
     return 0;
 }

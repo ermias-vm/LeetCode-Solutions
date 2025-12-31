@@ -41,22 +41,27 @@ public:
 };
 
 // Test
+void printVector(const vector<int>& v) {
+    cout << "Output: [";
+    for (size_t i = 0; i < v.size(); i++) {
+        cout << v[i];
+        if (i < v.size() - 1) cout << ", ";
+    }
+    cout << "]" << endl;
+}
+
 int main() {
     Solution solution;
 
-    vector<int> example1 = {1, 2, 3};
-    vector<int> example2 = {-1, 1, 0, -3, 3};
-
+    // Example 1: nums = [1,2,3,4]
+    vector<int> example1 = {1, 2, 3, 4};
     vector<int> result1 = solution.productExceptSelf(example1);
+    printVector(result1);
+
+    // Example 2: nums = [-1,1,0,-3,3]
+    vector<int> example2 = {-1, 1, 0, -3, 3};
     vector<int> result2 = solution.productExceptSelf(example2);
-
-    cout << "Example 1: ";
-    for (int num : result1) { cout << num << " "; }
-    cout << endl;
-
-    cout << "Example 2: ";
-    for (int num : result2) { cout << num << " "; }
-    cout << endl;
+    printVector(result2);
 
     return 0;
 }

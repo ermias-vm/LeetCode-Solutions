@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <climits>
+#include <iomanip>
 
 using namespace std;
 
@@ -58,13 +59,16 @@ public:
 // Test
 int main() {
     Solution solution;
-    vector<int> nums1 = {1, 3};
-    vector<int> nums2 = {2};
-    cout << "Example 1: " << solution.findMedianSortedArrays(nums1, nums2) << endl;
+    
+    // Example 1: nums1 = [1,3], nums2 = [2]
+    vector<int> nums1a = {1, 3};
+    vector<int> nums2a = {2};
+    cout << "Output: " << fixed << setprecision(5) << solution.findMedianSortedArrays(nums1a, nums2a) << endl;
 
-    nums1 = {1, 2};
-    nums2 = {3, 4};
-    cout << "Example 2: " << solution.findMedianSortedArrays(nums1, nums2) << endl;
+    // Example 2: nums1 = [1,2], nums2 = [3,4]
+    vector<int> nums1b = {1, 2};
+    vector<int> nums2b = {3, 4};
+    cout << "Output: " << fixed << setprecision(5) << solution.findMedianSortedArrays(nums1b, nums2b) << endl;
 
     return 0;
 }

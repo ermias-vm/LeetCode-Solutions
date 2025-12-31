@@ -45,11 +45,14 @@ public:
 // Test
 int main() {
     Solution solution;
+    
+    // Example 1: height = [1,8,6,2,5,4,8,3,7]
     vector<int> height1 = {1, 8, 6, 2, 5, 4, 8, 3, 7};
+    cout << "Output: " << solution.maxArea(height1) << endl;
+    
+    // Example 2: height = [1,1]
     vector<int> height2 = {1, 1};
-
-    cout << "Test case 1: " << solution.maxArea(height1) << endl;  // Output: 49
-    cout << "Test case 2: " << solution.maxArea(height2) << endl;  // Output: 1
+    cout << "Output: " << solution.maxArea(height2) << endl;
 
     return 0;
 }

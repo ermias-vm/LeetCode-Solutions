@@ -46,11 +46,14 @@ public:
 // Test
 int main() {
     Solution solution;
+    
+    // Example 1: heights = [2,1,5,6,2,3]
     vector<int> heights1 = {2, 1, 5, 6, 2, 3};
+    cout << "Output: " << solution.largestRectangleArea(heights1) << endl;
+    
+    // Example 2: heights = [2,4]
     vector<int> heights2 = {2, 4};
-
-    cout << "Test case 1: " << solution.largestRectangleArea(heights1) << endl;  // Output: 10
-    cout << "Test case 2: " << solution.largestRectangleArea(heights2) << endl;  // Output: 4
+    cout << "Output: " << solution.largestRectangleArea(heights2) << endl;
 
     return 0;
 }

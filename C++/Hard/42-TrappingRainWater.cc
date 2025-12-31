@@ -51,11 +51,14 @@ public:
 // Test
 int main() {
     Solution solution;
+    
+    // Example 1: height = [0,1,0,2,1,0,1,3,2,1,2,1]
     vector<int> height1 = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
+    cout << "Output: " << solution.trap(height1) << endl;
+    
+    // Example 2: height = [4,2,0,3,2,5]
     vector<int> height2 = {4, 2, 0, 3, 2, 5};
-
-    cout << "Test case 1: " << solution.trap(height1) << endl;  // Output: 6
-    cout << "Test case 2: " << solution.trap(height2) << endl;  // Output: 9
+    cout << "Output: " << solution.trap(height2) << endl;
 
     return 0;
 }

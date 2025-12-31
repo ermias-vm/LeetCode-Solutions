@@ -49,13 +49,18 @@ public:
 // Test
 int main() {
     Solution sol;
+    
+    // Example 1: tokens = ["2","1","+","3","*"]
     vector<string> tokens1 = {"2", "1", "+", "3", "*"};
+    cout << "Output: " << sol.evalRPN(tokens1) << endl;
+    
+    // Example 2: tokens = ["4","13","5","/","+"]
     vector<string> tokens2 = {"4", "13", "5", "/", "+"};
+    cout << "Output: " << sol.evalRPN(tokens2) << endl;
+    
+    // Example 3: tokens = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
     vector<string> tokens3 = {"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"};
-
-    cout << "Example 1: " << sol.evalRPN(tokens1) << endl;  // Output: 9
-    cout << "Example 2: " << sol.evalRPN(tokens2) << endl;  // Output: 6
-    cout << "Example 3: " << sol.evalRPN(tokens3) << endl;  // Output: 22
+    cout << "Output: " << sol.evalRPN(tokens3) << endl;
 
     return 0;
 }

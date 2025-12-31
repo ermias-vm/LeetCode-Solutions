@@ -51,20 +51,20 @@ public:
 int main() {
     Solution sol;
 
-    // Test case 1
+    // Example 1: target = 12, position = [10,8,0,5,3], speed = [2,4,1,1,3]
     vector<int> pos1 = {10, 8, 0, 5, 3};
     vector<int> speed1 = {2, 4, 1, 1, 3};
-    cout << "Test 1: " << sol.carFleet(12, pos1, speed1) << endl;  // Expected: 3
+    cout << "Output: " << sol.carFleet(12, pos1, speed1) << endl;
 
-    // Test case 2
+    // Example 2: target = 10, position = [3], speed = [3]
     vector<int> pos2 = {3};
     vector<int> speed2 = {3};
-    cout << "Test 2: " << sol.carFleet(10, pos2, speed2) << endl;  // Expected: 1
+    cout << "Output: " << sol.carFleet(10, pos2, speed2) << endl;
 
-    // Test case 3
+    // Example 3: target = 100, position = [0,2,4], speed = [4,2,1]
     vector<int> pos3 = {0, 2, 4};
     vector<int> speed3 = {4, 2, 1};
-    cout << "Test 3: " << sol.carFleet(100, pos3, speed3) << endl;  // Expected: 1
+    cout << "Output: " << sol.carFleet(100, pos3, speed3) << endl;
 
     return 0;
 }

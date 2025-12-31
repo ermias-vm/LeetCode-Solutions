@@ -51,17 +51,17 @@ private:
 int main() {
     Solution solution;
 
+    // Example 1: piles = [3,6,7,11], h = 8
     vector<int> piles1 = {3, 6, 7, 11};
-    int h1 = 8;
-    cout << "Test case 1: " << solution.minEatingSpeed(piles1, h1) << endl;  // Output: 4
+    cout << "Output: " << solution.minEatingSpeed(piles1, 8) << endl;
 
+    // Example 2: piles = [30,11,23,4,20], h = 5
     vector<int> piles2 = {30, 11, 23, 4, 20};
-    int h2 = 5;
-    cout << "Test case 2: " << solution.minEatingSpeed(piles2, h2) << endl;  // Output: 30
+    cout << "Output: " << solution.minEatingSpeed(piles2, 5) << endl;
 
+    // Example 3: piles = [30,11,23,4,20], h = 6
     vector<int> piles3 = {30, 11, 23, 4, 20};
-    int h3 = 6;
-    cout << "Test case 3: " << solution.minEatingSpeed(piles3, h3) << endl;  // Output: 23
+    cout << "Output: " << solution.minEatingSpeed(piles3, 6) << endl;
 
     return 0;
 }

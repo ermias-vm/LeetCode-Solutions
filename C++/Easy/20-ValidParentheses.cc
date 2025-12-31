@@ -41,13 +41,21 @@ public:
 // Test
 int main() {
     Solution solution;
-    string test1 = "()";
-    string test2 = "()[]{}";
-    string test3 = "(]";
-
-    cout << "Test case 1: " << (solution.isValid(test1) ? "true" : "false") << endl;
-    cout << "Test case 2: " << (solution.isValid(test2) ? "true" : "false") << endl;
-    cout << "Test case 3: " << (solution.isValid(test3) ? "true" : "false") << endl;
+    
+    // Example 1: s = "()"
+    cout << "Output: " << (solution.isValid("()") ? "true" : "false") << endl;
+    
+    // Example 2: s = "()[]{}"
+    cout << "Output: " << (solution.isValid("()[]{}") ? "true" : "false") << endl;
+    
+    // Example 3: s = "(]"
+    cout << "Output: " << (solution.isValid("(]") ? "true" : "false") << endl;
+    
+    // Example 4: s = "([])"
+    cout << "Output: " << (solution.isValid("([])") ? "true" : "false") << endl;
+    
+    // Example 5: s = "([)]"
+    cout << "Output: " << (solution.isValid("([)]") ? "true" : "false") << endl;
 
     return 0;
 }

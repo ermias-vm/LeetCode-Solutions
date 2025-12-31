@@ -41,38 +41,29 @@ public:
 };
 
 // Test
+void printVector(const vector<int>& v) {
+    cout << "Output: [";
+    for (size_t i = 0; i < v.size(); i++) {
+        cout << v[i];
+        if (i < v.size() - 1) cout << ", ";
+    }
+    cout << "]" << endl;
+}
+
 int main() {
     Solution sol;
 
-    // Test case 1
+    // Example 1: temperatures = [73,74,75,71,69,72,76,73]
     vector<int> temps1 = {73, 74, 75, 71, 69, 72, 76, 73};
-    vector<int> result1 = sol.dailyTemperatures(temps1);
-    cout << "Test 1: [";
-    for (unsigned int i = 0; i < result1.size(); i++) {
-        cout << result1[i];
-        if (i < result1.size() - 1) cout << ", ";
-    }
-    cout << "]" << endl;  // Expected: [1, 1, 4, 2, 1, 1, 0, 0]
+    printVector(sol.dailyTemperatures(temps1));
 
-    // Test case 2
+    // Example 2: temperatures = [30,40,50,60]
     vector<int> temps2 = {30, 40, 50, 60};
-    vector<int> result2 = sol.dailyTemperatures(temps2);
-    cout << "Test 2: [";
-    for (unsigned int i = 0; i < result2.size(); i++) {
-        cout << result2[i];
-        if (i < result2.size() - 1) cout << ", ";
-    }
-    cout << "]" << endl;  // Expected: [1, 1, 1, 0]
+    printVector(sol.dailyTemperatures(temps2));
 
-    // Test case 3
+    // Example 3: temperatures = [30,60,90]
     vector<int> temps3 = {30, 60, 90};
-    vector<int> result3 = sol.dailyTemperatures(temps3);
-    cout << "Test 3: [";
-    for (unsigned int i = 0; i < result3.size(); i++) {
-        cout << result3[i];
-        if (i < result3.size() - 1) cout << ", ";
-    }
-    cout << "]" << endl;  // Expected: [1, 1, 0]
+    printVector(sol.dailyTemperatures(temps3));
 
     return 0;
 }

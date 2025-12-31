@@ -44,13 +44,15 @@ public:
 
 // Test
 int main() {
+    // Example 1: ["MinStack","push","push","push","getMin","pop","top","getMin"]
+    // [[],[-2],[0],[-3],[],[],[],[]]
     MinStack stk;
     stk.push(-2);
     stk.push(0);
     stk.push(-3);
-    cout << stk.getMin() << endl;  // return -3
+    cout << "Output: " << stk.getMin() << ", ";  // return -3
     stk.pop();
-    cout << stk.top() << endl;     // return 0
+    cout << stk.top() << ", ";     // return 0
     cout << stk.getMin() << endl;  // return -2
 
     return 0;

@@ -62,11 +62,15 @@ ListNode* buildList(const std::vector<int>& nums) {
 }
 
 void printList(ListNode* head) {
+    cout << "Output: [";
+    bool first = true;
     while (head) {
-        cout << head->val << " ";
+        if (!first) cout << ", ";
+        cout << head->val;
+        first = false;
         head = head->next;
     }
-    cout << endl;
+    cout << "]" << endl;
 }
 
 void deleteList(ListNode* head) {
@@ -78,21 +82,34 @@ void deleteList(ListNode* head) {
 }
 
 int main() {
-    vector<int> nums1 = {2, 4, 3};
-    vector<int> nums2 = {5, 6, 4};
-    ListNode* l1 = buildList(nums1);
-    ListNode* l2 = buildList(nums2);
-    // printList(l1);
-    // printList(l2);
     Solution solution;
-    ListNode* result = solution.addTwoNumbers(l1, l2);
-    cout << "Output: ";
-    printList(result);
-
-    // Correctamente liberar la memoria de las listas
+    
+    // Example 1: l1 = [2,4,3], l2 = [5,6,4]
+    ListNode* l1 = buildList({2, 4, 3});
+    ListNode* l2 = buildList({5, 6, 4});
+    ListNode* result1 = solution.addTwoNumbers(l1, l2);
+    printList(result1);
     deleteList(l1);
     deleteList(l2);
-    deleteList(result);
+    deleteList(result1);
+    
+    // Example 2: l1 = [0], l2 = [0]
+    l1 = buildList({0});
+    l2 = buildList({0});
+    ListNode* result2 = solution.addTwoNumbers(l1, l2);
+    printList(result2);
+    deleteList(l1);
+    deleteList(l2);
+    deleteList(result2);
+    
+    // Example 3: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+    l1 = buildList({9, 9, 9, 9, 9, 9, 9});
+    l2 = buildList({9, 9, 9, 9});
+    ListNode* result3 = solution.addTwoNumbers(l1, l2);
+    printList(result3);
+    deleteList(l1);
+    deleteList(l2);
+    deleteList(result3);
 
     return 0;
 }

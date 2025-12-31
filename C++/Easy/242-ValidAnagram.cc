@@ -40,9 +40,12 @@ public:
 // Test
 int main() {
     Solution solution;
-    cout << boolalpha;
-    cout << "Example 1: " << solution.isAnagram("anagram", "nagaram") << endl;
-    cout << "Example 2: " << solution.isAnagram("rat", "car") << endl;
+    
+    // Example 1: s = "anagram", t = "nagaram"
+    cout << "Output: " << (solution.isAnagram("anagram", "nagaram") ? "true" : "false") << endl;
+    
+    // Example 2: s = "rat", t = "car"
+    cout << "Output: " << (solution.isAnagram("rat", "car") ? "true" : "false") << endl;
 
     return 0;
 }

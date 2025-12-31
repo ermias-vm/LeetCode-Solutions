@@ -51,15 +51,13 @@ public:
 int main() {
     Solution solution;
 
-    vector<vector<int>> matrix1 = {{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}};
-    int target1 = 3;
-    cout << "Test case 1: " << (solution.searchMatrix(matrix1, target1) ? "true" : "false")
-         << endl;  // Output: true
+    // Example 1: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,50]], target = 3
+    vector<vector<int>> matrix1 = {{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 50}};
+    cout << "Output: " << (solution.searchMatrix(matrix1, 3) ? "true" : "false") << endl;
 
+    // Example 2: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
     vector<vector<int>> matrix2 = {{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}};
-    int target2 = 13;
-    cout << "Test case 2: " << (solution.searchMatrix(matrix2, target2) ? "true" : "false")
-         << endl;  // Output: false
+    cout << "Output: " << (solution.searchMatrix(matrix2, 13) ? "true" : "false") << endl;
 
     return 0;
 }

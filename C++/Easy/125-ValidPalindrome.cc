@@ -40,14 +40,15 @@ public:
 // Test
 int main() {
     Solution solution;
-    string s1 = "A man, a plan, a canal: Panama";
-    string s2 = "race a car";
-    string s3 = " ";
-
-    cout << boolalpha;
-    cout << "Test case 1: " << solution.isPalindrome(s1) << endl;
-    cout << "Test case 2: " << solution.isPalindrome(s2) << endl;
-    cout << "Test case 3: " << solution.isPalindrome(s3) << endl;
+    
+    // Example 1: s = "A man, a plan, a canal: Panama"
+    cout << "Output: " << (solution.isPalindrome("A man, a plan, a canal: Panama") ? "true" : "false") << endl;
+    
+    // Example 2: s = "race a car"
+    cout << "Output: " << (solution.isPalindrome("race a car") ? "true" : "false") << endl;
+    
+    // Example 3: s = " "
+    cout << "Output: " << (solution.isPalindrome(" ") ? "true" : "false") << endl;
 
     return 0;
 }

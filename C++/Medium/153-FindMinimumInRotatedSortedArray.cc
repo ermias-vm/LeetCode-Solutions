@@ -42,14 +42,17 @@ public:
 int main() {
     Solution solution;
 
+    // Example 1: nums = [3,4,5,1,2]
     vector<int> nums1 = {3, 4, 5, 1, 2};
-    cout << "Test case 1: " << solution.findMin(nums1) << endl;  // Output: 1
+    cout << "Output: " << solution.findMin(nums1) << endl;
 
+    // Example 2: nums = [4,5,6,7,0,1,2]
     vector<int> nums2 = {4, 5, 6, 7, 0, 1, 2};
-    cout << "Test case 2: " << solution.findMin(nums2) << endl;  // Output: 0
+    cout << "Output: " << solution.findMin(nums2) << endl;
 
+    // Example 3: nums = [11,13,15,17]
     vector<int> nums3 = {11, 13, 15, 17};
-    cout << "Test case 3: " << solution.findMin(nums3) << endl;  // Output: 11
+    cout << "Output: " << solution.findMin(nums3) << endl;
 
     return 0;
 }

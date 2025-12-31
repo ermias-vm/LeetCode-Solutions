@@ -17,6 +17,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 using namespace std;
 
 class Solution {
@@ -42,15 +43,33 @@ public:
 
 // Test
 
+void printVector(vector<int>& v) {
+    sort(v.begin(), v.end());
+    cout << "Output: [";
+    for (size_t i = 0; i < v.size(); i++) {
+        cout << v[i];
+        if (i < v.size() - 1) cout << ", ";
+    }
+    cout << "]" << endl;
+}
+
 int main() {
     Solution solution;
-    vector<int> nums = {1, 1, 1, 2, 2, 3};
-    int k = 2;
-
-    vector<int> result = solution.topKFrequent(nums, k);
-    cout << "Top " << k << " frequent elements: ";
-    for (int num : result) { cout << num << " "; }
-    cout << endl;
+    
+    // Example 1: nums = [1,1,1,2,2,3], k = 2
+    vector<int> nums1 = {1, 1, 1, 2, 2, 3};
+    vector<int> result1 = solution.topKFrequent(nums1, 2);
+    printVector(result1);
+    
+    // Example 2: nums = [1], k = 1
+    vector<int> nums2 = {1};
+    vector<int> result2 = solution.topKFrequent(nums2, 1);
+    printVector(result2);
+    
+    // Example 3: nums = [1,2], k = 2
+    vector<int> nums3 = {1, 2};
+    vector<int> result3 = solution.topKFrequent(nums3, 2);
+    printVector(result3);
 
     return 0;
 }

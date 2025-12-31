@@ -55,22 +55,32 @@ public:
 // Test
 
 void printResult(const vector<vector<int>>& result) {
-    for (const auto& triplet : result) {
-        for (int num : triplet) { cout << num << " "; }
-        cout << endl;
+    cout << "Output: [";
+    for (size_t i = 0; i < result.size(); i++) {
+        cout << "[";
+        for (size_t j = 0; j < result[i].size(); j++) {
+            cout << result[i][j];
+            if (j < result[i].size() - 1) cout << ", ";
+        }
+        cout << "]";
+        if (i < result.size() - 1) cout << ", ";
     }
-    cout << endl;
+    cout << "]" << endl;
 }
 
 int main() {
     Solution sol;
+    
+    // Example 1: nums = [-1,0,1,2,-1,-4]
     vector<int> nums1 = {-1, 0, 1, 2, -1, -4};
-    vector<int> nums2 = {0, 1, 1};
-    vector<int> nums3 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-    // Print results
     printResult(sol.threeSum(nums1));
+    
+    // Example 2: nums = [0,1,1]
+    vector<int> nums2 = {0, 1, 1};
     printResult(sol.threeSum(nums2));
+    
+    // Example 3: nums = [0,0,0]
+    vector<int> nums3 = {0, 0, 0};
     printResult(sol.threeSum(nums3));
 
     return 0;
