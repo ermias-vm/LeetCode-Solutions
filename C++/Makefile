@@ -1,6 +1,11 @@
+# Makefile for C++ LeetCode Solutions
 
-CXXFLAGS=-std=c++20 -Wall
+CXXFLAGS = -std=c++20 -Wall
 VERIFY_SCRIPT = ../verify_output.sh
+TEMP_DIR = ../tmp/C++
+
+# Create tmp directory (only once per make invocation)
+$(shell mkdir -p $(TEMP_DIR))
 
 all:
 
@@ -42,10 +47,10 @@ run%:
         else \
             DIFFICULTY=$$(dirname "$$FILE" | sed 's|^\\./||'); \
             echo "Running file $$FILE"; \
-            TMP_OUTPUT=$$(mktemp); \
+            TMP_OUTPUT="$(TEMP_DIR)/$$N.txt"; \
             "./$$FILE" | tee "$$TMP_OUTPUT"; \
             "$(VERIFY_SCRIPT)" "$$N" "$$TMP_OUTPUT" "$$DIFFICULTY"; \
-            rm -f "$$TMP_OUTPUT"; \
+            if [ "$(KEEP_TMP)" != "1" ]; then rm -f "$$TMP_OUTPUT"; fi; \
         fi; \
     fi
 

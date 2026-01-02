@@ -5,6 +5,9 @@
 #   make <problem_number> c++       -> Uses C++/Makefile
 #   make <problem_number> java      -> Uses Java/Makefile
 #   make <problem_number> python    -> Uses Python/Makefile
+#   make <number> <lang> [keep]     -> Run (optionally keep temp files)
+#   make verify <lang> [keep]       -> Verify (optionally keep temp files)
+#   make clean tmp                  -> Delete tmp/ folder
 #   make format                     -> Format all source files
 #   make format c++                 -> Format only C++ files
 #   make format java                -> Format only Java files
@@ -12,13 +15,20 @@
 # Default language directory (c, c++, java, python)
 DEFAULT_LANG ?= c
 
+# Temp directory for output files
+TEMP_DIR = tmp
+
 # Map language names to directories
 lang_to_dir = $(if $(filter c,$1),C,$(if $(filter c++,$1),C++,$(if $(filter java,$1),Java,$(if $(filter python,$1),Python,$(error Unknown language: $1)))))
 
 # Detect if second argument is a language
 LANG_ARGS := c c++ java python
 SECOND_ARG := $(word 2,$(MAKECMDGOALS))
+THIRD_ARG := $(word 3,$(MAKECMDGOALS))
 IS_LANG := $(filter $(SECOND_ARG),$(LANG_ARGS))
+
+# Detect 'keep' parameter (can be 2nd or 3rd argument)
+KEEP_TMP := $(if $(filter keep,$(SECOND_ARG) $(THIRD_ARG)),1,0)
 
 # Determine target directory
 ifeq ($(IS_LANG),)
@@ -40,11 +50,13 @@ help:
 	@echo "║   make <number> c++          Run problem in C++                  ║"
 	@echo "║   make <number> java         Run problem in Java                 ║"
 	@echo "║   make <number> python       Run problem in Python               ║"
+	@echo "║   make <number> <lang> [keep] Run and keep temp files in tmp/    ║"
 	@echo "║                                                                  ║"
 	@echo "║ Examples:                                                        ║"
 	@echo "║   make 153                   Run problem 153 (default: $(DEFAULT_LANG))        ║"
 	@echo "║   make 1 java                Run problem 1 in Java               ║"
 	@echo "║   make 42 c++                Run problem 42 in C++               ║"
+	@echo "║   make 42 c++ [keep]         Run problem 42 in C++ (keep tmp)    ║"
 	@echo "║                                                                  ║"
 	@echo "║ Other commands:                                                  ║"
 	@echo "║   make format                Format all source files             ║"
@@ -53,11 +65,13 @@ help:
 	@echo "║   make format java           Format only Java files              ║"
 	@echo "║   make clean_all             Clean all in default language       ║"
 	@echo "║   make clean_all <lang>      Clean all in specified language     ║"
+	@echo "║   make clean tmp             Delete tmp/ folder                  ║"
 	@echo "║   make find<N>               Find problem N in default language  ║"
 	@echo "║   make find<N> <lang>        Find problem N in specified lang    ║"
 	@echo "║   make summary               Show summary table of all problems  ║"
 	@echo "║   make verify all            Verify all problems (C, C++, Java)  ║"
 	@echo "║   make verify <lang>         Verify problems in specific lang    ║"
+	@echo "║   make verify <lang> [keep]  Verify and keep temp files          ║"
 	@echo "╚══════════════════════════════════════════════════════════════════╝"
 
 # Format target - runs format-all by default
@@ -183,6 +197,24 @@ clean_all:
 	@echo "Cleaning all in $(TARGET_DIR)..."
 	$(MAKE) -C $(TARGET_DIR) clean_all
 
+# Clean temp folder
+clean:
+ifeq ($(SECOND_ARG),tmp)
+	@if [ -d "$(TEMP_DIR)" ]; then \
+		echo "Deleting $(TEMP_DIR)/ folder..."; \
+		rm -rf "$(TEMP_DIR)"; \
+		echo "Done."; \
+	else \
+		echo "$(TEMP_DIR)/ folder does not exist."; \
+	fi
+else
+	@echo "Usage: make clean tmp"
+endif
+
+# Handle 'tmp' as a target argument
+tmp:
+	@true
+
 # Global clean - clean all language directories
 global_clean:
 	@echo "=== Global Clean ==="
@@ -194,8 +226,8 @@ global_clean:
 	done
 	@echo "=== Done ==="
 
-# Handle language arguments (prevent "No rule to make target" error)
-c c++ java python:
+# Handle language arguments and 'keep' (prevent "No rule to make target" error)
+c c++ java python keep:
 	@true
 
 # Find target with optional language
@@ -229,14 +261,14 @@ clean%:
 	@if echo "$@" | grep -Eq '^[0-9]+$$'; then \
 		echo "Running problem $@ in $(TARGET_DIR) ($(if $(IS_LANG),$(IS_LANG),$(DEFAULT_LANG)))..."; \
 		echo ""; \
-		$(MAKE) -C $(TARGET_DIR) --no-print-directory $@; \
+		$(MAKE) -C $(TARGET_DIR) --no-print-directory KEEP_TMP=$(KEEP_TMP) $@; \
 	else \
 		echo "Unknown target: $@"; \
 		echo "Use 'make help' for usage information."; \
 		exit 1; \
 	fi
 
-.PHONY: help format format-all format-check clean_all global_clean c c++ java python _do_format_c _do_format_check_c summary verify all
+.PHONY: help format format-all format-check clean_all clean global_clean c c++ java python keep tmp _do_format_c _do_format_check_c summary verify all
 
 # Summary - Show table with problem counts by language and difficulty
 summary:
@@ -312,23 +344,25 @@ summary:
 
 # Verify - Run all problems with expected outputs and show results table
 # Usage: make verify all | make verify c | make verify c++ | make verify java
+# Add 'keep' as third argument to keep temp files: make verify c++ keep
 verify:
 ifeq ($(SECOND_ARG),all)
-	@$(MAKE) --no-print-directory _verify_all LANGS="c c++ java" OUT_PREFIX="All"
+	@$(MAKE) --no-print-directory _verify_all LANGS="c c++ java" OUT_PREFIX="All" KEEP_TMP=$(KEEP_TMP)
 else ifeq ($(SECOND_ARG),c)
-	@$(MAKE) --no-print-directory _verify_all LANGS="c" OUT_PREFIX="C"
+	@$(MAKE) --no-print-directory _verify_all LANGS="c" OUT_PREFIX="C" KEEP_TMP=$(KEEP_TMP)
 else ifeq ($(SECOND_ARG),c++)
-	@$(MAKE) --no-print-directory _verify_all LANGS="c++" OUT_PREFIX="C++"
+	@$(MAKE) --no-print-directory _verify_all LANGS="c++" OUT_PREFIX="C++" KEEP_TMP=$(KEEP_TMP)
 else ifeq ($(SECOND_ARG),java)
-	@$(MAKE) --no-print-directory _verify_all LANGS="java" OUT_PREFIX="Java"
+	@$(MAKE) --no-print-directory _verify_all LANGS="java" OUT_PREFIX="Java" KEEP_TMP=$(KEEP_TMP)
 else
-	@echo "Usage: make verify <all|c|c++|java>"
+	@echo "Usage: make verify <all|c|c++|java> [keep]"
 	@echo ""
 	@echo "Examples:"
-	@echo "  make verify all     Verify all problems in C, C++, and Java"
-	@echo "  make verify c       Verify only C problems"
-	@echo "  make verify c++     Verify only C++ problems"
-	@echo "  make verify java    Verify only Java problems"
+	@echo "  make verify all       Verify all problems in C, C++, and Java"
+	@echo "  make verify c         Verify only C problems"
+	@echo "  make verify c++       Verify only C++ problems"
+	@echo "  make verify java      Verify only Java problems"
+	@echo "  make verify c++ [keep] Verify C++ and keep temp files"
 endif
 
 # Handle 'all' as a target argument
@@ -336,7 +370,7 @@ all:
 	@true
 
 _verify_all:
-	@mkdir -p out
+	@mkdir -p out $(TEMP_DIR)/C $(TEMP_DIR)/C++ $(TEMP_DIR)/Java
 	@outfile="out/$(OUT_PREFIX)_TestResults.txt"; \
 	echo "" | tee "$$outfile"; \
 	echo "═══════════════════════════════════════════════════════════════════════════════" | tee -a "$$outfile"; \
@@ -363,7 +397,7 @@ _verify_all:
 					exe="$${src%.c}.x"; \
 					gcc -std=c11 -Wall -o "$$exe" "$$src" 2>/dev/null; \
 					if [ -f "$$exe" ]; then \
-						tmp=$$(mktemp); \
+						tmp="$(TEMP_DIR)/C/$$num.txt"; \
 						"./$$exe" > "$$tmp" 2>&1; \
 						expected_file="ExpectedOutputs/$$difficulty/$$num.txt"; \
 						if [ -f "$$expected_file" ]; then \
@@ -388,7 +422,8 @@ _verify_all:
 							fi; \
 							c_results="$$c_results$$num:$$errors "; \
 						fi; \
-						rm -f "$$tmp" "$$exe"; \
+						if [ "$(KEEP_TMP)" != "1" ]; then rm -f "$$tmp"; fi; \
+						rm -f "$$exe"; \
 					else \
 						echo "  Compilation failed!" | tee -a "$$outfile"; \
 					fi; \
@@ -404,7 +439,7 @@ _verify_all:
 					exe="$${src%.cc}.x"; \
 					g++ -std=c++20 -Wall -o "$$exe" "$$src" 2>/dev/null; \
 					if [ -f "$$exe" ]; then \
-						tmp=$$(mktemp); \
+						tmp="$(TEMP_DIR)/C++/$$num.txt"; \
 						"./$$exe" > "$$tmp" 2>&1; \
 						expected_file="ExpectedOutputs/$$difficulty/$$num.txt"; \
 						if [ -f "$$expected_file" ]; then \
@@ -429,7 +464,8 @@ _verify_all:
 							fi; \
 							cpp_results="$$cpp_results$$num:$$errors "; \
 						fi; \
-						rm -f "$$tmp" "$$exe"; \
+						if [ "$(KEEP_TMP)" != "1" ]; then rm -f "$$tmp"; fi; \
+						rm -f "$$exe"; \
 					else \
 						echo "  Compilation failed!" | tee -a "$$outfile"; \
 					fi; \
@@ -444,7 +480,7 @@ _verify_all:
 					echo "Testing [Java] Problem $$num - $$name..." | tee -a "$$outfile"; \
 					javac "$$src" 2>/dev/null; \
 					if [ -f "$$dir/Test.class" ]; then \
-						tmp=$$(mktemp); \
+						tmp="$(TEMP_DIR)/Java/$$num.txt"; \
 						java -cp "$$dir" Test > "$$tmp" 2>&1; \
 						expected_file="ExpectedOutputs/$$difficulty/$$num.txt"; \
 						if [ -f "$$expected_file" ]; then \
@@ -469,7 +505,8 @@ _verify_all:
 							fi; \
 							java_results="$$java_results$$num:$$errors "; \
 						fi; \
-						rm -f "$$tmp" "$$dir/Test.class" "$$dir/Solution.class"; \
+						if [ "$(KEEP_TMP)" != "1" ]; then rm -f "$$tmp"; fi; \
+						rm -f "$$dir/Test.class" "$$dir/Solution.class"; \
 					else \
 						echo "  Compilation failed!" | tee -a "$$outfile"; \
 					fi; \

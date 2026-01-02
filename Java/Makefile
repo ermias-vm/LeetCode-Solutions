@@ -4,6 +4,10 @@ JC = javac
 JVM = java
 JFLAGS =
 VERIFY_SCRIPT = ../verify_output.sh
+TEMP_DIR = ../tmp/Java
+
+# Create tmp directory (only once per make invocation)
+$(shell mkdir -p $(TEMP_DIR))
 
 all:
 	@echo "Usage: make <problem_number>"
@@ -35,10 +39,10 @@ run%:
 	fi; \
 	CLASS_DIR=$$(dirname "$$CLASS_FILE"); \
 	echo "Running file $$CLASS_DIR/Test.class"; \
-	TMP_OUTPUT=$$(mktemp); \
+	TMP_OUTPUT="$(TEMP_DIR)/$$N.txt"; \
 	$(JVM) -cp "$$CLASS_DIR" Test | tee "$$TMP_OUTPUT"; \
 	"$(VERIFY_SCRIPT)" "$$N" "$$TMP_OUTPUT" "$$DIFFICULTY"; \
-	rm -f "$$TMP_OUTPUT"
+	if [ "$(KEEP_TMP)" != "1" ]; then rm -f "$$TMP_OUTPUT"; fi
 
 # Clean the Solution.class and Test.class files for the given problem number
 clean%:

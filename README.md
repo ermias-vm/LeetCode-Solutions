@@ -30,6 +30,10 @@ A collection of [LeetCode](https://leetcode.com/problemset/) problem solutions i
   - **C_TestResults_PASS.txt** / **C_TestResults_FAIL.txt**
   - **C++_TestResults_PASS.txt** / **C++_TestResults_FAIL.txt**
   - **Java_TestResults_PASS.txt** / **Java_TestResults_FAIL.txt**
+- **[tmp/]** - Temporary output files (when using `[keep]` option)
+  - **C/** - C program outputs
+  - **C++/** - C++ program outputs  
+  - **Java/** - Java program outputs
 
 ---
 
@@ -77,6 +81,7 @@ Deleting ./Easy/1-TwoSum.x
 | `make <N> c` | Run problem N in C |
 | `make <N> c++` | Run problem N in C++ |
 | `make <N> java` | Run problem N in Java |
+| `make <N> <lang> [keep]` | Run and keep temp output in `tmp/<lang>/` |
 
 ### Individual Steps
 
@@ -94,6 +99,7 @@ Deleting ./Easy/1-TwoSum.x
 | `make verify c` | Verify all C solutions |
 | `make verify c++` | Verify all C++ solutions |
 | `make verify java` | Verify all Java solutions |
+| `make verify <lang> [keep]` | Verify and keep temp files in `tmp/<lang>/` |
 
 ### Utilities
 
@@ -105,6 +111,7 @@ Deleting ./Easy/1-TwoSum.x
 | `make format` | Format all source files |
 | `make format c++` | Format only C++ files |
 | `make clean_all` | Clean all compiled files |
+| `make clean tmp` | Delete `tmp/` folder |
 | `make help` | Show all available commands |
 
 ---
