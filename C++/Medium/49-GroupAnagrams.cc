@@ -41,14 +41,15 @@ public:
 
 // Function to print the results
 void printResults(vector<vector<string>>& results) {
-    // Sort each group and then sort all groups for consistent output
+    // Sort each group internally, then sort groups by size (ascending) then alphabetically
     for (auto& group : results) {
         sort(group.begin(), group.end());
     }
     sort(results.begin(), results.end(), [](const vector<string>& a, const vector<string>& b) {
+        if (a.size() != b.size()) return a.size() < b.size();  // Smaller groups first
         if (a.empty()) return true;
         if (b.empty()) return false;
-        return a[0] < b[0];
+        return a[0] < b[0];  // Then alphabetically by first element
     });
     
     cout << "Output: [";
