@@ -39,39 +39,33 @@ int* dailyTemperatures(int* temperatures, int temperaturesSize, int* returnSize)
 
 // Test
 void printArray(int* nums, int size) {
-    printf("[");
+    printf("Output: [");
     for (int i = 0; i < size; i++) {
         printf("%d", nums[i]);
         if (i < size - 1) printf(", ");
     }
-    printf("]");
+    printf("]\n");
 }
 
 int main() {
     int returnSize;
 
-    // Test case 1
+    // Example 1: temperatures = [73,74,75,71,69,72,76,73]
     int temps1[] = {73, 74, 75, 71, 69, 72, 76, 73};
     int* result1 = dailyTemperatures(temps1, 8, &returnSize);
-    printf("Test 1: ");
     printArray(result1, returnSize);
-    printf("\n");  // Expected: [1, 1, 4, 2, 1, 1, 0, 0]
     free(result1);
 
-    // Test case 2
+    // Example 2: temperatures = [30,40,50,60]
     int temps2[] = {30, 40, 50, 60};
     int* result2 = dailyTemperatures(temps2, 4, &returnSize);
-    printf("Test 2: ");
     printArray(result2, returnSize);
-    printf("\n");  // Expected: [1, 1, 1, 0]
     free(result2);
 
-    // Test case 3
+    // Example 3: temperatures = [30,60,90]
     int temps3[] = {30, 60, 90};
     int* result3 = dailyTemperatures(temps3, 3, &returnSize);
-    printf("Test 3: ");
     printArray(result3, returnSize);
-    printf("\n");  // Expected: [1, 1, 0]
     free(result3);
 
     return 0;

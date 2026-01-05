@@ -40,13 +40,13 @@ int largestRectangleArea(int* heights, int heightsSize) {
 
 // Test
 int main() {
-    // Test case 1
+    // Example 1: heights = [2,1,5,6,2,3]
     int heights1[] = {2, 1, 5, 6, 2, 3};
-    printf("Test case 1: %d\n", largestRectangleArea(heights1, 6));  // Output: 10
+    printf("Output: %d\n", largestRectangleArea(heights1, 6));
 
-    // Test case 2
+    // Example 2: heights = [2,4]
     int heights2[] = {2, 4};
-    printf("Test case 2: %d\n", largestRectangleArea(heights2, 2));  // Output: 4
+    printf("Output: %d\n", largestRectangleArea(heights2, 2));
 
     return 0;
 }

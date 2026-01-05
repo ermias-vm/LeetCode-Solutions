@@ -44,21 +44,18 @@ bool searchMatrix(int** matrix, int matrixSize, int* matrixColSize, int target) 
 
 // Test
 int main() {
-    // Test case 1
-    int row1[] = {1, 3, 5, 7};
-    int row2[] = {10, 11, 16, 20};
-    int row3[] = {23, 30, 34, 60};
-    int* matrix1[] = {row1, row2, row3};
+    // Example 1: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,50]], target = 3
+    int row1a[] = {1, 3, 5, 7};
+    int row1b[] = {10, 11, 16, 20};
+    int row1c[] = {23, 30, 34, 50};
+    int* matrix1[] = {row1a, row1b, row1c};
     int colSize1[] = {4, 4, 4};
-    int target1 = 3;
+    printf("Output: %s\n", searchMatrix(matrix1, 3, colSize1, 3) ? "true" : "false");
 
-    printf("Test case 1: %s\n",
-           searchMatrix(matrix1, 3, colSize1, target1) ? "true" : "false");  // Output: true
-
-    // Test case 2
-    int target2 = 13;
-    printf("Test case 2: %s\n",
-           searchMatrix(matrix1, 3, colSize1, target2) ? "true" : "false");  // Output: false
+    // Example 2: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
+    int row2c[] = {23, 30, 34, 60};
+    int* matrix2[] = {row1a, row1b, row2c};
+    printf("Output: %s\n", searchMatrix(matrix2, 3, colSize1, 13) ? "true" : "false");
 
     return 0;
 }

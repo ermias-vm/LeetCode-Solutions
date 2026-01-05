@@ -48,20 +48,17 @@ int minEatingSpeed(int* piles, int pilesSize, int h) {
 
 // Test
 int main() {
-    // Test case 1
+    // Example 1: piles = [3,6,7,11], h = 8
     int piles1[] = {3, 6, 7, 11};
-    int h1 = 8;
-    printf("Test case 1: %d\n", minEatingSpeed(piles1, 4, h1));  // Output: 4
+    printf("Output: %d\n", minEatingSpeed(piles1, 4, 8));
 
-    // Test case 2
+    // Example 2: piles = [30,11,23,4,20], h = 5
     int piles2[] = {30, 11, 23, 4, 20};
-    int h2 = 5;
-    printf("Test case 2: %d\n", minEatingSpeed(piles2, 5, h2));  // Output: 30
+    printf("Output: %d\n", minEatingSpeed(piles2, 5, 5));
 
-    // Test case 3
+    // Example 3: piles = [30,11,23,4,20], h = 6
     int piles3[] = {30, 11, 23, 4, 20};
-    int h3 = 6;
-    printf("Test case 3: %d\n", minEatingSpeed(piles3, 5, h3));  // Output: 23
+    printf("Output: %d\n", minEatingSpeed(piles3, 5, 6));
 
     return 0;
 }

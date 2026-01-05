@@ -34,17 +34,17 @@ int findMin(int* nums, int numsSize) {
 
 // Test
 int main() {
-    // Test case 1
+    // Example 1: nums = [3,4,5,1,2]
     int nums1[] = {3, 4, 5, 1, 2};
-    printf("Test case 1: %d\n", findMin(nums1, 5));  // Output: 1
+    printf("Output: %d\n", findMin(nums1, 5));
 
-    // Test case 2
+    // Example 2: nums = [4,5,6,7,0,1,2]
     int nums2[] = {4, 5, 6, 7, 0, 1, 2};
-    printf("Test case 2: %d\n", findMin(nums2, 7));  // Output: 0
+    printf("Output: %d\n", findMin(nums2, 7));
 
-    // Test case 3
+    // Example 3: nums = [11,13,15,17]
     int nums3[] = {11, 13, 15, 17};
-    printf("Test case 3: %d\n", findMin(nums3, 4));  // Output: 11
+    printf("Output: %d\n", findMin(nums3, 4));
 
     return 0;
 }

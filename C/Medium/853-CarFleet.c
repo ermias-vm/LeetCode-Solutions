@@ -61,20 +61,20 @@ int carFleet(int target, int* position, int positionSize, int* speed, int speedS
 
 // Test
 int main() {
-    // Test case 1
+    // Example 1: target = 12, position = [10,8,0,5,3], speed = [2,4,1,1,3]
     int pos1[] = {10, 8, 0, 5, 3};
     int speed1[] = {2, 4, 1, 1, 3};
-    printf("Test 1: %d\n", carFleet(12, pos1, 5, speed1, 5));  // Expected: 3
+    printf("Output: %d\n", carFleet(12, pos1, 5, speed1, 5));
 
-    // Test case 2
+    // Example 2: target = 10, position = [3], speed = [3]
     int pos2[] = {3};
     int speed2[] = {3};
-    printf("Test 2: %d\n", carFleet(10, pos2, 1, speed2, 1));  // Expected: 1
+    printf("Output: %d\n", carFleet(10, pos2, 1, speed2, 1));
 
-    // Test case 3
+    // Example 3: target = 100, position = [0,2,4], speed = [4,2,1]
     int pos3[] = {0, 2, 4};
     int speed3[] = {4, 2, 1};
-    printf("Test 3: %d\n", carFleet(100, pos3, 3, speed3, 3));  // Expected: 1
+    printf("Output: %d\n", carFleet(100, pos3, 3, speed3, 3));
 
     return 0;
 }

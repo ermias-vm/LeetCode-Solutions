@@ -97,35 +97,79 @@ char*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnCo
 }
 
 // Test
-int main() {
-    char* strs[] = {"eat", "tea", "tan", "ate", "nat", "bat"};
-    int strsSize = 6;
-    int returnSize;
-    int* returnColumnSizes;
+int compareStrings(const void* a, const void* b) {
+    return strcmp(*(char**)a, *(char**)b);
+}
 
-    char*** result = groupAnagrams(strs, strsSize, &returnSize, &returnColumnSizes);
+typedef struct {
+    char** group;
+    int size;
+} Group;
 
-    printf("Input: strs = [");
-    for (int i = 0; i < strsSize; i++) {
-        printf("\"%s\"", strs[i]);
-        if (i < strsSize - 1) printf(",");
+int compareGroups(const void* a, const void* b) {
+    Group* ga = (Group*)a;
+    Group* gb = (Group*)b;
+    // Sort by size first, then by first element alphabetically
+    if (ga->size != gb->size) return ga->size - gb->size;
+    return strcmp(ga->group[0], gb->group[0]);
+}
+
+void printResult(char*** result, int returnSize, int* returnColumnSizes) {
+    // Sort elements within each group
+    for (int i = 0; i < returnSize; i++) {
+        qsort(result[i], returnColumnSizes[i], sizeof(char*), compareStrings);
     }
-    printf("]\n");
-
+    
+    // Sort groups by first element
+    Group* groups = malloc(returnSize * sizeof(Group));
+    for (int i = 0; i < returnSize; i++) {
+        groups[i].group = result[i];
+        groups[i].size = returnColumnSizes[i];
+    }
+    qsort(groups, returnSize, sizeof(Group), compareGroups);
+    
     printf("Output: [");
     for (int i = 0; i < returnSize; i++) {
         printf("[");
-        for (int j = 0; j < returnColumnSizes[i]; j++) {
-            printf("\"%s\"", result[i][j]);
-            if (j < returnColumnSizes[i] - 1) printf(",");
+        for (int j = 0; j < groups[i].size; j++) {
+            printf("\"%s\"", groups[i].group[j]);
+            if (j < groups[i].size - 1) printf(", ");
         }
         printf("]");
-        if (i < returnSize - 1) printf(",");
-        free(result[i]);
+        if (i < returnSize - 1) printf(", ");
     }
     printf("]\n");
+    
+    free(groups);
+}
 
-    free(result);
+int main() {
+    int returnSize;
+    int* returnColumnSizes;
+
+    // Example 1: strs = ["eat","tea","tan","ate","nat","bat"]
+    char* strs1[] = {"eat", "tea", "tan", "ate", "nat", "bat"};
+    char*** result1 = groupAnagrams(strs1, 6, &returnSize, &returnColumnSizes);
+    printResult(result1, returnSize, returnColumnSizes);
+    for (int i = 0; i < returnSize; i++) free(result1[i]);
+    free(result1);
     free(returnColumnSizes);
+
+    // Example 2: strs = [""]
+    char* strs2[] = {""};
+    char*** result2 = groupAnagrams(strs2, 1, &returnSize, &returnColumnSizes);
+    printResult(result2, returnSize, returnColumnSizes);
+    for (int i = 0; i < returnSize; i++) free(result2[i]);
+    free(result2);
+    free(returnColumnSizes);
+
+    // Example 3: strs = ["a"]
+    char* strs3[] = {"a"};
+    char*** result3 = groupAnagrams(strs3, 1, &returnSize, &returnColumnSizes);
+    printResult(result3, returnSize, returnColumnSizes);
+    for (int i = 0; i < returnSize; i++) free(result3[i]);
+    free(result3);
+    free(returnColumnSizes);
+
     return 0;
 }

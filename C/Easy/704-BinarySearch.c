@@ -36,13 +36,13 @@ int search(int* nums, int numsSize, int target) {
 
 // Test
 int main() {
-    // Test case 1
+    // Example 1: nums = [-1,0,3,5,9,12], target = 9
     int nums1[] = {-1, 0, 3, 5, 9, 12};
-    printf("Test case 1: %d\n", search(nums1, 6, 9));  // Output: 4
+    printf("Output: %d\n", search(nums1, 6, 9));
 
-    // Test case 2
+    // Example 2: nums = [-1,0,3,5,9,12], target = 2
     int nums2[] = {-1, 0, 3, 5, 9, 12};
-    printf("Test case 2: %d\n", search(nums2, 6, 2));  // Output: -1
+    printf("Output: %d\n", search(nums2, 6, 2));
 
     return 0;
 }
