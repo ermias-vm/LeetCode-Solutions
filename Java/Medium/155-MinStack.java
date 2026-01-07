@@ -50,24 +50,15 @@ class MinStack {
 // Test
 class Test {
     public static void main(String[] args) {
+        // Example 1: ["MinStack","push","push","push","getMin","pop","top","getMin"]
+        // [[],[-2],[0],[-3],[],[],[],[]]
         MinStack minStack = new MinStack();
-
-        System.out.println("Operations:");
-        System.out.println("push(-2)");
         minStack.push(-2);
-
-        System.out.println("push(0)");
         minStack.push(0);
-
-        System.out.println("push(-3)");
         minStack.push(-3);
-
-        System.out.println("getMin() -> " + minStack.getMin()); // return -3
-
-        System.out.println("pop()");
+        System.out.print("Output: " + minStack.getMin() + ", ");  // return -3
         minStack.pop();
-
-        System.out.println("top() -> " + minStack.top());       // return 0
-        System.out.println("getMin() -> " + minStack.getMin()); // return -2
+        System.out.print(minStack.top() + ", ");                   // return 0
+        System.out.println(minStack.getMin());                     // return -2
     }
 }

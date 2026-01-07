@@ -44,17 +44,20 @@ class Solution {
 class Test {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        String test1 = "()";
-        String test2 = "()[]{}";
-        String test3 = "(]";
-
-        System.out.println("Input: " + test1);
-        System.out.println("Output: " + solution.isValid(test1)); // Output: true
-
-        System.out.println("Input: " + test2);
-        System.out.println("Output: " + solution.isValid(test2)); // Output: true
-
-        System.out.println("Input: " + test3);
-        System.out.println("Output: " + solution.isValid(test3)); // Output: false
+        
+        // Example 1: s = "()"
+        System.out.println("Output: " + solution.isValid("()"));
+        
+        // Example 2: s = "()[]{}"
+        System.out.println("Output: " + solution.isValid("()[]{}"));
+        
+        // Example 3: s = "(]"
+        System.out.println("Output: " + solution.isValid("(]"));
+        
+        // Example 4: s = "([])"
+        System.out.println("Output: " + solution.isValid("([])"));
+        
+        // Example 5: s = "([)]"
+        System.out.println("Output: " + solution.isValid("([)]"));
     }
 }

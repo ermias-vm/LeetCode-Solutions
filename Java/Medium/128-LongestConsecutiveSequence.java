@@ -43,15 +43,17 @@ class Solution {
 class Test {
     public static void main(String[] args) {
         Solution solution = new Solution();
+        
+        // Example 1: nums = [100,4,200,1,3,2]
         int[] nums1 = {100, 4, 200, 1, 3, 2};
-        System.out.println("Input: nums = " + Arrays.toString(nums1) + "\n");
+        System.out.println("Output: " + solution.longestConsecutive(nums1));
 
+        // Example 2: nums = [0,3,7,2,5,8,4,6,0,1]
         int[] nums2 = {0, 3, 7, 2, 5, 8, 4, 6, 0, 1};
-        System.out.println("Input: nums = " + Arrays.toString(nums2));
-        System.out.println("Output: " + solution.longestConsecutive(nums2) + "\n");
+        System.out.println("Output: " + solution.longestConsecutive(nums2));
 
+        // Example 3: nums = [1,0,1,2]
         int[] nums3 = {1, 0, 1, 2};
-        System.out.println("Input: nums = " + Arrays.toString(nums3));
         System.out.println("Output: " + solution.longestConsecutive(nums3));
     }
 }

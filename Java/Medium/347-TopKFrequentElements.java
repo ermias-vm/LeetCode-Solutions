@@ -50,24 +50,31 @@ class Solution {
 
 // Test
 class Test {
+    public static String formatResult(int[] result) {
+        int[] sorted = result.clone();
+        Arrays.sort(sorted);
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < sorted.length; i++) {
+            sb.append(sorted[i]);
+            if (i < sorted.length - 1) sb.append(", ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+    
     public static void main(String[] args) {
         Solution solution = new Solution();
 
+        // Example 1: nums = [1,1,1,2,2,3], k = 2
         int[] nums1 = {1, 1, 1, 2, 2, 3};
-        int k1 = 2;
-        System.out.println("Input: nums = " + Arrays.toString(nums1) + ", k = " + k1);
-        System.out.println("Output: " + Arrays.toString(solution.topKFrequent(nums1, k1)));
-        System.out.println();
+        System.out.println("Output: " + formatResult(solution.topKFrequent(nums1, 2)));
 
+        // Example 2: nums = [1], k = 1
         int[] nums2 = {1};
-        int k2 = 1;
-        System.out.println("Input: nums = " + Arrays.toString(nums2) + ", k = " + k2);
-        System.out.println("Output: " + Arrays.toString(solution.topKFrequent(nums2, k2)));
-        System.out.println();
+        System.out.println("Output: " + formatResult(solution.topKFrequent(nums2, 1)));
 
-        int[] nums3 = {4, 1, -1, 2, -1, 2, 3};
-        int k3 = 2;
-        System.out.println("Input: nums = " + Arrays.toString(nums3) + ", k = " + k3);
-        System.out.println("Output: " + Arrays.toString(solution.topKFrequent(nums3, k3)));
+        // Example 3: nums = [1,2], k = 2
+        int[] nums3 = {1, 2};
+        System.out.println("Output: " + formatResult(solution.topKFrequent(nums3, 2)));
     }
 }
