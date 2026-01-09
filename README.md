@@ -106,12 +106,14 @@ Deleting ./Easy/1-TwoSum.x
 | Command | Description |
 |---------|-------------|
 | `make summary` | Show table of all problems and solutions |
+| `make summary keep` | Save summary to `Solutions_summary.txt` |
 | `make find<N>` | Find the source file for problem N |
 | `make find<N> c++` | Find problem N in C++ |
 | `make format` | Format all source files |
 | `make format c++` | Format only C++ files |
 | `make clean_all` | Clean all compiled files |
 | `make clean tmp` | Delete `tmp/` folder |
+| `make clean out` | Delete `out/` folder |
 | `make help` | Show all available commands |
 
 ---

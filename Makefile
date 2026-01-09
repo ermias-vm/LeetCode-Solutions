@@ -8,6 +8,7 @@
 #   make <number> <lang> [keep]     -> Run (optionally keep temp files)
 #   make verify <lang> [keep]       -> Verify (optionally keep temp files)
 #   make clean tmp                  -> Delete tmp/ folder
+#   make clean out                  -> Delete out/ folder
 #   make format                     -> Format all source files
 #   make format c++                 -> Format only C++ files
 #   make format java                -> Format only Java files
@@ -41,38 +42,40 @@ endif
 .DEFAULT_GOAL := help
 
 help:
-	@echo "╔══════════════════════════════════════════════════════════════════╗"
-	@echo "║           LeetCode Solutions - Root Makefile                     ║"
-	@echo "╠══════════════════════════════════════════════════════════════════╣"
-	@echo "║ Usage:                                                           ║"
-	@echo "║   make <number>              Run problem with default lang ($(DEFAULT_LANG))   ║"
-	@echo "║   make <number> c            Run problem in C                    ║"
-	@echo "║   make <number> c++          Run problem in C++                  ║"
-	@echo "║   make <number> java         Run problem in Java                 ║"
-	@echo "║   make <number> python       Run problem in Python               ║"
-	@echo "║   make <number> <lang> [keep] Run and keep temp files in tmp/    ║"
-	@echo "║                                                                  ║"
-	@echo "║ Examples:                                                        ║"
-	@echo "║   make 153                   Run problem 153 (default: $(DEFAULT_LANG))        ║"
-	@echo "║   make 1 java                Run problem 1 in Java               ║"
-	@echo "║   make 42 c++                Run problem 42 in C++               ║"
-	@echo "║   make 42 c++ [keep]         Run problem 42 in C++ (keep tmp)    ║"
-	@echo "║                                                                  ║"
-	@echo "║ Other commands:                                                  ║"
-	@echo "║   make format                Format all source files             ║"
-	@echo "║   make format c              Format only C files                 ║"
-	@echo "║   make format c++            Format only C++ files               ║"
-	@echo "║   make format java           Format only Java files              ║"
-	@echo "║   make clean_all             Clean all in default language       ║"
-	@echo "║   make clean_all <lang>      Clean all in specified language     ║"
-	@echo "║   make clean tmp             Delete tmp/ folder                  ║"
-	@echo "║   make find<N>               Find problem N in default language  ║"
-	@echo "║   make find<N> <lang>        Find problem N in specified lang    ║"
-	@echo "║   make summary               Show summary table of all problems  ║"
-	@echo "║   make verify all            Verify all problems (C, C++, Java)  ║"
-	@echo "║   make verify <lang>         Verify problems in specific lang    ║"
-	@echo "║   make verify <lang> [keep]  Verify and keep temp files          ║"
-	@echo "╚══════════════════════════════════════════════════════════════════╝"
+	@echo "╔═══════════════════════════════════════════════════════════════════════╗"
+	@echo "║              LeetCode Solutions - Root Makefile                       ║"
+	@echo "╠═══════════════════════════════════════════════════════════════════════╣"
+	@echo "║ Usage:                                                                ║"
+	@echo "║   make <number>                Run problem with default lang ($(DEFAULT_LANG))      ║"
+	@echo "║   make <number> c              Run problem in C                       ║"
+	@echo "║   make <number> c++            Run problem in C++                     ║"
+	@echo "║   make <number> java           Run problem in Java                    ║"
+	@echo "║   make <number> python         Run problem in Python                  ║"
+	@echo "║   make <number> <lang> [keep]  Run and keep temp files in tmp/        ║"
+	@echo "║                                                                       ║"
+	@echo "║ Examples:                                                             ║"
+	@echo "║   make 153                     Run problem 153 (default: $(DEFAULT_LANG))           ║"
+	@echo "║   make 1 java                  Run problem 1 in Java                  ║"
+	@echo "║   make 42 c++                  Run problem 42 in C++                  ║"
+	@echo "║   make 42 c++ keep             Run problem 42 in C++ (keep tmp)       ║"
+	@echo "║                                                                       ║"
+	@echo "║ Other commands:                                                       ║"
+	@echo "║   make format                  Format all source files                ║"
+	@echo "║   make format c                Format only C files                    ║"
+	@echo "║   make format c++              Format only C++ files                  ║"
+	@echo "║   make format java             Format only Java files                 ║"
+	@echo "║   make clean_all               Clean all in default language          ║"
+	@echo "║   make clean_all <lang>        Clean all in specified language        ║"
+	@echo "║   make clean tmp               Delete tmp/ folder                     ║"
+	@echo "║   make clean out               Delete out/ folder                     ║"
+	@echo "║   make find<N>                 Find problem N in default language     ║"
+	@echo "║   make find<N> <lang>          Find problem N in specified lang       ║"
+	@echo "║   make summary                 Show summary table of all problems     ║"
+	@echo "║   make summary keep            Save summary to Solutions_summary.txt  ║"
+	@echo "║   make verify all              Verify all problems (C, C++, Java)     ║"
+	@echo "║   make verify <lang>           Verify problems in specific lang       ║"
+	@echo "║   make verify <lang> keep      Verify and keep temp files             ║"
+	@echo "╚═══════════════════════════════════════════════════════════════════════╝"
 
 # Format target - runs format-all by default
 format:
@@ -207,8 +210,16 @@ ifeq ($(SECOND_ARG),tmp)
 	else \
 		echo "$(TEMP_DIR)/ folder does not exist."; \
 	fi
+else ifeq ($(SECOND_ARG),out)
+	@if [ -d "out" ]; then \
+		echo "Deleting out/ folder..."; \
+		rm -rf "out"; \
+		echo "Done."; \
+	else \
+		echo "out/ folder does not exist."; \
+	fi
 else
-	@echo "Usage: make clean tmp"
+	@echo "Usage: make clean tmp | make clean out"
 endif
 
 # Handle 'tmp' as a target argument
@@ -268,10 +279,20 @@ clean%:
 		exit 1; \
 	fi
 
-.PHONY: help format format-all format-check clean_all clean global_clean c c++ java python keep tmp _do_format_c _do_format_check_c summary verify all
+.PHONY: help format format-all format-check clean_all clean global_clean c c++ java python keep tmp out _do_format_c _do_format_check_c summary _summary_output verify all
 
 # Summary - Show table with problem counts by language and difficulty
+# Usage: make summary | make summary keep (saves to Solutions_summary.txt)
 summary:
+ifeq ($(KEEP_TMP),1)
+	@$(MAKE) --no-print-directory _summary_output | tee Solutions_summary.txt
+	@echo ""
+	@echo "   Summary saved to: Solutions_summary.txt"
+else
+	@$(MAKE) --no-print-directory _summary_output
+endif
+
+_summary_output:
 	@echo ""
 	@echo "   LeetCode Solutions - Summary:"
 	@echo ""
@@ -315,9 +336,9 @@ summary:
 	@all_problems=$$(find C C++ Java -name "*-*.c" -o -name "*-*.cc" -o -name "*-*.java" 2>/dev/null | \
 		sed 's|.*/||' | sed 's|\.[^.]*$$||' | sort -t'-' -k1 -n | uniq); \
 	problem_count=$$(echo "$$all_problems" | wc -w); \
-	echo   "  ┌──────┬──────────────────────────────────────────────┬────────┬─────┬─────┬──────┬──────┐"; \
-	printf "  │ %-4s │ %-44s │ %-6s │ %-3s │ %-3s │ %-4s │ %-4s │\n" "#" "Problem" "Level" "C" "C++" "Java" "Test"; \
-	echo   "  ├──────┼──────────────────────────────────────────────┼────────┼─────┼─────┼──────┼──────┤"; \
+	echo   "  ┌──────┬──────────────────────────────────────────────┬────────┬──────┬──────┬──────┬──────┐"; \
+	printf "  │ %-4s │ %-44s │ %-6s │ %-4s │ %-4s │ %-4s │ %-4s │\n" "#" "Problem" "Level" " C " " C++" "Java" "Test"; \
+	echo   "  ├──────┼──────────────────────────────────────────────┼────────┼──────┼──────┼──────┼──────┤"; \
 	first=1; \
 	for problem in $$all_problems; do \
 		num=$$(echo "$$problem" | cut -d'-' -f1); \
@@ -326,18 +347,18 @@ summary:
 		if find C/Easy C++/Easy Java/Easy -name "$$num-*" 2>/dev/null | grep -q .; then level="Easy"; fi; \
 		if find C/Medium C++/Medium Java/Medium -name "$$num-*" 2>/dev/null | grep -q .; then level="Medium"; fi; \
 		if find C/Hard C++/Hard Java/Hard -name "$$num-*" 2>/dev/null | grep -q .; then level="Hard"; fi; \
-		c_exists=" "; cpp_exists=" "; java_exists=" "; test_exists=" "; \
-		if find C -name "$$num-*.c" 2>/dev/null | grep -q .; then c_exists="✓"; fi; \
-		if find C++ -name "$$num-*.cc" 2>/dev/null | grep -q .; then cpp_exists="✓"; fi; \
-		if find Java -name "$$num-*.java" 2>/dev/null | grep -q .; then java_exists="✓"; fi; \
-		if find ExpectedOutputs -name "$$num.txt" 2>/dev/null | grep -q .; then test_exists="✓"; fi; \
+		c_exists="  "; cpp_exists="  "; java_exists="  "; test_exists="  "; \
+		if find C -name "$$num-*.c" 2>/dev/null | grep -q .; then c_exists="OK"; fi; \
+		if find C++ -name "$$num-*.cc" 2>/dev/null | grep -q .; then cpp_exists="OK"; fi; \
+		if find Java -name "$$num-*.java" 2>/dev/null | grep -q .; then java_exists="OK"; fi; \
+		if find ExpectedOutputs -name "$$num.txt" 2>/dev/null | grep -q .; then test_exists="OK"; fi; \
 		if [ $$first -eq 0 ]; then \
-			echo   "  ├──────┼──────────────────────────────────────────────┼────────┼─────┼─────┼──────┼──────┤"; \
+			echo   "  ├──────┼──────────────────────────────────────────────┼────────┼──────┼──────┼──────┼──────┤"; \
 		fi; \
 		first=0; \
-		printf "  │ %4s │ %-44s │ %-6s │  %s  │  %s  │  %s   │  %s   │\n" "$$num" "$$name" "$$level" "$$c_exists" "$$cpp_exists" "$$java_exists" "$$test_exists"; \
+		printf "  │ %4s │ %-44s │ %-6s │  %s  │  %s  │  %s  │  %s  │\n" "$$num" "$$name" "$$level" "$$c_exists" "$$cpp_exists" "$$java_exists" "$$test_exists"; \
 	done; \
-	echo   "  └──────┴──────────────────────────────────────────────┴────────┴─────┴─────┴──────┴──────┘"; \
+	echo   "  └──────┴──────────────────────────────────────────────┴────────┴──────┴──────┴──────┴──────┘"; \
 	echo ""; \
 	echo "   Total distinct problems: $$problem_count"; \
 	echo "";
