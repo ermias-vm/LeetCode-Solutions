@@ -30,11 +30,11 @@ int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes
     // Sort the array
     qsort(nums, numsSize, sizeof(int), compare);
 
-    // Allocate space for result (worst case: numsSize/3 triplets)
-    int maxTriplets = numsSize / 3;
-    int** result = (int**)malloc(maxTriplets * sizeof(int*));
-    *returnColumnSizes = (int*)malloc(maxTriplets * sizeof(int));
+    // Start with NULL result, will allocate as needed
+    int** result = NULL;
+    *returnColumnSizes = NULL;
     *returnSize = 0;
+    int capacity = 0;
 
     for (int i = 0; i < numsSize; i++) {
         // Skip duplicates for the fixed element
@@ -47,7 +47,13 @@ int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes
             int sum = nums[i] + nums[left] + nums[right];
 
             if (sum == 0) {
-                // Found a triplet
+                // Found a triplet - expand arrays if needed
+                if (*returnSize >= capacity) {
+                    capacity = capacity == 0 ? 8 : capacity * 2;
+                    result = (int**)realloc(result, capacity * sizeof(int*));
+                    *returnColumnSizes = (int*)realloc(*returnColumnSizes, capacity * sizeof(int));
+                }
+
                 result[*returnSize] = (int*)malloc(3 * sizeof(int));
                 result[*returnSize][0] = nums[i];
                 result[*returnSize][1] = nums[left];
