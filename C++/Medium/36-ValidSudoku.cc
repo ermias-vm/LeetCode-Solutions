@@ -72,5 +72,8 @@ int main() {
                                    {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
                                    {'.', '.', '.', '.', '8', '.', '.', '7', '9'}};
 
-    cout << "Test 1: " << (solution.isValidSudoku(board1) ? "Valid" : "Invalid") << endl;
-    cout << "Test 2: " << (solution.isValidSudoku(board2) ? "Valid" : "Invalid") << endl;
+    cout << "Output: " << (solution.isValidSudoku(board1) ? "true" : "false") << endl;
+    cout << "Output: " << (solution.isValidSudoku(board2) ? "true" : "false") << endl;
+
+    return 0;
+}
