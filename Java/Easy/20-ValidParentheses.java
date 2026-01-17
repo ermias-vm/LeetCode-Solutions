@@ -32,8 +32,7 @@ class Solution {
                 if (openedBrackets.isEmpty() || openedBrackets.peek() != bracketMap.get(c))
                     return false;
                 openedBrackets.pop();
-            } else
-                openedBrackets.push(c);
+            } else openedBrackets.push(c);
         }
 
         return openedBrackets.isEmpty();
@@ -44,19 +43,19 @@ class Solution {
 class Test {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        
+
         // Example 1: s = "()"
         System.out.println("Output: " + solution.isValid("()"));
-        
+
         // Example 2: s = "()[]{}"
         System.out.println("Output: " + solution.isValid("()[]{}"));
-        
+
         // Example 3: s = "(]"
         System.out.println("Output: " + solution.isValid("(]"));
-        
+
         // Example 4: s = "([])"
         System.out.println("Output: " + solution.isValid("([])"));
-        
+
         // Example 5: s = "([)]"
         System.out.println("Output: " + solution.isValid("([)]"));
     }

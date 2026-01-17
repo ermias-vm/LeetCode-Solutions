@@ -30,16 +30,12 @@ public:
 
         while (left < right) {
             if (height[left] < height[right]) {
-                if (height[left] >= left_max)
-                    left_max = height[left];
-                else
-                    water_trapped += left_max - height[left];
+                if (height[left] >= left_max) left_max = height[left];
+                else water_trapped += left_max - height[left];
                 left++;
             } else {
-                if (height[right] >= right_max)
-                    right_max = height[right];
-                else
-                    water_trapped += right_max - height[right];
+                if (height[right] >= right_max) right_max = height[right];
+                else water_trapped += right_max - height[right];
                 right--;
             }
         }
@@ -51,11 +47,11 @@ public:
 // Test
 int main() {
     Solution solution;
-    
+
     // Example 1: height = [0,1,0,2,1,0,1,3,2,1,2,1]
     vector<int> height1 = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
     cout << "Output: " << solution.trap(height1) << endl;
-    
+
     // Example 2: height = [4,2,0,3,2,5]
     vector<int> height2 = {4, 2, 0, 3, 2, 5};
     cout << "Output: " << solution.trap(height2) << endl;

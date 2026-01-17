@@ -61,7 +61,7 @@ class Test {
         sb.append("]");
         return sb.toString();
     }
-    
+
     public static void main(String[] args) {
         Solution solution = new Solution();
 

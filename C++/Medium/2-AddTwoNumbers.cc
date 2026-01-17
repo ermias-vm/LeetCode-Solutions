@@ -83,7 +83,7 @@ void deleteList(ListNode* head) {
 
 int main() {
     Solution solution;
-    
+
     // Example 1: l1 = [2,4,3], l2 = [5,6,4]
     ListNode* l1 = buildList({2, 4, 3});
     ListNode* l2 = buildList({5, 6, 4});
@@ -92,7 +92,7 @@ int main() {
     deleteList(l1);
     deleteList(l2);
     deleteList(result1);
-    
+
     // Example 2: l1 = [0], l2 = [0]
     l1 = buildList({0});
     l2 = buildList({0});
@@ -101,7 +101,7 @@ int main() {
     deleteList(l1);
     deleteList(l2);
     deleteList(result2);
-    
+
     // Example 3: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
     l1 = buildList({9, 9, 9, 9, 9, 9, 9});
     l2 = buildList({9, 9, 9, 9});

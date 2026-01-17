@@ -47,7 +47,9 @@ int carFleet(int target, int* position, int positionSize, int* speed, int speedS
     for (int i = 0; i < positionSize; i++) {
         double time = cars[i].time;
         // If current car takes more time, it forms a new fleet
-        if (top == -1 || time > stack[top]) { stack[++top] = time; }
+        if (top == -1 || time > stack[top]) {
+            stack[++top] = time;
+        }
         // Otherwise, it catches up and joins the fleet ahead
     }
 

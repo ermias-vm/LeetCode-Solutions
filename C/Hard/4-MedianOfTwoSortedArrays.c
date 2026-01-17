@@ -17,8 +17,12 @@
 #include <stdio.h>
 #include <limits.h>
 
-int max(int a, int b) { return (a > b) ? a : b; }
-int min(int a, int b) { return (a < b) ? a : b; }
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
 
 double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size) {
     // Ensure nums1 is the smaller array

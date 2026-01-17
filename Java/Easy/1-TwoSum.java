@@ -45,12 +45,12 @@ class Test {
 
     public static void main(String[] args) {
         // Example 1
-        runTest(new int[]{2, 7, 11, 15}, 9);
+        runTest(new int[] {2, 7, 11, 15}, 9);
 
         // Example 2
-        runTest(new int[]{3, 2, 4}, 6);
+        runTest(new int[] {3, 2, 4}, 6);
 
         // Example 3
-        runTest(new int[]{3, 3}, 6);
+        runTest(new int[] {3, 3}, 6);
     }
 }

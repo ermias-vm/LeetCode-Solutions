@@ -31,16 +31,11 @@ public:
                 st.pop();
                 int a = st.top();
                 st.pop();
-                if (token == "+")
-                    st.push(a + b);
-                else if (token == "-")
-                    st.push(a - b);
-                else if (token == "*")
-                    st.push(a * b);
-                else if (token == "/")
-                    st.push(a / b);
-            } else
-                st.push(stoi(token));
+                if (token == "+") st.push(a + b);
+                else if (token == "-") st.push(a - b);
+                else if (token == "*") st.push(a * b);
+                else if (token == "/") st.push(a / b);
+            } else st.push(stoi(token));
         }
         return st.top();
     }
@@ -49,15 +44,15 @@ public:
 // Test
 int main() {
     Solution sol;
-    
+
     // Example 1: tokens = ["2","1","+","3","*"]
     vector<string> tokens1 = {"2", "1", "+", "3", "*"};
     cout << "Output: " << sol.evalRPN(tokens1) << endl;
-    
+
     // Example 2: tokens = ["4","13","5","/","+"]
     vector<string> tokens2 = {"4", "13", "5", "/", "+"};
     cout << "Output: " << sol.evalRPN(tokens2) << endl;
-    
+
     // Example 3: tokens = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
     vector<string> tokens3 = {"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"};
     cout << "Output: " << sol.evalRPN(tokens3) << endl;

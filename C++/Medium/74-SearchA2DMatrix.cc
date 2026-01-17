@@ -35,12 +35,9 @@ public:
             int col = mid % n;
             int midVal = matrix[row][col];
 
-            if (midVal == target)
-                return true;
-            else if (midVal < target)
-                left = mid + 1;
-            else
-                right = mid - 1;
+            if (midVal == target) return true;
+            else if (midVal < target) left = mid + 1;
+            else right = mid - 1;
         }
 
         return false;

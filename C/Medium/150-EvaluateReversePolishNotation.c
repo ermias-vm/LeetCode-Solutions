@@ -25,16 +25,24 @@ int evalRPN(char** tokens, int tokensSize) {
     for (int i = 0; i < tokensSize; i++) {
         char* token = tokens[i];
         // Check if it's an operator (single char and one of + - * /)
-        if (strlen(token) == 1 && (token[0] == '+' || token[0] == '-' || 
-                                    token[0] == '*' || token[0] == '/')) {
+        if (strlen(token) == 1 &&
+            (token[0] == '+' || token[0] == '-' || token[0] == '*' || token[0] == '/')) {
             int b = stack[top--];
             int a = stack[top--];
             int result;
             switch (token[0]) {
-                case '+': result = a + b; break;
-                case '-': result = a - b; break;
-                case '*': result = a * b; break;
-                case '/': result = a / b; break;
+            case '+':
+                result = a + b;
+                break;
+            case '-':
+                result = a - b;
+                break;
+            case '*':
+                result = a * b;
+                break;
+            case '/':
+                result = a / b;
+                break;
             }
             stack[++top] = result;
         } else {

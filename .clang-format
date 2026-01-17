@@ -8,10 +8,10 @@ ColumnLimit: 100
 
 # Braces
 BreakBeforeBraces: Attach
-AllowShortFunctionsOnASingleLine: All
-AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
 AllowShortLoopsOnASingleLine: true
-AllowShortBlocksOnASingleLine: Always
+AllowShortBlocksOnASingleLine: Never
 
 # Spacing
 SpaceBeforeParens: ControlStatements
@@ -59,8 +59,8 @@ TabWidth: 4
 UseTab: Never
 ColumnLimit: 100
 BreakBeforeBraces: Attach
-AllowShortIfStatementsOnASingleLine: Never
-AllowShortLoopsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLoopsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: None
 AllowShortBlocksOnASingleLine: Never
 SpaceBeforeParens: ControlStatements

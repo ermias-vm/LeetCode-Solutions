@@ -39,7 +39,9 @@ public:
         for (int i = 0; i < n; i++) {
             double time = cars[i].second;
             // If current car takes more time, it forms a new fleet
-            if (st.empty() || time > st.top()) { st.push(time); }
+            if (st.empty() || time > st.top()) {
+                st.push(time);
+            }
             // Otherwise, it catches up and joins the fleet ahead
         }
 

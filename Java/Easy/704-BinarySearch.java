@@ -41,11 +41,11 @@ class Solution {
 class Test {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        
+
         // Example 1: nums = [-1,0,3,5,9,12], target = 9
         int[] nums1 = {-1, 0, 3, 5, 9, 12};
         System.out.println("Output: " + solution.search(nums1, 9));
-        
+
         // Example 2: nums = [-1,0,3,5,9,12], target = 2
         int[] nums2 = {-1, 0, 3, 5, 9, 12};
         System.out.println("Output: " + solution.search(nums2, 2));

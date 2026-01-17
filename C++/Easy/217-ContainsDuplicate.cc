@@ -35,15 +35,15 @@ public:
 // Test
 int main() {
     Solution solution;
-    
+
     // Example 1: nums = [1,2,3,1]
     vector<int> nums1 = {1, 2, 3, 1};
     cout << "Output: " << (solution.containsDuplicate(nums1) ? "true" : "false") << endl;
-    
+
     // Example 2: nums = [1,2,3,4]
     vector<int> nums2 = {1, 2, 3, 4};
     cout << "Output: " << (solution.containsDuplicate(nums2) ? "true" : "false") << endl;
-    
+
     // Example 3: nums = [1,1,1,3,3,4,3,2,4,2]
     vector<int> nums3 = {1, 1, 1, 3, 3, 4, 3, 2, 4, 2};
     cout << "Output: " << (solution.containsDuplicate(nums3) ? "true" : "false") << endl;

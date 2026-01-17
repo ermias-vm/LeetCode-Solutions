@@ -26,7 +26,9 @@ public:
         unordered_map<int, int> hash;
         for (int i = 0; i < nums.size(); i++) {
             int complement = target - nums[i];
-            if (hash.find(complement) != hash.end()) { return {hash[complement], i}; }
+            if (hash.find(complement) != hash.end()) {
+                return {hash[complement], i};
+            }
             hash[nums[i]] = i;
         }
         return {};
@@ -46,11 +48,11 @@ void printVector(const vector<int>& v) {
 void runTest(vector<int> nums, int target) {
     Solution solution;
     vector<int> result = solution.twoSum(nums, target);
-    
+
     cout << "Input: nums = ";
     printVector(nums);
     cout << ", target = " << target << endl;
-    
+
     cout << "Output: ";
     printVector(result);
     cout << endl << endl;

@@ -32,7 +32,9 @@ public:
         }
 
         vector<vector<string>> result;
-        for (auto& group : anagramGroups) { result.push_back(group.second); }
+        for (auto& group : anagramGroups) {
+            result.push_back(group.second);
+        }
         return result;
     }
 };
@@ -51,7 +53,7 @@ void printResults(vector<vector<string>>& results) {
         if (b.empty()) return false;
         return a[0] < b[0];  // Then alphabetically by first element
     });
-    
+
     cout << "Output: [";
     for (size_t i = 0; i < results.size(); i++) {
         cout << "[";
@@ -67,17 +69,17 @@ void printResults(vector<vector<string>>& results) {
 
 int main() {
     Solution solution;
-    
+
     // Example 1: strs = ["eat","tea","tan","ate","nat","bat"]
     vector<string> strs1 = {"eat", "tea", "tan", "ate", "nat", "bat"};
     vector<vector<string>> result1 = solution.groupAnagrams(strs1);
     printResults(result1);
-    
+
     // Example 2: strs = [""]
     vector<string> strs2 = {""};
     vector<vector<string>> result2 = solution.groupAnagrams(strs2);
     printResults(result2);
-    
+
     // Example 3: strs = ["a"]
     vector<string> strs3 = {"a"};
     vector<vector<string>> result3 = solution.groupAnagrams(strs3);

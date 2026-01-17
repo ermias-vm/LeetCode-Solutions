@@ -49,7 +49,7 @@ class Test {
             if (a.size() != b.size()) return a.size() - b.size();
             return a.get(0).compareTo(b.get(0));
         });
-        
+
         StringBuilder sb = new StringBuilder("[");
         for (int i = 0; i < result.size(); i++) {
             sb.append("[");
@@ -63,20 +63,20 @@ class Test {
         sb.append("]");
         return sb.toString();
     }
-    
+
     public static void main(String[] args) {
         Solution solution = new Solution();
-        
+
         // Example 1: strs = ["eat","tea","tan","ate","nat","bat"]
         String[] example1 = {"eat", "tea", "tan", "ate", "nat", "bat"};
         List<List<String>> result1 = solution.groupAnagrams(example1);
         System.out.println("Output: " + formatResult(result1));
-        
+
         // Example 2: strs = [""]
         String[] example2 = {""};
         List<List<String>> result2 = solution.groupAnagrams(example2);
         System.out.println("Output: " + formatResult(result2));
-        
+
         // Example 3: strs = ["a"]
         String[] example3 = {"a"};
         List<List<String>> result3 = solution.groupAnagrams(example3);

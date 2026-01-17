@@ -26,7 +26,9 @@ using namespace std;
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        if (nums1.size() > nums2.size()) { return findMedianSortedArrays(nums2, nums1); }
+        if (nums1.size() > nums2.size()) {
+            return findMedianSortedArrays(nums2, nums1);
+        }
 
         int x = nums1.size();
         int y = nums2.size();
@@ -45,12 +47,9 @@ public:
             if (maxLeftX <= minRightY && maxLeftY <= minRightX) {
                 if ((x + y) % 2 == 0)
                     return (max(maxLeftX, maxLeftY) + min(minRightX, minRightY)) / 2.0;
-                else
-                    return max(maxLeftX, maxLeftY);
-            } else if (maxLeftX > minRightY)
-                high = partitionX - 1;
-            else
-                low = partitionX + 1;
+                else return max(maxLeftX, maxLeftY);
+            } else if (maxLeftX > minRightY) high = partitionX - 1;
+            else low = partitionX + 1;
         }
         throw invalid_argument("Input arrays are not sorted or have incorrect sizes.");
     }
@@ -59,16 +58,18 @@ public:
 // Test
 int main() {
     Solution solution;
-    
+
     // Example 1: nums1 = [1,3], nums2 = [2]
     vector<int> nums1a = {1, 3};
     vector<int> nums2a = {2};
-    cout << "Output: " << fixed << setprecision(5) << solution.findMedianSortedArrays(nums1a, nums2a) << endl;
+    cout << "Output: " << fixed << setprecision(5)
+         << solution.findMedianSortedArrays(nums1a, nums2a) << endl;
 
     // Example 2: nums1 = [1,2], nums2 = [3,4]
     vector<int> nums1b = {1, 2};
     vector<int> nums2b = {3, 4};
-    cout << "Output: " << fixed << setprecision(5) << solution.findMedianSortedArrays(nums1b, nums2b) << endl;
+    cout << "Output: " << fixed << setprecision(5)
+         << solution.findMedianSortedArrays(nums1b, nums2b) << endl;
 
     return 0;
 }

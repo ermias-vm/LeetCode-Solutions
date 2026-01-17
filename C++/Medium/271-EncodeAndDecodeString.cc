@@ -61,12 +61,16 @@ int main() {
     // Print results
     cout << "Encoded 1: " << encoded1 << endl;
     cout << "Decoded 1: ";
-    for (const auto& str : decoded1) { cout << "\"" << str << "\" "; }
+    for (const auto& str : decoded1) {
+        cout << "\"" << str << "\" ";
+    }
     cout << endl;
 
     cout << "Encoded 2: " << encoded2 << endl;
     cout << "Decoded 2: ";
-    for (const auto& str : decoded2) { cout << "\"" << str << "\" "; }
+    for (const auto& str : decoded2) {
+        cout << "\"" << str << "\" ";
+    }
     cout << endl;
 
     return 0;

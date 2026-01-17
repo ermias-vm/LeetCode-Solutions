@@ -42,10 +42,8 @@ public:
                         --right;  // Skip duplicates
                     ++left;
                     --right;
-                } else if (sum < 0)
-                    ++left;
-                else
-                    --right;
+                } else if (sum < 0) ++left;
+                else --right;
             }
         }
         return result;
@@ -70,15 +68,15 @@ void printResult(const vector<vector<int>>& result) {
 
 int main() {
     Solution sol;
-    
+
     // Example 1: nums = [-1,0,1,2,-1,-4]
     vector<int> nums1 = {-1, 0, 1, 2, -1, -4};
     printResult(sol.threeSum(nums1));
-    
+
     // Example 2: nums = [0,1,1]
     vector<int> nums2 = {0, 1, 1};
     printResult(sol.threeSum(nums2));
-    
+
     // Example 3: nums = [0,0,0]
     vector<int> nums3 = {0, 0, 0};
     printResult(sol.threeSum(nums3));

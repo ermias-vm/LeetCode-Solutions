@@ -39,15 +39,15 @@ public:
 // Test
 int main() {
     Solution solution;
-    
+
     // Example 1: s = "abcabcbb"
     cout << "Output: " << solution.lengthOfLongestSubstring("abcabcbb") << endl;
-    
+
     // Example 2: s = "bbbbb"
     cout << "Output: " << solution.lengthOfLongestSubstring("bbbbb") << endl;
-    
+
     // Example 3: s = "pwwkew"
     cout << "Output: " << solution.lengthOfLongestSubstring("pwwkew") << endl;
-    
+
     return 0;
 }

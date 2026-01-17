@@ -25,12 +25,9 @@ public:
         int left = 0, right = numbers.size() - 1;
         while (left < right) {
             int sum = numbers[left] + numbers[right];
-            if (sum == target)
-                return {++left, ++right};
-            else if (sum < target)
-                left++;
-            else
-                right--;
+            if (sum == target) return {++left, ++right};
+            else if (sum < target) left++;
+            else right--;
         }
         return {};
     }
@@ -39,17 +36,17 @@ public:
 // Test
 int main() {
     Solution solution;
-    
+
     // Example 1: numbers = [2,7,11,15], target = 9
     vector<int> numbers1 = {2, 7, 11, 15};
     vector<int> result1 = solution.twoSum(numbers1, 9);
     cout << "Output: [" << result1[0] << ", " << result1[1] << "]" << endl;
-    
+
     // Example 2: numbers = [2,3,4], target = 6
     vector<int> numbers2 = {2, 3, 4};
     vector<int> result2 = solution.twoSum(numbers2, 6);
     cout << "Output: [" << result2[0] << ", " << result2[1] << "]" << endl;
-    
+
     // Example 3: numbers = [-1,0], target = -1
     vector<int> numbers3 = {-1, 0};
     vector<int> result3 = solution.twoSum(numbers3, -1);

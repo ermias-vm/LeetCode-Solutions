@@ -16,8 +16,12 @@
 
 #include <stdio.h>
 
-int max(int a, int b) { return (a > b) ? a : b; }
-int min(int a, int b) { return (a < b) ? a : b; }
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
 
 int maxArea(int* height, int heightSize) {
     int left = 0;
@@ -30,10 +34,8 @@ int maxArea(int* height, int heightSize) {
         int currentArea = width * currentHeight;
         maxArea = max(maxArea, currentArea);
 
-        if (height[left] < height[right])
-            left++;
-        else
-            right--;
+        if (height[left] < height[right]) left++;
+        else right--;
     }
 
     return maxArea;

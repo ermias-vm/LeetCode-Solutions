@@ -40,10 +40,10 @@ public:
 // Test
 int main() {
     Solution solution;
-    
+
     // Example 1: s = "anagram", t = "nagaram"
     cout << "Output: " << (solution.isAnagram("anagram", "nagaram") ? "true" : "false") << endl;
-    
+
     // Example 2: s = "rat", t = "car"
     cout << "Output: " << (solution.isAnagram("rat", "car") ? "true" : "false") << endl;
 

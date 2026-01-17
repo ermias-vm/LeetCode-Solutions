@@ -16,7 +16,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int compare(const void* a, const void* b) { return (*(int*)a - *(int*)b); }
+int compare(const void* a, const void* b) {
+    return (*(int*)a - *(int*)b);
+}
 
 int longestConsecutive(int* nums, int numsSize) {
     if (numsSize == 0) return 0;
@@ -27,10 +29,8 @@ int longestConsecutive(int* nums, int numsSize) {
     int currentStreak = 1;
 
     for (int i = 1; i < numsSize; i++) {
-        if (nums[i] == nums[i - 1])
-            continue;
-        else if (nums[i] == nums[i - 1] + 1)
-            currentStreak++;
+        if (nums[i] == nums[i - 1]) continue;
+        else if (nums[i] == nums[i - 1] + 1) currentStreak++;
         else {
             if (currentStreak > longestStreak) longestStreak = currentStreak;
             currentStreak = 1;

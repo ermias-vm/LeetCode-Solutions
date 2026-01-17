@@ -43,11 +43,11 @@ public:
 // Test
 int main() {
     Solution solution;
-    
+
     // Example 1: nums = [-1,0,3,5,9,12], target = 9
     vector<int> nums1 = {-1, 0, 3, 5, 9, 12};
     cout << "Output: " << solution.search(nums1, 9) << endl;
-    
+
     // Example 2: nums = [-1,0,3,5,9,12], target = 2
     vector<int> nums2 = {-1, 0, 3, 5, 9, 12};
     cout << "Output: " << solution.search(nums2, 2) << endl;

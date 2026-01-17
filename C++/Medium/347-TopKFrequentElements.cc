@@ -27,7 +27,9 @@ public:
         for (int num : nums) freqMap[num]++;
 
         vector<vector<int>> buckets(nums.size() + 1);
-        for (auto& pair : freqMap) { buckets[pair.second].push_back(pair.first); }
+        for (auto& pair : freqMap) {
+            buckets[pair.second].push_back(pair.first);
+        }
 
         vector<int> result;
         for (int i = buckets.size() - 1; i >= 0; --i) {
@@ -55,17 +57,17 @@ void printVector(vector<int>& v) {
 
 int main() {
     Solution solution;
-    
+
     // Example 1: nums = [1,1,1,2,2,3], k = 2
     vector<int> nums1 = {1, 1, 1, 2, 2, 3};
     vector<int> result1 = solution.topKFrequent(nums1, 2);
     printVector(result1);
-    
+
     // Example 2: nums = [1], k = 1
     vector<int> nums2 = {1};
     vector<int> result2 = solution.topKFrequent(nums2, 1);
     printVector(result2);
-    
+
     // Example 3: nums = [1,2], k = 2
     vector<int> nums3 = {1, 2};
     vector<int> result3 = solution.topKFrequent(nums3, 2);

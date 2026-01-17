@@ -58,16 +58,16 @@ void print(const vector<string>& result) {
 
 int main() {
     Solution solution;
-    
+
     // Example 1: n = 3
     vector<string> res1 = solution.generateParenthesis(3);
     // Sort for consistent output
     sort(res1.begin(), res1.end());
     print(res1);
-    
+
     // Example 2: n = 1
     vector<string> res2 = solution.generateParenthesis(1);
     print(res2);
-    
+
     return 0;
 }

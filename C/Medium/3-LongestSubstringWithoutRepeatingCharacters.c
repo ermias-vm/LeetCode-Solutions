@@ -25,15 +25,21 @@ int lengthOfLongestSubstring(char* s) {
     int charIndex[128];
     int start = 0;
 
-    for (int i = 0; i < 128; i++) { charIndex[i] = -1; }
+    for (int i = 0; i < 128; i++) {
+        charIndex[i] = -1;
+    }
 
     for (int end = 0; end < n; end++) {
-        if (charIndex[s[end]] >= start) { start = charIndex[s[end]] + 1; }
+        if (charIndex[s[end]] >= start) {
+            start = charIndex[s[end]] + 1;
+        }
 
         charIndex[s[end]] = end;
 
         int currentLength = end - start + 1;
-        if (currentLength > maxLength) { maxLength = currentLength; }
+        if (currentLength > maxLength) {
+            maxLength = currentLength;
+        }
     }
 
     return maxLength;

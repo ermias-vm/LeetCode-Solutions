@@ -21,8 +21,7 @@ class Solution {
 
         List<List<Integer>> result = new ArrayList<>();
         for (int i = 0; i < nums.length; i++) {
-            if (i > 0 && nums[i] == nums[i - 1])
-                continue; // Skip duplicates
+            if (i > 0 && nums[i] == nums[i - 1]) continue; // Skip duplicates
 
             int left = i + 1;
             int right = nums.length - 1;
@@ -32,8 +31,7 @@ class Solution {
 
                 if (sum == 0) {
                     result.add(Arrays.asList(nums[i], nums[left], nums[right]));
-                    while (left < right && nums[left] == nums[left + 1])
-                        left++; // Skip duplicates
+                    while (left < right && nums[left] == nums[left + 1]) left++; // Skip duplicates
                     while (left < right && nums[right] == nums[right - 1])
                         right--; // Skip duplicates
                     left++;

@@ -19,7 +19,9 @@
 #include <string.h>
 
 // Function for qsort to compare characters
-int compareChar(const void* a, const void* b) { return (*(char*)a - *(char*)b); }
+int compareChar(const void* a, const void* b) {
+    return (*(char*)a - *(char*)b);
+}
 
 // Function to sort a string
 char* sortString(const char* s) {
@@ -119,7 +121,7 @@ void printResult(char*** result, int returnSize, int* returnColumnSizes) {
     for (int i = 0; i < returnSize; i++) {
         qsort(result[i], returnColumnSizes[i], sizeof(char*), compareStrings);
     }
-    
+
     // Sort groups by first element
     Group* groups = malloc(returnSize * sizeof(Group));
     for (int i = 0; i < returnSize; i++) {
@@ -127,7 +129,7 @@ void printResult(char*** result, int returnSize, int* returnColumnSizes) {
         groups[i].size = returnColumnSizes[i];
     }
     qsort(groups, returnSize, sizeof(Group), compareGroups);
-    
+
     printf("Output: [");
     for (int i = 0; i < returnSize; i++) {
         printf("[");
@@ -139,7 +141,7 @@ void printResult(char*** result, int returnSize, int* returnColumnSizes) {
         if (i < returnSize - 1) printf(", ");
     }
     printf("]\n");
-    
+
     free(groups);
 }
 

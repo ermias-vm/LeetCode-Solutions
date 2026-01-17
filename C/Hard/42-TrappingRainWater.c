@@ -27,16 +27,12 @@ int trap(int* height, int heightSize) {
 
     while (left < right) {
         if (height[left] < height[right]) {
-            if (height[left] >= leftMax)
-                leftMax = height[left];
-            else
-                waterTrapped += leftMax - height[left];
+            if (height[left] >= leftMax) leftMax = height[left];
+            else waterTrapped += leftMax - height[left];
             left++;
         } else {
-            if (height[right] >= rightMax)
-                rightMax = height[right];
-            else
-                waterTrapped += rightMax - height[right];
+            if (height[right] >= rightMax) rightMax = height[right];
+            else waterTrapped += rightMax - height[right];
             right--;
         }
     }

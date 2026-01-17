@@ -49,32 +49,14 @@ bool isValidSudoku(char** board, int boardSize, int* boardColSize) {
 // Test
 int main() {
     // Example 1: Valid sudoku board
-    char* board1[] = {
-        "53..7....",
-        "6..195...",
-        ".98....6.",
-        "8...6...3",
-        "4..8.3..1",
-        "7...2...6",
-        ".6....28.",
-        "...419..5",
-        "....8..79"
-    };
+    char* board1[] = {"53..7....", "6..195...", ".98....6.", "8...6...3", "4..8.3..1",
+                      "7...2...6", ".6....28.", "...419..5", "....8..79"};
     int colSize1 = 9;
     printf("Output: %s\n", isValidSudoku(board1, 9, &colSize1) ? "true" : "false");
 
     // Example 2: Invalid sudoku (duplicate 8 in first column)
-    char* board2[] = {
-        "83..7....",
-        "6..195...",
-        ".98....6.",
-        "8...6...3",
-        "4..8.3..1",
-        "7...2...6",
-        ".6....28.",
-        "...419..5",
-        "....8..79"
-    };
+    char* board2[] = {"83..7....", "6..195...", ".98....6.", "8...6...3", "4..8.3..1",
+                      "7...2...6", ".6....28.", "...419..5", "....8..79"};
     int colSize2 = 9;
     printf("Output: %s\n", isValidSudoku(board2, 9, &colSize2) ? "true" : "false");
 

@@ -20,8 +20,7 @@ import java.util.Set;
 class Solution {
     public int longestConsecutive(int[] nums) {
         Set<Integer> numSet = new HashSet<>();
-        for (int num : nums)
-            numSet.add(num);
+        for (int num : nums) numSet.add(num);
         int longestStreak = 0;
 
         for (int n : numSet) {
@@ -43,7 +42,7 @@ class Solution {
 class Test {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        
+
         // Example 1: nums = [100,4,200,1,3,2]
         int[] nums1 = {100, 4, 200, 1, 3, 2};
         System.out.println("Output: " + solution.longestConsecutive(nums1));

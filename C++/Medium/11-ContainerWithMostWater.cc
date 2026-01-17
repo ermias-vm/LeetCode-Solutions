@@ -32,10 +32,8 @@ public:
             unsigned int currentArea = width * currentHeight;
             maxArea = max(maxArea, currentArea);
 
-            if (height[left] < height[right])
-                left++;
-            else
-                right--;
+            if (height[left] < height[right]) left++;
+            else right--;
         }
 
         return maxArea;
@@ -45,11 +43,11 @@ public:
 // Test
 int main() {
     Solution solution;
-    
+
     // Example 1: height = [1,8,6,2,5,4,8,3,7]
     vector<int> height1 = {1, 8, 6, 2, 5, 4, 8, 3, 7};
     cout << "Output: " << solution.maxArea(height1) << endl;
-    
+
     // Example 2: height = [1,1]
     vector<int> height2 = {1, 1};
     cout << "Output: " << solution.maxArea(height2) << endl;
