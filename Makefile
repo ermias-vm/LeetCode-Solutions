@@ -258,7 +258,6 @@ clean%:
 	else \
 		echo "Unknown target: $@"; \
 		echo "Use 'make help' for usage information."; \
-		exit 1; \
 	fi
 
 .PHONY: help format format-all format-check clean_all clean global_clean c c++ java out _do_format_c _do_format_check_c summary _summary_output verify all
