@@ -25,15 +25,10 @@ A collection of [LeetCode](https://leetcode.com/problemset/) problem solutions i
   - **[Easy/](ExpectedOutputs/Easy/)** 
   - **[Medium/](ExpectedOutputs/Medium/)**
   - **[Hard/](ExpectedOutputs/Hard/)**
-- **[out/]** - Generated verification results (suffix _PASS or _FAIL)
-  - **All_TestResults_PASS.txt** / **All_TestResults_FAIL.txt**
-  - **C_TestResults_PASS.txt** / **C_TestResults_FAIL.txt**
-  - **C++_TestResults_PASS.txt** / **C++_TestResults_FAIL.txt**
-  - **Java_TestResults_PASS.txt** / **Java_TestResults_FAIL.txt**
-- **[tmp/]** - Temporary output files (when using `[keep]` option)
-  - **C/** - C program outputs
-  - **C++/** - C++ program outputs  
-  - **Java/** - Java program outputs
+- **[Out/]** - Generated output folder (gitignored)
+  - **logs/** - Verification results with timestamps
+  - **tmp/** - Temporary output files
+  - **Solutions_summary.txt** - Summary table
 
 ---
 
@@ -81,7 +76,6 @@ Deleting ./Easy/1-TwoSum.x
 | `make <N> c` | Run problem N in C |
 | `make <N> c++` | Run problem N in C++ |
 | `make <N> java` | Run problem N in Java |
-| `make <N> <lang> [keep]` | Run and keep temp output in `tmp/<lang>/` |
 
 ### Individual Steps
 
@@ -91,29 +85,26 @@ Deleting ./Easy/1-TwoSum.x
 | `make run<N>` | Run problem N only |
 | `make clean<N>` | Clean compiled files for problem N |
 
-### Verification
+### Verification & Summary
 
 | Command | Description |
 |---------|-------------|
-| `make verify all` | Verify all problems in C, C++, and Java |
-| `make verify c` | Verify all C solutions |
-| `make verify c++` | Verify all C++ solutions |
-| `make verify java` | Verify all Java solutions |
-| `make verify <lang> [keep]` | Verify and keep temp files in `tmp/<lang>/` |
+| `make verify all` | Verify all problems (C, C++, Java) → `Out/logs/` |
+| `make verify c` | Verify all C solutions → `Out/logs/` |
+| `make verify c++` | Verify all C++ solutions → `Out/logs/` |
+| `make verify java` | Verify all Java solutions → `Out/logs/` |
+| `make summary` | Show & save summary → `Out/Solutions_summary.txt` |
 
 ### Utilities
 
 | Command | Description |
 |---------|-------------|
-| `make summary` | Show table of all problems and solutions |
-| `make summary keep` | Save summary to `Solutions_summary.txt` |
 | `make find<N>` | Find the source file for problem N |
 | `make find<N> c++` | Find problem N in C++ |
 | `make format` | Format all source files |
 | `make format c++` | Format only C++ files |
 | `make clean_all` | Clean all compiled files |
-| `make clean tmp` | Delete `tmp/` folder |
-| `make clean out` | Delete `out/` folder |
+| `make clean out` | Delete `Out/` folder (with confirmation) |
 | `make help` | Show all available commands |
 
 ---
@@ -133,9 +124,11 @@ First line: number of test cases. Following lines: expected outputs.
 
 Solutions must print `Output: <result>` for each test case.
 
-### Verification Results Table
+### Verification Results
 
-When running `make verify all`:
+Logs are saved to `Out/logs/` with timestamps:
+- `All_TestResults_PASS_20260118_153042.txt`
+- `C++_TestResults_FAIL_20260118_153042.txt`
 
 | Value | Meaning |
 |-------|---------|

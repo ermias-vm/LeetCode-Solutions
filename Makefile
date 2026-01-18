@@ -4,32 +4,29 @@
 #   make <problem_number> c         -> Uses C/Makefile
 #   make <problem_number> c++       -> Uses C++/Makefile
 #   make <problem_number> java      -> Uses Java/Makefile
-#   make <problem_number> python    -> Uses Python/Makefile
-#   make <number> <lang> [keep]     -> Run (optionally keep temp files)
-#   make verify <lang> [keep]       -> Verify (optionally keep temp files)
-#   make clean tmp                  -> Delete tmp/ folder
-#   make clean out                  -> Delete out/ folder
+#   make <number> <lang>            -> Run problem in specified language
+#   make verify <lang>              -> Verify all problems (saves to Out/logs/)
+#   make summary                    -> Show summary (saves to Out/)
+#   make clean out                  -> Delete Out/ folder (with confirmation)
 #   make format                     -> Format all source files
 #   make format c++                 -> Format only C++ files
-#   make format java                -> Format only Java files
 
-# Default language directory (c, c++, java, python)
+# Default language directory (c, c++, java)
 DEFAULT_LANG ?= c
 
-# Temp directory for output files
-TEMP_DIR = tmp
+# Output directories
+OUT_DIR = Out
+LOGS_DIR = $(OUT_DIR)/logs
+TEMP_DIR = $(OUT_DIR)/tmp
 
 # Map language names to directories
-lang_to_dir = $(if $(filter c,$1),C,$(if $(filter c++,$1),C++,$(if $(filter java,$1),Java,$(if $(filter python,$1),Python,$(error Unknown language: $1)))))
+lang_to_dir = $(if $(filter c,$1),C,$(if $(filter c++,$1),C++,$(if $(filter java,$1),Java,$(error Unknown language: $1))))
 
 # Detect if second argument is a language
-LANG_ARGS := c c++ java python
+LANG_ARGS := c c++ java
 SECOND_ARG := $(word 2,$(MAKECMDGOALS))
 THIRD_ARG := $(word 3,$(MAKECMDGOALS))
 IS_LANG := $(filter $(SECOND_ARG),$(LANG_ARGS))
-
-# Detect 'keep' parameter (can be 2nd or 3rd argument)
-KEEP_TMP := $(if $(filter keep,$(SECOND_ARG) $(THIRD_ARG)),1,0)
 
 # Determine target directory
 ifeq ($(IS_LANG),)
@@ -46,35 +43,33 @@ help:
 	@echo "║              LeetCode Solutions - Root Makefile                       ║"
 	@echo "╠═══════════════════════════════════════════════════════════════════════╣"
 	@echo "║ Usage:                                                                ║"
-	@echo "║   make <number>                Run problem with default lang ($(DEFAULT_LANG))      ║"
-	@echo "║   make <number> c              Run problem in C                       ║"
-	@echo "║   make <number> c++            Run problem in C++                     ║"
-	@echo "║   make <number> java           Run problem in Java                    ║"
-	@echo "║   make <number> python         Run problem in Python                  ║"
-	@echo "║   make <number> <lang> [keep]  Run and keep temp files in tmp/        ║"
+	@echo "║   make <number>              Run problem with default lang ($(DEFAULT_LANG))        ║"
+	@echo "║   make <number> c            Run problem in C                         ║"
+	@echo "║   make <number> c++          Run problem in C++                       ║"
+	@echo "║   make <number> java         Run problem in Java                      ║"
 	@echo "║                                                                       ║"
 	@echo "║ Examples:                                                             ║"
-	@echo "║   make 153                     Run problem 153 (default: $(DEFAULT_LANG))           ║"
-	@echo "║   make 1 java                  Run problem 1 in Java                  ║"
-	@echo "║   make 42 c++                  Run problem 42 in C++                  ║"
-	@echo "║   make 42 c++ keep             Run problem 42 in C++ (keep tmp)       ║"
+	@echo "║   make 153                   Run problem 153 (default: $(DEFAULT_LANG))             ║"
+	@echo "║   make 1 java                Run problem 1 in Java                    ║"
+	@echo "║   make 42 c++                Run problem 42 in C++                    ║"
+	@echo "║                                                                       ║"
+	@echo "║ Verification & Summary:                                               ║"
+	@echo "║   make verify all            Verify all (C, C++, Java) -> Out/logs/   ║"
+	@echo "║   make verify c              Verify C solutions -> Out/logs/          ║"
+	@echo "║   make verify c++            Verify C++ solutions -> Out/logs/        ║"
+	@echo "║   make verify java           Verify Java solutions -> Out/logs/       ║"
+	@echo "║   make summary               Show & save summary -> Out/              ║"
 	@echo "║                                                                       ║"
 	@echo "║ Other commands:                                                       ║"
-	@echo "║   make format                  Format all source files                ║"
-	@echo "║   make format c                Format only C files                    ║"
-	@echo "║   make format c++              Format only C++ files                  ║"
-	@echo "║   make format java             Format only Java files                 ║"
-	@echo "║   make clean_all               Clean all in default language          ║"
-	@echo "║   make clean_all <lang>        Clean all in specified language        ║"
-	@echo "║   make clean tmp               Delete tmp/ folder                     ║"
-	@echo "║   make clean out               Delete out/ folder                     ║"
-	@echo "║   make find<N>                 Find problem N in default language     ║"
-	@echo "║   make find<N> <lang>          Find problem N in specified lang       ║"
-	@echo "║   make summary                 Show summary table of all problems     ║"
-	@echo "║   make summary keep            Save summary to Solutions_summary.txt  ║"
-	@echo "║   make verify all              Verify all problems (C, C++, Java)     ║"
-	@echo "║   make verify <lang>           Verify problems in specific lang       ║"
-	@echo "║   make verify <lang> keep      Verify and keep temp files             ║"
+	@echo "║   make format                Format all source files                  ║"
+	@echo "║   make format c              Format only C files                      ║"
+	@echo "║   make format c++            Format only C++ files                    ║"
+	@echo "║   make format java           Format only Java files                   ║"
+	@echo "║   make clean_all             Clean all in default language            ║"
+	@echo "║   make clean_all <lang>      Clean all in specified language          ║"
+	@echo "║   make clean out             Delete Out/ folder                       ║"
+	@echo "║   make find<N>               Find problem N in default language       ║"
+	@echo "║   make find<N> <lang>        Find problem N in specified lang         ║"
 	@echo "╚═══════════════════════════════════════════════════════════════════════╝"
 
 # Format target - runs format-all by default
@@ -159,11 +154,8 @@ ifeq ($(IS_LANG),)
 	@echo "Checking format for all source files..."
 	@$(MAKE) --no-print-directory _do_format_check_c DIRS="C C++"
 	@$(MAKE) -C Java --no-print-directory format-check
-	@$(MAKE) -C Python --no-print-directory format-check
 else ifeq ($(IS_LANG),java)
 	@$(MAKE) -C Java --no-print-directory format-check
-else ifeq ($(IS_LANG),python)
-	@$(MAKE) -C Python --no-print-directory format-check
 else
 	@echo "Checking format for $(IS_LANG) source files..."
 	@$(MAKE) --no-print-directory _do_format_check_c DIRS="$(TARGET_DIR)"
@@ -200,36 +192,26 @@ clean_all:
 	@echo "Cleaning all in $(TARGET_DIR)..."
 	$(MAKE) -C $(TARGET_DIR) clean_all
 
-# Clean temp folder
+# Clean Out folder with confirmation
 clean:
-ifeq ($(SECOND_ARG),tmp)
-	@if [ -d "$(TEMP_DIR)" ]; then \
-		echo "Deleting $(TEMP_DIR)/ folder..."; \
-		rm -rf "$(TEMP_DIR)"; \
-		echo "Done."; \
+ifeq ($(SECOND_ARG),out)
+	@if [ -d "$(OUT_DIR)" ]; then \
+		rm -rI "$(OUT_DIR)"; \
 	else \
-		echo "$(TEMP_DIR)/ folder does not exist."; \
-	fi
-else ifeq ($(SECOND_ARG),out)
-	@if [ -d "out" ]; then \
-		echo "Deleting out/ folder..."; \
-		rm -rf "out"; \
-		echo "Done."; \
-	else \
-		echo "out/ folder does not exist."; \
+		echo "$(OUT_DIR)/ folder does not exist."; \
 	fi
 else
-	@echo "Usage: make clean tmp | make clean out"
+	@echo "Usage: make clean out"
 endif
 
-# Handle 'tmp' as a target argument
-tmp:
+# Handle 'out' as a target argument
+out:
 	@true
 
 # Global clean - clean all language directories
 global_clean:
 	@echo "=== Global Clean ==="
-	@for dir in C C++ Java Python; do \
+	@for dir in C C++ Java; do \
 		if [ -f "$$dir/Makefile" ]; then \
 			echo "Cleaning $$dir..."; \
 			$(MAKE) -C $$dir clean_all 2>/dev/null || true; \
@@ -237,8 +219,8 @@ global_clean:
 	done
 	@echo "=== Done ==="
 
-# Handle language arguments and 'keep' (prevent "No rule to make target" error)
-c c++ java python keep:
+# Handle language arguments (prevent "No rule to make target" error)
+c c++ java:
 	@true
 
 # Find target with optional language
@@ -272,25 +254,22 @@ clean%:
 	@if echo "$@" | grep -Eq '^[0-9]+$$'; then \
 		echo "Running problem $@ in $(TARGET_DIR) ($(if $(IS_LANG),$(IS_LANG),$(DEFAULT_LANG)))..."; \
 		echo ""; \
-		$(MAKE) -C $(TARGET_DIR) --no-print-directory KEEP_TMP=$(KEEP_TMP) $@; \
+		$(MAKE) -C $(TARGET_DIR) --no-print-directory KEEP_TMP=0 $@; \
 	else \
 		echo "Unknown target: $@"; \
 		echo "Use 'make help' for usage information."; \
 		exit 1; \
 	fi
 
-.PHONY: help format format-all format-check clean_all clean global_clean c c++ java python keep tmp out _do_format_c _do_format_check_c summary _summary_output verify all
+.PHONY: help format format-all format-check clean_all clean global_clean c c++ java out _do_format_c _do_format_check_c summary _summary_output verify all
 
 # Summary - Show table with problem counts by language and difficulty
-# Usage: make summary | make summary keep (saves to Solutions_summary.txt)
+# Always saves to Out/Solutions_summary.txt
 summary:
-ifeq ($(KEEP_TMP),1)
-	@$(MAKE) --no-print-directory _summary_output | tee Solutions_summary.txt
+	@mkdir -p $(OUT_DIR)
+	@$(MAKE) --no-print-directory _summary_output | tee $(OUT_DIR)/Solutions_summary.txt
 	@echo ""
-	@echo "   Summary saved to: Solutions_summary.txt"
-else
-	@$(MAKE) --no-print-directory _summary_output
-endif
+	@echo "   Summary saved to: $(OUT_DIR)/Solutions_summary.txt"
 
 _summary_output:
 	@echo ""
@@ -364,26 +343,27 @@ _summary_output:
 	echo "";
 
 # Verify - Run all problems with expected outputs and show results table
+# Always saves to Out/logs/ with timestamp
 # Usage: make verify all | make verify c | make verify c++ | make verify java
-# Add 'keep' as third argument to keep temp files: make verify c++ keep
 verify:
 ifeq ($(SECOND_ARG),all)
-	@$(MAKE) --no-print-directory _verify_all LANGS="c c++ java" OUT_PREFIX="All" KEEP_TMP=$(KEEP_TMP)
+	@$(MAKE) --no-print-directory _verify_all LANGS="c c++ java" OUT_PREFIX="All"
 else ifeq ($(SECOND_ARG),c)
-	@$(MAKE) --no-print-directory _verify_all LANGS="c" OUT_PREFIX="C" KEEP_TMP=$(KEEP_TMP)
+	@$(MAKE) --no-print-directory _verify_all LANGS="c" OUT_PREFIX="C"
 else ifeq ($(SECOND_ARG),c++)
-	@$(MAKE) --no-print-directory _verify_all LANGS="c++" OUT_PREFIX="C++" KEEP_TMP=$(KEEP_TMP)
+	@$(MAKE) --no-print-directory _verify_all LANGS="c++" OUT_PREFIX="C++"
 else ifeq ($(SECOND_ARG),java)
-	@$(MAKE) --no-print-directory _verify_all LANGS="java" OUT_PREFIX="Java" KEEP_TMP=$(KEEP_TMP)
+	@$(MAKE) --no-print-directory _verify_all LANGS="java" OUT_PREFIX="Java"
 else
-	@echo "Usage: make verify <all|c|c++|java> [keep]"
+	@echo "Usage: make verify <all|c|c++|java>"
 	@echo ""
 	@echo "Examples:"
 	@echo "  make verify all       Verify all problems in C, C++, and Java"
 	@echo "  make verify c         Verify only C problems"
 	@echo "  make verify c++       Verify only C++ problems"
 	@echo "  make verify java      Verify only Java problems"
-	@echo "  make verify c++ [keep] Verify C++ and keep temp files"
+	@echo ""
+	@echo "Results are saved to Out/logs/ with timestamp"
 endif
 
 # Handle 'all' as a target argument
@@ -391,11 +371,13 @@ all:
 	@true
 
 _verify_all:
-	@mkdir -p out $(TEMP_DIR)/C $(TEMP_DIR)/C++ $(TEMP_DIR)/Java
-	@outfile="out/$(OUT_PREFIX)_TestResults.txt"; \
+	@mkdir -p $(LOGS_DIR) $(TEMP_DIR)/C $(TEMP_DIR)/C++ $(TEMP_DIR)/Java
+	@timestamp=$$(date +%Y%m%d_%H%M%S); \
+	outfile="$(LOGS_DIR)/$(OUT_PREFIX)_TestResults_$$timestamp.txt"; \
 	echo "" | tee "$$outfile"; \
 	echo "═══════════════════════════════════════════════════════════════════════════════" | tee -a "$$outfile"; \
 	echo "   Verification Results - $(OUT_PREFIX)" | tee -a "$$outfile"; \
+	echo "   Timestamp: $$timestamp" | tee -a "$$outfile"; \
 	echo "═══════════════════════════════════════════════════════════════════════════════" | tee -a "$$outfile"; \
 	echo "" | tee -a "$$outfile"; \
 	verify_c="no"; verify_cpp="no"; verify_java="no"; \
@@ -443,7 +425,6 @@ _verify_all:
 							fi; \
 							c_results="$$c_results$$num:$$errors "; \
 						fi; \
-						if [ "$(KEEP_TMP)" != "1" ]; then rm -f "$$tmp"; fi; \
 						rm -f "$$exe"; \
 					else \
 						echo "  Compilation failed!" | tee -a "$$outfile"; \
@@ -485,7 +466,6 @@ _verify_all:
 							fi; \
 							cpp_results="$$cpp_results$$num:$$errors "; \
 						fi; \
-						if [ "$(KEEP_TMP)" != "1" ]; then rm -f "$$tmp"; fi; \
 						rm -f "$$exe"; \
 					else \
 						echo "  Compilation failed!" | tee -a "$$outfile"; \
@@ -526,7 +506,6 @@ _verify_all:
 							fi; \
 							java_results="$$java_results$$num:$$errors "; \
 						fi; \
-						if [ "$(KEEP_TMP)" != "1" ]; then rm -f "$$tmp"; fi; \
 						rm -f "$$dir/Test.class" "$$dir/Solution.class"; \
 					else \
 						echo "  Compilation failed!" | tee -a "$$outfile"; \
@@ -621,10 +600,9 @@ _verify_all:
 	echo "   Summary: $$total_pass passed, $$total_fail failed" | tee -a "$$outfile"; \
 	echo "" | tee -a "$$outfile"; \
 	if [ $$total_fail -eq 0 ]; then \
-		final_file="out/$(OUT_PREFIX)_TestResults_PASS.txt"; \
+		final_file="$(LOGS_DIR)/$(OUT_PREFIX)_TestResults_PASS_$$timestamp.txt"; \
 	else \
-		final_file="out/$(OUT_PREFIX)_TestResults_FAIL.txt"; \
+		final_file="$(LOGS_DIR)/$(OUT_PREFIX)_TestResults_FAIL_$$timestamp.txt"; \
 	fi; \
 	mv "$$outfile" "$$final_file"; \
 	echo "   Output saved to: $$final_file";
-

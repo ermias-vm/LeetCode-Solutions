@@ -10,7 +10,6 @@ base.txt
 C/tcc/
 C++/tcc/
 Java/tcc/
-Python/tcc/
 
 # MinGW Compiler (downloaded automatically by C++ make.ps1)
 C++/mingw/
@@ -32,9 +31,6 @@ C++/mingw/
 *.iws
 *.iml
 *.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
 ### Eclipse ###
 .apt_generated
@@ -64,5 +60,4 @@ bin/
 ### Other Files
 ToDo
 backup/
-tmp/
-Solutions_summary.txt
+Out/
