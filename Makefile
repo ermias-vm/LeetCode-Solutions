@@ -373,6 +373,7 @@ _verify_all:
 	@mkdir -p $(LOGS_DIR) $(TEMP_DIR)/C $(TEMP_DIR)/C++ $(TEMP_DIR)/Java
 	@timestamp=$$(date +%Y%m%d_%H%M%S); \
 	outfile="$(LOGS_DIR)/$(OUT_PREFIX)_TestResults_$$timestamp.txt"; \
+	total_start=$$(date +%s); \
 	echo "" | tee "$$outfile"; \
 	echo "═══════════════════════════════════════════════════════════════════════════════" | tee -a "$$outfile"; \
 	echo "   Verification Results - $(OUT_PREFIX)" | tee -a "$$outfile"; \
@@ -387,8 +388,10 @@ _verify_all:
 	done; \
 	all_problems=$$(find ExpectedOutputs -name "*.txt" 2>/dev/null | sed 's|.*/||' | sed 's|\.txt$$||' | sort -n | uniq); \
 	c_results=""; cpp_results=""; java_results=""; \
-	for num in $$all_problems; do \
-		for lang in $(LANGS); do \
+	c_time=0; cpp_time=0; java_time=0; \
+	for lang in $(LANGS); do \
+		lang_start=$$(date +%s); \
+		for num in $$all_problems; do \
 			if [ "$$lang" = "c" ]; then \
 				src=$$(find C -name "$$num-*.c" 2>/dev/null | head -n 1); \
 				if [ -n "$$src" ]; then \
@@ -513,7 +516,13 @@ _verify_all:
 				fi; \
 			fi; \
 		done; \
+		lang_end=$$(date +%s); \
+		if [ "$$lang" = "c" ]; then c_time=$$((lang_end - lang_start)); fi; \
+		if [ "$$lang" = "c++" ]; then cpp_time=$$((lang_end - lang_start)); fi; \
+		if [ "$$lang" = "java" ]; then java_time=$$((lang_end - lang_start)); fi; \
 	done; \
+	total_end=$$(date +%s); \
+	total_time=$$((total_end - total_start)); \
 	echo "" | tee -a "$$outfile"; \
 	echo "═══════════════════════════════════════════════════════════════════════════════" | tee -a "$$outfile"; \
 	echo "   Summary Table" | tee -a "$$outfile"; \
@@ -597,6 +606,22 @@ _verify_all:
 	echo   "  └──────┴──────────────────────────────────────────────┴────────┴─────┴─────┴──────┴────────┘" | tee -a "$$outfile"; \
 	echo "" | tee -a "$$outfile"; \
 	echo "   Summary: $$total_pass passed, $$total_fail failed" | tee -a "$$outfile"; \
+	echo "" | tee -a "$$outfile"; \
+	echo "═══════════════════════════════════════════════════════════════════════════════" | tee -a "$$outfile"; \
+	echo "   Elapsed Time" | tee -a "$$outfile"; \
+	echo "═══════════════════════════════════════════════════════════════════════════════" | tee -a "$$outfile"; \
+	echo "" | tee -a "$$outfile"; \
+	if [ "$$verify_c" = "yes" ]; then \
+		printf "   C:      %3ds\n" "$$c_time" | tee -a "$$outfile"; \
+	fi; \
+	if [ "$$verify_cpp" = "yes" ]; then \
+		printf "   C++:    %3ds\n" "$$cpp_time" | tee -a "$$outfile"; \
+	fi; \
+	if [ "$$verify_java" = "yes" ]; then \
+		printf "   Java:   %3ds\n" "$$java_time" | tee -a "$$outfile"; \
+	fi; \
+	printf "   ─────────────\n" | tee -a "$$outfile"; \
+	printf "   Total:  %3ds\n" "$$total_time" | tee -a "$$outfile"; \
 	echo "" | tee -a "$$outfile"; \
 	if [ $$total_fail -eq 0 ]; then \
 		final_file="$(LOGS_DIR)/$(OUT_PREFIX)_TestResults_PASS_$$timestamp.txt"; \
