@@ -50,7 +50,7 @@ void printVector(vector<int>& v) {
     cout << "Output: [";
     for (size_t i = 0; i < v.size(); i++) {
         cout << v[i];
-        if (i < v.size() - 1) cout << ", ";
+        if (i < v.size() - 1) cout << ",";
     }
     cout << "]" << endl;
 }
@@ -68,8 +68,8 @@ int main() {
     vector<int> result2 = solution.topKFrequent(nums2, 1);
     printVector(result2);
 
-    // Example 3: nums = [1,2], k = 2
-    vector<int> nums3 = {1, 2};
+    // Example 3: nums = [1,2,1,2,1,2,3,1,3,2], k = 2
+    vector<int> nums3 = {1, 2, 1, 2, 1, 2, 3, 1, 3, 2};
     vector<int> result3 = solution.topKFrequent(nums3, 2);
     printVector(result3);
 
