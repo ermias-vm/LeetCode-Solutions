@@ -47,31 +47,35 @@ public:
 };
 
 // Test
+void printDecoded(const vector<string>& decoded) {
+    cout << "[";
+    for (size_t i = 0; i < decoded.size(); i++) {
+        cout << "\"" << decoded[i] << "\"";
+        if (i < decoded.size() - 1) cout << ", ";
+    }
+    cout << "]";
+}
+
 int main() {
     Solution solution;
+
+    // Example 1
     vector<string> strs1 = {"hello", "world"};
-    vector<string> strs2 = {"", "a", "abc", "defg"};
-
+    cout << "Input: [\"hello\", \"world\"]" << endl;
     string encoded1 = solution.encode(strs1);
-    string encoded2 = solution.encode(strs2);
-
     vector<string> decoded1 = solution.decode(encoded1);
+    cout << "Output: ";
+    printDecoded(decoded1);
+    cout << endl << endl;
+
+    // Example 2
+    vector<string> strs2 = {"", "a", "abc", "defg"};
+    cout << "Input: [\"\", \"a\", \"abc\", \"defg\"]" << endl;
+    string encoded2 = solution.encode(strs2);
     vector<string> decoded2 = solution.decode(encoded2);
-
-    // Print results
-    cout << "Encoded 1: " << encoded1 << endl;
-    cout << "Decoded 1: ";
-    for (const auto& str : decoded1) {
-        cout << "\"" << str << "\" ";
-    }
-    cout << endl;
-
-    cout << "Encoded 2: " << encoded2 << endl;
-    cout << "Decoded 2: ";
-    for (const auto& str : decoded2) {
-        cout << "\"" << str << "\" ";
-    }
-    cout << endl;
+    cout << "Output: ";
+    printDecoded(decoded2);
+    cout << endl << endl;
 
     return 0;
 }
