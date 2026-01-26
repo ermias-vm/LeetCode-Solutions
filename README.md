@@ -21,10 +21,14 @@ A collection of [LeetCode](https://leetcode.com/problemset/) problem solutions i
   - **[Medium/](Java/Medium/)**
   - **[Hard/](Java/Hard/)**
   - **[Makefile](Java/Makefile)** - Java-specific Makefile
-- **[ExpectedOutputs/](ExpectedOutputs/)** - Expected test outputs for verification
-  - **[Easy/](ExpectedOutputs/Easy/)** 
-  - **[Medium/](ExpectedOutputs/Medium/)**
-  - **[Hard/](ExpectedOutputs/Hard/)**
+- **[Results/](Results/)** - Expected test outputs for verification
+  - **[Easy/](Results/Easy/)** 
+  - **[Medium/](Results/Medium/)**
+  - **[Hard/](Results/Hard/)**
+- **[Templates/](Templates/)** - Solution templates for new problems
+  - **[template.c](Templates/template.c)** - C template
+  - **[template.cc](Templates/template.cc)** - C++ template
+  - **[template.java](Templates/template.java)** - Java template
 - **[Out/]** - Generated output folder (gitignored)
   - **logs/** - Verification results with timestamps
   - **tmp/** - Temporary output files
@@ -111,9 +115,9 @@ Deleting ./Easy/1-TwoSum.x
 
 ## Output Verification
 
-Each problem run automatically verifies against expected outputs stored in [ExpectedOutputs/](ExpectedOutputs/).
+Each problem run automatically verifies against expected outputs stored in [Results/](Results/).
 
-**Expected output format** (`ExpectedOutputs/<Difficulty>/<N>.txt`):
+**Expected output format** (`Results/<Difficulty>/<N>.txt`):
 ```
 3
 [0, 1]
@@ -144,7 +148,7 @@ Logs are saved to `Out/logs/` with timestamps:
 
 1. Create the solution file: `<Language>/<Difficulty>/<N>-<ProblemName>.<ext>`
 2. Include a test runner that prints `Output: <result>` for each test case
-3. Add expected outputs to [ExpectedOutputs/](ExpectedOutputs/)`<Difficulty>/<N>.txt`
+3. Add expected outputs to [Results/](Results/)`<Difficulty>/<N>.txt`
 4. Run with `make <N> <language>` to verify
 
 ## File Naming Convention

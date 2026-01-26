@@ -287,9 +287,9 @@ _summary_output:
 	java_medium=$$(find Java/Medium -name "*.java" 2>/dev/null | wc -l); \
 	java_hard=$$(find Java/Hard -name "*.java" 2>/dev/null | wc -l); \
 	java_total=$$((java_easy + java_medium + java_hard)); \
-	test_easy=$$(find ExpectedOutputs/Easy -name "*.txt" 2>/dev/null | wc -l); \
-	test_medium=$$(find ExpectedOutputs/Medium -name "*.txt" 2>/dev/null | wc -l); \
-	test_hard=$$(find ExpectedOutputs/Hard -name "*.txt" 2>/dev/null | wc -l); \
+	test_easy=$$(find Results/Easy -name "*.txt" 2>/dev/null | wc -l); \
+	test_medium=$$(find Results/Medium -name "*.txt" 2>/dev/null | wc -l); \
+	test_hard=$$(find Results/Hard -name "*.txt" 2>/dev/null | wc -l); \
 	test_total=$$((test_easy + test_medium + test_hard)); \
 	total_easy=$$((c_easy + cpp_easy + java_easy)); \
 	total_medium=$$((c_medium + cpp_medium + java_medium)); \
@@ -315,7 +315,7 @@ _summary_output:
 		sed 's|.*/||' | sed 's|\.[^.]*$$||' | sort -t'-' -k1 -n | uniq); \
 	problem_count=$$(echo "$$all_problems" | wc -w); \
 	echo   "  ┌──────┬──────────────────────────────────────────────┬────────┬──────┬──────┬──────┬──────┐"; \
-	printf "  │ %-4s │ %-44s │ %-6s │ %-4s │ %-4s │ %-4s │ %-4s │\n" "#" "Problem" "Level" " C " " C++" "Java" "Test"; \
+	printf "  │ %-4s │ %-44s │ %-6s │ %-4s │ %-4s │ %-4s │ %-4s │\n" "NUM" "Problem" "Level" " C " " C++" "Java" "Test"; \
 	echo   "  ├──────┼──────────────────────────────────────────────┼────────┼──────┼──────┼──────┼──────┤"; \
 	first=1; \
 	for problem in $$all_problems; do \
@@ -329,7 +329,7 @@ _summary_output:
 		if find C -name "$$num-*.c" 2>/dev/null | grep -q .; then c_exists="OK"; fi; \
 		if find C++ -name "$$num-*.cc" 2>/dev/null | grep -q .; then cpp_exists="OK"; fi; \
 		if find Java -name "$$num-*.java" 2>/dev/null | grep -q .; then java_exists="OK"; fi; \
-		if find ExpectedOutputs -name "$$num.txt" 2>/dev/null | grep -q .; then test_exists="OK"; fi; \
+		if find Results -name "$$num.txt" 2>/dev/null | grep -q .; then test_exists="OK"; fi; \
 		if [ $$first -eq 0 ]; then \
 			echo   "  ├──────┼──────────────────────────────────────────────┼────────┼──────┼──────┼──────┼──────┤"; \
 		fi; \
@@ -386,7 +386,7 @@ _verify_all:
 		if [ "$$lang" = "c++" ]; then verify_cpp="yes"; fi; \
 		if [ "$$lang" = "java" ]; then verify_java="yes"; fi; \
 	done; \
-	all_problems=$$(find ExpectedOutputs -name "*.txt" 2>/dev/null | sed 's|.*/||' | sed 's|\.txt$$||' | sort -n | uniq); \
+	all_problems=$$(find Results -name "*.txt" 2>/dev/null | sed 's|.*/||' | sed 's|\.txt$$||' | sort -n | uniq); \
 	c_results=""; cpp_results=""; java_results=""; \
 	c_time=0; cpp_time=0; java_time=0; \
 	for lang in $(LANGS); do \
@@ -404,7 +404,7 @@ _verify_all:
 					if [ -f "$$exe" ]; then \
 						tmp="$(TEMP_DIR)/C/$$num.txt"; \
 						"./$$exe" > "$$tmp" 2>&1; \
-						expected_file="ExpectedOutputs/$$difficulty/$$num.txt"; \
+						expected_file="Results/$$difficulty/$$num.txt"; \
 						if [ -f "$$expected_file" ]; then \
 							num_expected=$$(head -n 1 "$$expected_file"); \
 							errors=0; \
@@ -445,7 +445,7 @@ _verify_all:
 					if [ -f "$$exe" ]; then \
 						tmp="$(TEMP_DIR)/C++/$$num.txt"; \
 						"./$$exe" > "$$tmp" 2>&1; \
-						expected_file="ExpectedOutputs/$$difficulty/$$num.txt"; \
+						expected_file="Results/$$difficulty/$$num.txt"; \
 						if [ -f "$$expected_file" ]; then \
 							num_expected=$$(head -n 1 "$$expected_file"); \
 							errors=0; \
@@ -485,7 +485,7 @@ _verify_all:
 					if [ -f "$$dir/Test.class" ]; then \
 						tmp="$(TEMP_DIR)/Java/$$num.txt"; \
 						java -cp "$$dir" Test > "$$tmp" 2>&1; \
-						expected_file="ExpectedOutputs/$$difficulty/$$num.txt"; \
+						expected_file="Results/$$difficulty/$$num.txt"; \
 						if [ -f "$$expected_file" ]; then \
 							num_expected=$$(head -n 1 "$$expected_file"); \
 							errors=0; \
@@ -538,7 +538,7 @@ _verify_all:
 	for problem in $$all_src; do \
 		num=$$(echo "$$problem" | cut -d'-' -f1); \
 		name=$$(echo "$$problem" | cut -d'-' -f2-); \
-		if ! find ExpectedOutputs -name "$$num.txt" 2>/dev/null | grep -q .; then continue; fi; \
+		if ! find Results -name "$$num.txt" 2>/dev/null | grep -q .; then continue; fi; \
 		level=""; \
 		if find C/Easy C++/Easy Java/Easy -name "$$num-*" 2>/dev/null | grep -q .; then level="Easy"; fi; \
 		if find C/Medium C++/Medium Java/Medium -name "$$num-*" 2>/dev/null | grep -q .; then level="Medium"; fi; \

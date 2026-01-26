@@ -6,13 +6,13 @@ PROBLEM_NUM=$1
 OUTPUT_FILE=$2
 DIFFICULTY=$3
 SCRIPT_DIR="$(dirname "$0")"
-EXPECTED_DIR="$SCRIPT_DIR/ExpectedOutputs/$DIFFICULTY"
+EXPECTED_DIR="$SCRIPT_DIR/Results/$DIFFICULTY"
 EXPECTED_FILE="$EXPECTED_DIR/$PROBLEM_NUM.txt"
 
 # Check if expected file exists
 if [ ! -f "$EXPECTED_FILE" ]; then
     echo ""
-    echo "Expected output file not found: ExpectedOutputs/$DIFFICULTY/$PROBLEM_NUM.txt"
+    echo "Expected output file not found: Results/$DIFFICULTY/$PROBLEM_NUM.txt"
     echo "Skipping verification."
     exit 0
 fi
