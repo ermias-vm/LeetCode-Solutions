@@ -50,25 +50,29 @@ class Solution {
 
 // Test
 class Test {
+    public static String formatList(List<String> list) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < list.size(); i++) {
+            sb.append("\"").append(list.get(i)).append("\"");
+            if (i < list.size() - 1) sb.append(", ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
     public static void main(String[] args) {
         Solution solution = new Solution();
 
+        // Example 1: ["hello", "world"]
         List<String> strs1 = Arrays.asList("hello", "world");
-        List<String> strs2 = Arrays.asList("", "a", "abc", "defg");
-
         String encoded1 = solution.encode(strs1);
-        String encoded2 = solution.encode(strs2);
-
         List<String> decoded1 = solution.decode(encoded1);
+        System.out.println("Output: " + formatList(decoded1));
+
+        // Example 2: ["", "a", "abc", "defg"]
+        List<String> strs2 = Arrays.asList("", "a", "abc", "defg");
+        String encoded2 = solution.encode(strs2);
         List<String> decoded2 = solution.decode(encoded2);
-
-        System.out.println("Input 1: " + strs1);
-        System.out.println("Encoded 1: " + encoded1);
-        System.out.println("Decoded 1: " + decoded1);
-        System.out.println();
-
-        System.out.println("Input 2: " + strs2);
-        System.out.println("Encoded 2: " + encoded2);
-        System.out.println("Decoded 2: " + decoded2);
+        System.out.println("Output: " + formatList(decoded2));
     }
 }

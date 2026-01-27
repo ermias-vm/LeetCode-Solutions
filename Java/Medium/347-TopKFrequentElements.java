@@ -56,7 +56,7 @@ class Test {
         StringBuilder sb = new StringBuilder("[");
         for (int i = 0; i < sorted.length; i++) {
             sb.append(sorted[i]);
-            if (i < sorted.length - 1) sb.append(", ");
+            if (i < sorted.length - 1) sb.append(",");
         }
         sb.append("]");
         return sb.toString();
