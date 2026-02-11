@@ -40,6 +40,27 @@ $Script:CFlags = "-std=c11 -Wall -Wextra -g"
 $Script:CXX = "g++"
 $Script:CXXFlags = "-std=c++20 -Wall -Wextra -g"
 
+# Find clang-format in common locations
+$Script:ClangFormat = $null
+$clangFormatPaths = @(
+    "clang-format",  # In PATH
+    "C:\Program Files\LLVM\bin\clang-format.exe",
+    "C:\Program Files (x86)\LLVM\bin\clang-format.exe",
+    "$env:LOCALAPPDATA\Programs\LLVM\bin\clang-format.exe"
+)
+foreach ($path in $clangFormatPaths) {
+    if ($path -eq "clang-format") {
+        $cmd = Get-Command $path -ErrorAction SilentlyContinue
+        if ($cmd) {
+            $Script:ClangFormat = $cmd.Source
+            break
+        }
+    } elseif (Test-Path $path) {
+        $Script:ClangFormat = $path
+        break
+    }
+}
+
 # ============================================================================
 # Helper Functions
 # ============================================================================
@@ -173,11 +194,19 @@ function Show-Help {
     Write-Host "    .\build.ps1 verify java           Verify Java solutions"
     Write-Host "    .\build.ps1 summary               Show & save summary"
     Write-Host ""
+    Write-Host "  Formatting:" -ForegroundColor Yellow
+    Write-Host "    .\build.ps1 format                Format all source files"
+    Write-Host "    .\build.ps1 format c              Format only C files"
+    Write-Host "    .\build.ps1 format c++            Format only C++ files"
+    Write-Host "    .\build.ps1 format java           Format only Java files"
+    Write-Host "    .\build.ps1 format-check          Check format without modifying"
+    Write-Host ""
     Write-Host "  Other commands:" -ForegroundColor Yellow
-    Write-Host "    .\build.ps1 find <N>              Find problem N in default language"
-    Write-Host "    .\build.ps1 find <N> <lang>       Find problem N in specified lang"
-    Write-Host "    .\build.ps1 compile <N> [lang]    Compile problem N"
-    Write-Host "    .\build.ps1 clean                 Clean all executables"
+    Write-Host "    .\build.ps1 find <N> [lang]       Find problem N"
+    Write-Host "    .\build.ps1 compile <N> [lang]    Compile only (no run)"
+    Write-Host "    .\build.ps1 run <N> [lang]        Run only (must be compiled)"
+    Write-Host "    .\build.ps1 clean <N> [lang]      Clean specific problem"
+    Write-Host "    .\build.ps1 clean_all [lang]      Clean all executables"
     Write-Host "    .\build.ps1 clean out             Delete Out/ folder"
     Write-Host ""
     Write-Host "  =======================================================================" -ForegroundColor Cyan
@@ -552,6 +581,280 @@ function Invoke-Verify($langFilter) {
     Write-Host ""
 }
 
+function Invoke-RunOnly($num, $lang) {
+    $file = Find-SourceFile $num $lang
+    if (-not $file) {
+        $dir = Get-LangDir $lang
+        Write-Host "No source file found starting with $num- in $dir" -ForegroundColor Red
+        return
+    }
+    
+    $dir = $file.DirectoryName
+    $difficulty = Get-Difficulty $file.FullName
+    
+    # Create temp directory
+    $scriptRoot = $PSScriptRoot
+    if (-not $scriptRoot) { $scriptRoot = (Get-Location).Path }
+    $tempDir = Join-Path $scriptRoot (Join-Path $Script:TempDir (Get-LangDir $lang))
+    if (-not (Test-Path $tempDir)) {
+        New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
+    }
+    $tmpOutput = Join-Path $tempDir "$num.txt"
+    
+    switch ($lang.ToLower()) {
+        "c" {
+            $exePath = $file.FullName -replace "\.c$", ".exe"
+            if (Test-Path $exePath) {
+                Write-Host "Running $($file.BaseName).exe"
+                & $exePath | Tee-Object -FilePath $tmpOutput
+                Verify-Output $num $tmpOutput $difficulty
+            } else {
+                Write-Host "Executable not found. Please compile first with: .\build.ps1 compile $num $lang" -ForegroundColor Red
+            }
+        }
+        "c++" {
+            $exePath = $file.FullName -replace "\.cc$", ".exe"
+            if (Test-Path $exePath) {
+                Write-Host "Running $($file.BaseName).exe"
+                & $exePath | Tee-Object -FilePath $tmpOutput
+                Verify-Output $num $tmpOutput $difficulty
+            } else {
+                Write-Host "Executable not found. Please compile first with: .\build.ps1 compile $num $lang" -ForegroundColor Red
+            }
+        }
+        "java" {
+            $classFile = Join-Path $dir "Test.class"
+            if (Test-Path $classFile) {
+                Write-Host "Running Test.class"
+                Push-Location $dir
+                & java Test | Tee-Object -FilePath $tmpOutput
+                Pop-Location
+                Verify-Output $num $tmpOutput $difficulty
+            } else {
+                Write-Host "Class file not found. Please compile first with: .\build.ps1 compile $num $lang" -ForegroundColor Red
+            }
+        }
+    }
+    
+    Remove-Item $tmpOutput -ErrorAction SilentlyContinue
+}
+
+function Invoke-CleanProblem($num, $lang) {
+    $file = Find-SourceFile $num $lang
+    if (-not $file) {
+        $dir = Get-LangDir $lang
+        Write-Host "No source file found starting with $num- in $dir" -ForegroundColor Red
+        return
+    }
+    
+    $dir = $file.DirectoryName
+    $cleaned = $false
+    
+    switch ($lang.ToLower()) {
+        "c" {
+            $exePath = $file.FullName -replace "\.c$", ".exe"
+            $xPath = $file.FullName -replace "\.c$", ".x"
+            if (Test-Path $exePath) {
+                Remove-Item $exePath -Force
+                Write-Host "Deleted $($file.BaseName).exe" -ForegroundColor Green
+                $cleaned = $true
+            }
+            if (Test-Path $xPath) {
+                Remove-Item $xPath -Force
+                Write-Host "Deleted $($file.BaseName).x" -ForegroundColor Green
+                $cleaned = $true
+            }
+        }
+        "c++" {
+            $exePath = $file.FullName -replace "\.cc$", ".exe"
+            $xPath = $file.FullName -replace "\.cc$", ".x"
+            if (Test-Path $exePath) {
+                Remove-Item $exePath -Force
+                Write-Host "Deleted $($file.BaseName).exe" -ForegroundColor Green
+                $cleaned = $true
+            }
+            if (Test-Path $xPath) {
+                Remove-Item $xPath -Force
+                Write-Host "Deleted $($file.BaseName).x" -ForegroundColor Green
+                $cleaned = $true
+            }
+        }
+        "java" {
+            Get-ChildItem -Path $dir -Filter "*.class" -ErrorAction SilentlyContinue | ForEach-Object {
+                Remove-Item $_.FullName -Force
+                Write-Host "Deleted $($_.Name)" -ForegroundColor Green
+                $cleaned = $true
+            }
+        }
+    }
+    
+    if (-not $cleaned) {
+        Write-Host "No executables found for problem $num in $(Get-LangDir $lang)" -ForegroundColor Yellow
+    }
+}
+
+function Invoke-CleanAll($lang) {
+    if ($lang) {
+        $langs = @($lang)
+    } else {
+        $langs = @("C", "C++", "Java")
+    }
+    
+    foreach ($l in $langs) {
+        $langDir = if ($l -in @("c", "c++", "java")) { Get-LangDir $l } else { $l }
+        Write-Host "Cleaning $langDir..." -ForegroundColor Cyan
+        
+        foreach ($diff in @("Easy", "Medium", "Hard")) {
+            $path = "$langDir/$diff"
+            if (Test-Path $path) {
+                Get-ChildItem -Path $path -Filter "*.exe" -ErrorAction SilentlyContinue | Remove-Item -Force
+                Get-ChildItem -Path $path -Filter "*.class" -ErrorAction SilentlyContinue | Remove-Item -Force
+                Get-ChildItem -Path $path -Filter "*.x" -ErrorAction SilentlyContinue | Remove-Item -Force
+            }
+        }
+    }
+    Write-Host "Done!" -ForegroundColor Green
+}
+
+function Invoke-Format($lang) {
+    # Check if clang-format is available
+    $hasClangFormat = $null -ne $Script:ClangFormat
+    
+    if ($lang) {
+        $langs = @($lang)
+    } else {
+        $langs = @("c", "c++", "java")
+    }
+    
+    $modifiedFiles = @()
+    
+    foreach ($l in $langs) {
+        $langDir = Get-LangDir $l
+        $ext = switch ($l.ToLower()) {
+            "c"    { @("*.c", "*.h") }
+            "c++"  { @("*.cc", "*.h") }
+            "java" { @("*.java") }
+        }
+        
+        Write-Host ""
+        Write-Host "Formatting $langDir files..." -ForegroundColor Cyan
+        
+        foreach ($diff in @("Easy", "Medium", "Hard")) {
+            $path = "$langDir/$diff"
+            if (Test-Path $path) {
+                foreach ($pattern in $ext) {
+                    $files = Get-ChildItem -Path $path -Filter $pattern -ErrorAction SilentlyContinue
+                    foreach ($file in $files) {
+                        $modified = $false
+                        
+                        if ($hasClangFormat) {
+                            # Use clang-format for C, C++, and Java
+                            $originalContent = Get-Content $file.FullName -Raw
+                            & $Script:ClangFormat -i $file.FullName 2>$null
+                            $newContent = Get-Content $file.FullName -Raw
+                            if ($originalContent -ne $newContent) {
+                                $modified = $true
+                                $modifiedFiles += "$($file.Name) (clang-format)"
+                            }
+                        }
+                        
+                        # Ensure file ends with newline
+                        $content = Get-Content $file.FullName -Raw
+                        if ($content -and -not $content.EndsWith("`n")) {
+                            $content += "`n"
+                            Set-Content -Path $file.FullName -Value $content -NoNewline
+                            if (-not $modified) {
+                                $modifiedFiles += "$($file.Name) (added final newline)"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    Write-Host ""
+    Write-Host "Formatting complete!" -ForegroundColor Green
+    Write-Host ""
+    
+    if ($modifiedFiles.Count -gt 0) {
+        Write-Host "Modified files:" -ForegroundColor Yellow
+        $modifiedFiles | ForEach-Object { Write-Host "  - $_" }
+    } else {
+        Write-Host "No files were modified."
+    }
+    
+    if (-not $hasClangFormat -and ($lang -in @("c", "c++", $null))) {
+        Write-Host ""
+        Write-Host "Note: clang-format not found. Install it for better C/C++ formatting:" -ForegroundColor Yellow
+        Write-Host "  winget install LLVM.LLVM" -ForegroundColor DarkGray
+    }
+}
+
+function Invoke-FormatCheck($lang) {
+    $hasClangFormat = $null -ne $Script:ClangFormat
+    
+    if ($lang) {
+        $langs = @($lang)
+    } else {
+        $langs = @("c", "c++", "java")
+    }
+    
+    $unformattedFiles = @()
+    
+    foreach ($l in $langs) {
+        $langDir = Get-LangDir $l
+        $ext = switch ($l.ToLower()) {
+            "c"    { @("*.c", "*.h") }
+            "c++"  { @("*.cc", "*.h") }
+            "java" { @("*.java") }
+        }
+        
+        Write-Host "Checking $langDir files..." -ForegroundColor Cyan
+        
+        foreach ($diff in @("Easy", "Medium", "Hard")) {
+            $path = "$langDir/$diff"
+            if (Test-Path $path) {
+                foreach ($pattern in $ext) {
+                    $files = Get-ChildItem -Path $path -Filter $pattern -ErrorAction SilentlyContinue
+                    foreach ($file in $files) {
+                        if ($hasClangFormat) {
+                            $result = & $Script:ClangFormat --dry-run --Werror $file.FullName 2>&1
+                            if ($LASTEXITCODE -ne 0) {
+                                $unformattedFiles += $file.Name
+                            }
+                        }
+                        
+                        # Check if file ends with newline
+                        $content = Get-Content $file.FullName -Raw
+                        if ($content -and -not $content.EndsWith("`n")) {
+                            if ($file.Name -notin $unformattedFiles) {
+                                $unformattedFiles += "$($file.Name) (missing final newline)"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    Write-Host ""
+    if ($unformattedFiles.Count -gt 0) {
+        Write-Host "The following files need formatting:" -ForegroundColor Red
+        $unformattedFiles | ForEach-Object { Write-Host "  - $_" }
+        Write-Host ""
+        Write-Host "Run '.\build.ps1 format' to fix them." -ForegroundColor Yellow
+    } else {
+        Write-Host "All files are properly formatted!" -ForegroundColor Green
+    }
+    
+    if (-not $hasClangFormat -and ($lang -in @("c", "c++", $null))) {
+        Write-Host ""
+        Write-Host "Note: clang-format not found. Install it for C/C++ format checking:" -ForegroundColor Yellow
+        Write-Host "  winget install LLVM.LLVM" -ForegroundColor DarkGray
+    }
+}
+
 function Invoke-Clean($target) {
     if ($target -eq "out") {
         if (Test-Path $Script:OutDir) {
@@ -560,19 +863,12 @@ function Invoke-Clean($target) {
         } else {
             Write-Host "$Script:OutDir folder does not exist" -ForegroundColor Yellow
         }
+    } elseif ($target -match "^\d+$") {
+        # Clean specific problem number - but we need lang from Arg2
+        Write-Host "Use '.\build.ps1 clean <number> [lang]' to clean a specific problem" -ForegroundColor Yellow
     } else {
-        # Clean all executables
-        foreach ($lang in @("C", "C++", "Java")) {
-            foreach ($diff in @("Easy", "Medium", "Hard")) {
-                $path = "$lang/$diff"
-                if (Test-Path $path) {
-                    Get-ChildItem -Path $path -Filter "*.exe" -ErrorAction SilentlyContinue | Remove-Item -Force
-                    Get-ChildItem -Path $path -Filter "*.class" -ErrorAction SilentlyContinue | Remove-Item -Force
-                    Get-ChildItem -Path $path -Filter "*.x" -ErrorAction SilentlyContinue | Remove-Item -Force
-                }
-            }
-        }
-        Write-Host "Cleaned all executables" -ForegroundColor Green
+        # Clean all executables (legacy behavior)
+        Invoke-CleanAll $null
     }
 }
 
@@ -608,6 +904,14 @@ elseif ($Command -eq "compile") {
         Write-Host "Usage: .\build.ps1 compile <number> [lang]" -ForegroundColor Red
     }
 }
+elseif ($Command -eq "run") {
+    if ($Arg1) {
+        $lang = if ($Arg2 -and $Arg2 -in $Script:Languages) { $Arg2 } else { $Script:DefaultLang }
+        Invoke-RunOnly $Arg1 $lang
+    } else {
+        Write-Host "Usage: .\build.ps1 run <number> [lang]" -ForegroundColor Red
+    }
+}
 elseif ($Command -eq "verify") {
     if ($Arg1 -eq "all" -or $Arg1 -in $Script:Languages) {
         Invoke-Verify $Arg1
@@ -615,8 +919,28 @@ elseif ($Command -eq "verify") {
         Write-Host "Usage: .\build.ps1 verify <all|c|c++|java>" -ForegroundColor Red
     }
 }
+elseif ($Command -eq "format") {
+    $lang = if ($Arg1 -and $Arg1 -in $Script:Languages) { $Arg1 } else { $null }
+    Invoke-Format $lang
+}
+elseif ($Command -eq "format-check") {
+    $lang = if ($Arg1 -and $Arg1 -in $Script:Languages) { $Arg1 } else { $null }
+    Invoke-FormatCheck $lang
+}
 elseif ($Command -eq "clean") {
-    Invoke-Clean $Arg1
+    if ($Arg1 -match "^\d+$") {
+        # Clean specific problem
+        $lang = if ($Arg2 -and $Arg2 -in $Script:Languages) { $Arg2 } else { $Script:DefaultLang }
+        Invoke-CleanProblem $Arg1 $lang
+    } elseif ($Arg1 -eq "out") {
+        Invoke-Clean "out"
+    } else {
+        Invoke-Clean $Arg1
+    }
+}
+elseif ($Command -eq "clean_all") {
+    $lang = if ($Arg1 -and $Arg1 -in $Script:Languages) { $Arg1 } else { $null }
+    Invoke-CleanAll $lang
 }
 else {
     Write-Host "Unknown command: $Command" -ForegroundColor Red
