@@ -59,6 +59,6 @@ class Test {
         System.out.print("Output: " + minStack.getMin() + ", "); // return -3
         minStack.pop();
         System.out.print(minStack.top() + ", "); // return 0
-        System.out.println(minStack.getMin());   // return -2
+        System.out.println(minStack.getMin());     // return -2
     }
 }
